@@ -29,6 +29,12 @@ public class Database {
         _connectionProps = new Properties();
         _connectionProps.put("user", "inf117293");
         _connectionProps.put("password", "czita007");
+       
+       //fabian
+       //_connectionProps.put("user", "inf117187");
+       //_connectionProps.put("password", "inf117187");
+       
+       
     }
 
     public static void connect() {
@@ -140,11 +146,15 @@ public class Database {
             stmt = _conn.createStatement();
 
             if (condition != null) {
-                changes = stmt.executeUpdate("UPDATE" + table + " SET " + what + " WHERE " + condition);
+                changes = stmt.executeUpdate("UPDATE " + table + " SET " + what + " WHERE " + condition);
             } else {
-                changes = stmt.executeUpdate("UPDATE" + table + " SET " + what);
+                changes = stmt.executeUpdate("UPDATE " + table + " SET " + what);
             }
-            result = "Zmodyfikowano " + changes + " krotek.";
+            //changes = stmt.executeUpdate("UPDATE etaty SET placa_min = 1.2*placa_min");
+       
+            
+            
+            //result = "Zmodyfikowano " + changes + " krotek.";
 
         } catch (SQLException ex) {
             System.out.println("Bład wykonania polecenia" + ex.toString());

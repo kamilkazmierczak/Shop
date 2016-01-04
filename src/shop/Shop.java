@@ -40,7 +40,10 @@ public class Shop {
         */
   
         //db.insert("etaty", "nazwa,placa_min", "'THREE',33");
-        db.update("etaty", "placa_min = 1*placa_min", null);
+        //db.update("etaty", "placa_min = 0.4*placa_min", "nazwa = 'THREE'");
+        //db.delete("etaty", "NAZWA = 'TWO'");
+        
+        
         
         
         db.close();
