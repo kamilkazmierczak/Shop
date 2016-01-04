@@ -32,14 +32,15 @@ public class Shop {
         db.connect();      
         
         
-        //Object[] res = db.select("nazwisko","pracownicy",SelectTypes.STRING);
-        ArrayList<Object> data = db.select("placa_pod","pracownicy",SelectTypes.FLOAT);
-        
+        /* SELECT
+        ArrayList<Object> data = db.select("placa_pod","pracownicy","placa_pod>1700",SelectTypes.FLOAT);     
         for (Object result : data) {
             System.out.println(result);
         }
-        
-        //System.out.println(res[0]);
+        */
+  
+        //db.insert("etaty", "nazwa,placa_min", "'THREE',33");
+        db.update("etaty", "placa_min = 1*placa_min", null);
         
         
         db.close();

@@ -9,10 +9,7 @@ package shop;
  *
  * @author Kamil
  */
-public enum SelectTypes
+public enum UpdateTypes
 {
-    FLOAT,INT,STRING
+    INSERT,UPDATE,DELETE
 }
-
-    
-
