@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,11 +29,26 @@ public class Shop {
         
         
         Database db = Database.getDatabase();
-        db.connect();       
-        db.select();
+        db.connect();      
+        
+        
+        /* SELECT
+        ArrayList<Object> data = db.select("placa_pod","pracownicy","placa_pod>1700",SelectTypes.FLOAT);     
+        for (Object result : data) {
+            System.out.println(result);
+        }
+        */
+  
+        //db.insert("etaty", "nazwa,placa_min", "'THREE',33");
+        //db.update("etaty", "placa_min = 0.4*placa_min", "nazwa = 'THREE'");
+        //db.delete("etaty", "NAZWA = 'TWO'");
+        
+        
+        
+        
         db.close();
 
-        
+ 
 
         
        
