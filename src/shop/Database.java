@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,19 +68,25 @@ public class Database {
  
      
      
-     public static void select()
-     {
+     public static ArrayList<Object> select(String what,String table, SelectTypes type)
+     {      
+        ArrayList<Object> results = new ArrayList<Object>();
+    
             Statement stmt = null;
             ResultSet rs = null;
             try {
                 stmt = _conn.createStatement();
-                rs = stmt.executeQuery("select id_prac, nazwisko, placa_pod " +
-                "from pracownicy");
-                while (rs.next()) 
-                {
-                    System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " +
-                    rs.getFloat(3));
+                rs = stmt.executeQuery("select " + what + " from "+table);
+
+                switch(type){
+                    case STRING: while (rs.next()){results.add(rs.getString(1));}
+                                 break;
+                    case INT:    while (rs.next()){results.add(rs.getInt(1));}
+                                 break;
+                    case FLOAT:  while (rs.next()){results.add(rs.getFloat(1));}
+                                 break;              
                 }
+                
             } 
             catch (SQLException ex) 
             {
@@ -96,8 +103,9 @@ public class Database {
                     catch (SQLException e) { /* kod obsługi */ }
                 }
             }
+           
             
-            
+            return results;
             
      }
      
