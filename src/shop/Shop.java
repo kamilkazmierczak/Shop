@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -27,11 +28,19 @@ public class Shop {
     public static void main(String[] args) {
         // TODO code application logic here
         
+       
+        JFrame frame = new JFrame("Menu główne");
+        //frame.setSize(1300, 1600);
+        frame.setContentPane(new MainMenu());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
         
-        Database db = Database.getDatabase();
-        db.connect();      
         
         
+        //Database db = Database.getDatabase();
+        //db.connect();      
         /* SELECT
         ArrayList<Object> data = db.select("placa_pod","pracownicy","placa_pod>1700",SelectTypes.FLOAT);     
         for (Object result : data) {
@@ -43,10 +52,7 @@ public class Shop {
         //db.update("etaty", "placa_min = 0.4*placa_min", "nazwa = 'THREE'");
         //db.delete("etaty", "NAZWA = 'TWO'");
         
-        
-        
-        
-        db.close();
+        //db.close();
 
  
 
