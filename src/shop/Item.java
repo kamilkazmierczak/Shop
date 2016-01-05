@@ -65,7 +65,7 @@ public class Item {
     }
     
     public Object[] getItem(){
-        Object[] item = {this._nazwa,this._liczba_sztuk,this._cena,this._opis};
+        Object[] item = {this._id_towaru,this._nazwa,this._liczba_sztuk,this._cena,this._opis};
         return item;
     }
     
