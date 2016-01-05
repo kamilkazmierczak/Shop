@@ -5,6 +5,9 @@
  */
 package shop;
 
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -20,34 +23,50 @@ public class Products extends javax.swing.JPanel {
      */
     private JFrame _frame;
     private ArrayList _items = new ArrayList();
-    
 
     private Object[][] _tableContent;
-    
-    private void addItems()
-    {
-        _items.add(new Item(1, "pendrive", 34, (float)12.5, "Bardzo szybki"));
-        _items.add(new Item(2, "monitor", 2, (float)2500, "Znakomity"));
-        
+
+    private void addItems() {
+        _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
+        _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
+
         _tableContent = new Object[_items.size()][];
-        for(int i=0; i<_items.size(); i++)
-        {
-            _tableContent[i] = ((Item)_items.get(i)).getItem();
+        for (int i = 0; i < _items.size(); i++) {
+            _tableContent[i] = ((Item) _items.get(i)).getItem();
         }
-               
-        String[] ColumnNames = {"Nazwa", "Liczba sztuk","Cena", "Opis"};
+
+        String[] ColumnNames = {"Nazwa", "Liczba sztuk", "Cena", "Opis"};
         jTable1 = new JTable(_tableContent, ColumnNames);
     }
-    
-    
-    
+
     public Products(JFrame frame) {
         initComponents();
         this._frame = frame;
         addItems();
         jScrollPane1.getViewport().setView(jTable1);
+        initListeners();
+      
     }
 
+    
+    private void addItemToCart(int tableRow)
+    {
+        System.out.println("Dodano do koszyka" + tableRow);
+    }
+    
+    private void initListeners()
+    {
+          jTable1.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table = (JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    addItemToCart(row);
+                }
+            }
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
