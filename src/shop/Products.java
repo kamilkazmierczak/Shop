@@ -223,6 +223,11 @@ public class Products extends javax.swing.JPanel {
         jScrollPane2.setViewportView(CartTable);
 
         jButton1.setText("Realizuj zamówienie");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Powrót do menu");
         jButton2.setToolTipText("");
@@ -322,6 +327,14 @@ public class Products extends javax.swing.JPanel {
             System.out.println(item.getNazwa());
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFrame frame = new JFrame("Potwierdzenie");
+        frame.setContentPane(new OrderConfirmation(frame,_cartContent));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);  
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
