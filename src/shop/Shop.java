@@ -56,7 +56,11 @@ public class Shop {
 
  
 
+        /*
+        Notes:
+        -jesli liczba sztuk towaru = 0 to nie dodawaj go do koszyka
         
+        */
        
     }
     
