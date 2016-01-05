@@ -5,7 +5,9 @@
  */
 package shop;
 
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 
 /**
  *
@@ -17,10 +19,33 @@ public class Products extends javax.swing.JPanel {
      * Creates new form Products
      */
     private JFrame _frame;
+    private ArrayList _items = new ArrayList();
+    
+
+    private Object[][] _tableContent;
+    
+    private void addItems()
+    {
+        _items.add(new Item(1, "pendrive", 34, (float)12.5, "Bardzo szybki"));
+        _items.add(new Item(2, "monitor", 2, (float)2500, "Znakomity"));
+        
+        _tableContent = new Object[_items.size()][];
+        for(int i=0; i<_items.size(); i++)
+        {
+            _tableContent[i] = ((Item)_items.get(i)).getItem();
+        }
+               
+        String[] ColumnNames = {"Nazwa", "Liczba sztuk","Cena", "Opis"};
+        jTable1 = new JTable(_tableContent, ColumnNames);
+    }
+    
+    
     
     public Products(JFrame frame) {
         initComponents();
         this._frame = frame;
+        addItems();
+        jScrollPane1.getViewport().setView(jTable1);
     }
 
     /**
@@ -32,19 +57,55 @@ public class Products extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
+        jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
+        jLabel1.setText("Produkty");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(125, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
