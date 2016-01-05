@@ -5,6 +5,8 @@
  */
 package shop;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Kamil
@@ -14,6 +16,9 @@ public class Registration extends javax.swing.JPanel {
     /**
      * Creates new form Registration
      */
+    
+
+    
     public Registration() {
         initComponents();
     }

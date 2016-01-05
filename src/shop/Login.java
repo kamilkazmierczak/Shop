@@ -5,6 +5,8 @@
  */
 package shop;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Kamil
@@ -91,11 +93,25 @@ public class Login extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void openUserMenu()
+    {
+        JFrame frame = new JFrame("Menu użytkownika");
+        frame.setContentPane(new UserMenu(frame));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);      
+    }
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
         String login = jTextField1.getText();
         String password = jTextField2.getText();
+        
+        openUserMenu();
+        
+       
         
         //System.out.println(login+password);
         
