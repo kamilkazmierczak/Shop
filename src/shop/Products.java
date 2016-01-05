@@ -52,9 +52,13 @@ public class Products extends javax.swing.JPanel {
         model.addColumn("Nazwa");
         model.addColumn("Cena");
         CartTable.removeColumn(CartTable.getColumnModel().getColumn(0));
-        
-        
+
     }
+    
+
+    
+    
+    
 
     private void addItemToCart(int tableRow) {
 
@@ -142,7 +146,8 @@ public class Products extends javax.swing.JPanel {
         jScrollPane2.getViewport().setView(CartTable);
         initListeners();
         infoLabel.setVisible(false);
-
+        //Function.disableTableEdit(jTable1);
+        //disableTableEdit(CartTable);
     }
 
     private void initListeners() {
