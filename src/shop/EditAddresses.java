@@ -9,8 +9,10 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -33,36 +35,41 @@ public class EditAddresses extends javax.swing.JPanel {
         Functions.disableTableEdit(jTableAddresses);
         initListener();
 
-
     }
 
-    
-    private void selectAddress(Integer row)
-    {
+    private void selectAddress(Integer row) {
         jTextFieldCity.setText(_addressess.get(row).getMiejscowosc());
         jTextFieldAddress.setText(_addressess.get(row).getUlica());
         jTextFieldHomeNumber.setText((_addressess.get(row).getNr_domu()).toString());
         jTextFieldZipCode.setText(_addressess.get(row).getKod_pocztowy());
         jTextFieldPhone.setText((_addressess.get(row).getNr_telefonu()).toString());
-          
+
     }
-    
+
     private void initAddresses() {
 
+        /*
+        SQL
+         */   
         _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorzy", "Stara Tuchorza"));
         _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
         _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
-
-        _tableContent = new Object[_addressess.size()][];
-        for (int i = 0; i < _addressess.size(); i++) {
-            _tableContent[i] = (_addressess.get(i)).getAddress();
+        
+        DefaultTableModel model = new DefaultTableModel();
+        jTableAddresses = new JTable(model);
+        model.addColumn("Miejscowość");
+        model.addColumn("Ulica");
+        model.addColumn("Nr domu");
+        model.addColumn("Kod pocztowy");
+        model.addColumn("Nr telefonu");
+                
+        for(Address addr : _addressess)
+        {
+            model.addRow(addr.getAddress());
         }
-
-        String[] ColumnNames = {"Miejscowość", "Ulica", "Nr domu", "Kod pocztowy", "Nr telefonu"};
-        jTableAddresses = new JTable(_tableContent, ColumnNames);
+        
     }
 
-    
     private void initListener() {
         jTableAddresses.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -75,7 +82,41 @@ public class EditAddresses extends javax.swing.JPanel {
             }
         });
     }
-    
+
+    private void deleteAddressFromCart(int tableRow) {
+
+        DefaultTableModel model = (DefaultTableModel) jTableAddresses.getModel();
+
+        //Integer id = (Integer) jTableAddresses.getModel().getValueAt(tableRow, 0);
+        Integer nr_domu = (Integer) jTableAddresses.getModel().getValueAt(tableRow, 2);
+        String miejscowosc = (String) jTableAddresses.getModel().getValueAt(tableRow, 0);
+
+        for (int i = 0; i < _addressess.size(); i++) {
+            if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
+                _addressess.remove(i);
+            }
+        }
+
+        clearAddressesTable(model);
+        for (Address addr : _addressess) {
+            //model.addRow(new Object[]{addr.getMiejscowosc(),addr.getUlica(),addr.getNr_domu(),addr.getKod_pocztowy(),addr.getNr_telefonu()});
+            model.addRow(addr.getAddress());
+        }
+    }
+
+    public void clearAddressesTable(final DefaultTableModel model) {
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        model.setColumnCount(0);
+        model.addColumn("Miejscowość");
+        model.addColumn("Ulica");
+        model.addColumn("Nr domu");
+        model.addColumn("Kod pocztowy");
+        model.addColumn("Nr telefonu");
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -99,8 +140,8 @@ public class EditAddresses extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jTextFieldCity = new javax.swing.JTextField();
         jTextFieldAddress = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jButtonModify = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
@@ -148,9 +189,14 @@ public class EditAddresses extends javax.swing.JPanel {
         jLabel7.setText("Nr telefonu:");
         jLabel7.setToolTipText("");
 
-        jButton2.setText("Usuń");
+        jButtonDelete.setText("Usuń");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Zmodyfikuj");
+        jButtonModify.setText("Zmodyfikuj");
 
         jButton4.setText("Zapisz zmiany");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +205,7 @@ public class EditAddresses extends javax.swing.JPanel {
             }
         });
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Show addresses");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -183,28 +229,31 @@ public class EditAddresses extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldCity, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldHomeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel7))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldCity, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldHomeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton5)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(104, 104, 104)
+                                .addComponent(jButton5)))))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -243,8 +292,8 @@ public class EditAddresses extends javax.swing.JPanel {
                             .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -254,25 +303,34 @@ public class EditAddresses extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+
+        /*
+        SQL
+         */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTableAddressesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAddressesMouseClicked
-        
+
     }//GEN-LAST:event_jTableAddressesMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        System.out.println("zaznaczony jest "+jTableAddresses.getSelectedRow());
+        for (Address addr : _addressess) {
+            System.out.println("->" + addr.getMiejscowosc());
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+          deleteAddressFromCart(jTableAddresses.getSelectedRow());
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonModify;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

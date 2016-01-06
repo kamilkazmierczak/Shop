@@ -105,9 +105,7 @@ public class Products extends javax.swing.JPanel {
      private void deleteItemFromCart(int tableRow) {
 
         DefaultTableModel model = (DefaultTableModel) CartTable.getModel();
-        //model.removeRow(tableRow);
-        
-        
+
         Integer id = (Integer) CartTable.getModel().getValueAt(tableRow, 0);
         
             for (int i = 0; i < _cartContent.size(); i++) {
@@ -116,13 +114,7 @@ public class Products extends javax.swing.JPanel {
              }
          }
 
-        //model.setColumnCount(0);
-   
-        
         clearCartTable(model); 
-
-        
-        
         for(Item item : _cartContent)
         {
             model.addRow(new Object[]{item.getId_towaru(),item.getNazwa(),item.getCena()});
