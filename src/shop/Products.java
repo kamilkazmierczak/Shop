@@ -52,9 +52,13 @@ public class Products extends javax.swing.JPanel {
         model.addColumn("Nazwa");
         model.addColumn("Cena");
         CartTable.removeColumn(CartTable.getColumnModel().getColumn(0));
-        
-        
+
     }
+    
+
+    
+    
+    
 
     private void addItemToCart(int tableRow) {
 
@@ -101,9 +105,7 @@ public class Products extends javax.swing.JPanel {
      private void deleteItemFromCart(int tableRow) {
 
         DefaultTableModel model = (DefaultTableModel) CartTable.getModel();
-        //model.removeRow(tableRow);
-        
-        
+
         Integer id = (Integer) CartTable.getModel().getValueAt(tableRow, 0);
         
             for (int i = 0; i < _cartContent.size(); i++) {
@@ -112,13 +114,7 @@ public class Products extends javax.swing.JPanel {
              }
          }
 
-        //model.setColumnCount(0);
-   
-        
         clearCartTable(model); 
-
-        
-        
         for(Item item : _cartContent)
         {
             model.addRow(new Object[]{item.getId_towaru(),item.getNazwa(),item.getCena()});
@@ -142,7 +138,8 @@ public class Products extends javax.swing.JPanel {
         jScrollPane2.getViewport().setView(CartTable);
         initListeners();
         infoLabel.setVisible(false);
-
+        Functions.disableTableEdit(jTable1);
+        Functions.disableTableEdit(CartTable);
     }
 
     private void initListeners() {
