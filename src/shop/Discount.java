@@ -14,10 +14,18 @@ public class Discount {
     private Integer _kod_znizki;
     private Float _ile;
 
+    
+    public Discount() {
+        this._kod_znizki = null;
+        this._ile = null;
+    }
+    
     public Discount(Integer _kod_znizki, Float _ile) {
         this._kod_znizki = _kod_znizki;
         this._ile = _ile;
     }
+    
+    
 
     public Integer getKod_znizki() {
         return _kod_znizki;
@@ -35,6 +43,10 @@ public class Discount {
         this._ile = _ile;
     }
     
+    public Object[] getDiscount(){
+        Object[] user = {this._kod_znizki,this._ile};
+        return user;
+    }
     
     
 }

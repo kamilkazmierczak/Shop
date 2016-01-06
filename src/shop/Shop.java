@@ -63,6 +63,7 @@ public class Shop {
         -obsluga bledow userinput jest tylko w zarzadzaniu towarem
         
         >opisow bledow szukaj jako ERROR
+        >opisow szukaj jako INFO
         */
        
     }

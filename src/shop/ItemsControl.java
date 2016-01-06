@@ -26,13 +26,11 @@ public class ItemsControl extends javax.swing.JPanel {
     /**
      * Creates new form ItemsControl
      */
-   
     private Integer _row;
     private JFrame _frame;
     private ArrayList<Item> _items = new ArrayList<Item>();
-    private ArrayList<String> _tableColumns = new ArrayList<String>(Arrays.asList("Id", "Nazwa", "Liczba sztuk", "Cena","Opis"));
-    
-    
+    private ArrayList<String> _tableColumns = new ArrayList<String>(Arrays.asList("Id", "Nazwa", "Liczba sztuk", "Cena", "Opis"));
+
     public ItemsControl(JFrame frame) {
         initComponents();
         initItems();
@@ -41,9 +39,9 @@ public class ItemsControl extends javax.swing.JPanel {
         Functions.disableTableEdit(jTableItems);
         initListener();
         jSpinnerNumberofItems.setValue(1);
-       // jFormattedPriceField = new JFormattedTextField(new Float(3.14));
+        // jFormattedPriceField = new JFormattedTextField(new Float(3.14));
         jLabelInfo.setVisible(false);
-        
+
     }
 
     private void initListener() {
@@ -59,101 +57,88 @@ public class ItemsControl extends javax.swing.JPanel {
             }
         });
     }
-    
-    
 
-    
-    
     private void selectItems(Integer row) {
-        
+
         jTextFieldName.setText(_items.get(row).getNazwa());
         jTextFieldDescription.setText(_items.get(row).getOpis());
         jTextFieldPrice.setText(_items.get(row).getCena().toString());
         jSpinnerNumberofItems.setValue(_items.get(row).getLiczba_sztuk());
-        
+
     }
-    
-    
-    
+
     private void modifyItem(int row) {
         DefaultTableModel model = (DefaultTableModel) jTableItems.getModel();
-        setNewData(_items.get(row)); 
+        setNewData(_items.get(row));
         Functions.clearTable(model, _tableColumns);
         for (Item item : _items) {
             model.addRow(item.getItem());
         }
     }
-    
-    
+
     private void addItem() {
         DefaultTableModel model = (DefaultTableModel) jTableItems.getModel();
-        
+
         //setNewData(_items.get(row));
         //Item item = new Item(14, "myszka", 78, (float) 140.67, "Zwinna");
-        
-        Item newItem = new Item();
-        setNewData(newItem);
-        _items.add(newItem);
-        
-        /*
+        if (checkUserInput()) {
+            Item newItem = new Item();
+            setNewData(newItem);
+            _items.add(newItem);
+
+            /*
         ERROR
         TU BEDA BLEDY!!!
         bo to mi nie dodaje nowego id, nie robie nowej funkcji setNewData(..)
         bo nie wiem jak chce to realizowac, albo jakos z sbd, albo
         wziac id ostatniego elementu i nadac mu kolejny,
         domyslnie jak go nie ma to jest to null
-        */
-        
-        Functions.clearTable(model, _tableColumns);
-        for (Item item : _items) {
-            model.addRow(item.getItem());
-        }
-    }
-    
-    private void setNewData(Item item)
-    {
-        if (checkUserInput()) {
-            item.setNazwa(jTextFieldName.getText());
-            item.setLiczba_sztuk((Integer)jSpinnerNumberofItems.getValue());
-            item.setCena(Float.parseFloat(jTextFieldPrice.getText())); 
-            if (jTextFieldDescription.getText().length()>0) {
-                item.setOpis(jTextFieldDescription.getText());
-            }else
-            {
-                item.setOpis("");
+             */
+            Functions.clearTable(model, _tableColumns);
+            for (Item item : _items) {
+                model.addRow(item.getItem());
             }
-        } 
+        }
+
     }
-    
-    private boolean checkUserInput()
-    {
+
+    private void setNewData(Item item) {
+        item.setNazwa(jTextFieldName.getText());
+        item.setLiczba_sztuk((Integer) jSpinnerNumberofItems.getValue());
+        item.setCena(Float.parseFloat(jTextFieldPrice.getText()));
+        if (jTextFieldDescription.getText().length() > 0) {
+            item.setOpis(jTextFieldDescription.getText());
+        } else {
+            item.setOpis("");
+        }
+
+    }
+
+    private boolean checkUserInput() {
         boolean flag = true;
-        
-       Float price = (float)0;
-       try{
-           price = Float.parseFloat(jTextFieldPrice.getText());
-           if (price < 0 || price > 1000000) {
+
+        Float price = (float) 0;
+        try {
+            price = Float.parseFloat(jTextFieldPrice.getText());
+            if (price < 0 || price > 1000000) {
                 flag = false;
-           }
-       }catch(NumberFormatException ex)
-       {
-           flag = false;
-       }
-       
+            }
+        } catch (NumberFormatException ex) {
+            flag = false;
+        }
+
         if (jTextFieldName.getText().length() < 1) {
             flag = false;
         }
-        
+
         if (!flag) {
             jLabelInfo.setText("Błędne dane");
             jLabelInfo.setVisible(true);
         }
-        
+
         //opis moze byc pusty
-        
         return flag;
     }
-    
 
     private void initItems() {
 
@@ -166,31 +151,25 @@ public class ItemsControl extends javax.swing.JPanel {
 
         DefaultTableModel model = new DefaultTableModel();
         jTableItems = new JTable(model);
-        
-        for(String col : _tableColumns)
-        {
+
+        for (String col : _tableColumns) {
             model.addColumn(col);
         }
-        
 
         for (Item item : _items) {
             model.addRow(item.getItem());
         }
 
     }
-    
-    
-    
-     private void deleteItem(int tableRow) {
+
+    private void deleteItem(int tableRow) {
         DefaultTableModel model = (DefaultTableModel) jTableItems.getModel();
         _items.remove(tableRow);
-        Functions.clearTable(model,_tableColumns);
+        Functions.clearTable(model, _tableColumns);
         for (Item item : _items) {
             model.addRow(item.getItem());
         }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -262,7 +241,7 @@ public class ItemsControl extends javax.swing.JPanel {
             }
         });
 
-        jButton4.setText("jButton4");
+        jButton4.setText("Zapisz zmiany");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -307,12 +286,12 @@ public class ItemsControl extends javax.swing.JPanel {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(342, 342, 342)
-                        .addComponent(jButton4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -340,7 +319,7 @@ public class ItemsControl extends javax.swing.JPanel {
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,13 +330,10 @@ public class ItemsControl extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jButton4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -381,9 +357,9 @@ public class ItemsControl extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabelInfo)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonModAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonModAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -393,16 +369,15 @@ public class ItemsControl extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButtonModAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModAddActionPerformed
-        
+
         if (jComboBox1.getSelectedIndex() == 0) {
             //modeyfikuj
             modifyItem(_row);
-        }else
-        {
-            addItem();   
+        } else {
+            addItem();
         }
-        
-        
+
+
     }//GEN-LAST:event_jButtonModAddActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -410,7 +385,7 @@ public class ItemsControl extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jSpinnerNumberofItemsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerNumberofItemsStateChanged
-       if ((Integer)jSpinnerNumberofItems.getValue() < 1) {
+        if ((Integer) jSpinnerNumberofItems.getValue() < 1) {
             jSpinnerNumberofItems.setValue(1);
         }
     }//GEN-LAST:event_jSpinnerNumberofItemsStateChanged
@@ -424,13 +399,12 @@ public class ItemsControl extends javax.swing.JPanel {
             //modifikuj
             jButtonDelete.setVisible(true);
             jButtonModAdd.setText("Modyfikuj");
-        }else
-        {           
+        } else {
             jSpinnerNumberofItems.setValue(1);
             jTextFieldDescription.setText("");
             jTextFieldName.setText("");
             jTextFieldPrice.setText("");
-            
+
             jButtonModAdd.setText("Dodaj");
             jButtonDelete.setVisible(false);
         }
