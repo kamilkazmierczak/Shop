@@ -31,6 +31,20 @@ public class Order {
         this.calkowity_koszt = calkowity_koszt;
     }
 
+    public Order(Integer id_zamowienia, Date data_zamowienia, Float koszt_transportu, String sposob_transportu, String sposob_platnosci, String status, Float calkowity_koszt) {
+        this.id_zamowienia = id_zamowienia;
+        this.data_zamowienia = data_zamowienia;
+        this.data_dostawy = null;
+        this.koszt_transportu = koszt_transportu;
+        this.sposob_transportu = sposob_transportu;
+        this.sposob_platnosci = sposob_platnosci;
+        this.status = status;
+        this.calkowity_koszt = calkowity_koszt;
+    }
+    
+    
+    
+
     public Integer getId_zamowienia() {
         return id_zamowienia;
     }
@@ -97,5 +111,16 @@ public class Order {
     
     
     
+    public Object[] getOrder(){
+
+        if (this.data_dostawy == null) {
+             Object[] order = {this.id_zamowienia, Date.dateToString(this.data_zamowienia),"",this.koszt_transportu,this.sposob_transportu,this.sposob_platnosci,this.status,this.calkowity_koszt};
+             return order;
+        }else
+        {
+            Object[] order = {this.id_zamowienia, Date.dateToString(this.data_zamowienia),Date.dateToString(this.data_dostawy),this.koszt_transportu,this.sposob_transportu,this.sposob_platnosci,this.status,this.calkowity_koszt}; 
+            return order;
+        }
+    }
     
 }

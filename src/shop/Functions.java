@@ -12,14 +12,37 @@ import javax.swing.JTable;
  * @author Kamil
  */
 public class Functions {
-    
-    
-        
-    public static void disableTableEdit(JTable table)
-    {
-            for (int c = 0; c < table.getColumnCount(); c++) {
+
+    public static void disableTableEdit(JTable table) {
+        for (int c = 0; c < table.getColumnCount(); c++) {
             Class<?> col_class = table.getColumnClass(c);
             table.setDefaultEditor(col_class, null);// remove editor
         }
     }
+
+    public static String statusToString(StatusTypes status) {
+        switch (status) {
+
+            case PACKING:
+                return "pakowany";
+
+            case SENT:
+                return "wysłany";
+
+            case CANCELLED:
+                return "anulowany";
+
+            case RECEIVED:
+                return "odebrany";
+
+            default:
+                return "nieznany status";
+        }
+        
+    
+        
+        
+
+    }
+
 }
