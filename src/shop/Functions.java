@@ -5,7 +5,9 @@
  */
 package shop;
 
+import java.util.ArrayList;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,6 +15,30 @@ import javax.swing.JTable;
  */
 public class Functions {
 
+    
+
+   
+      public static void clearTable(final DefaultTableModel model,ArrayList<String> columns) {
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        model.setColumnCount(0);
+        for(String col : columns)
+        {
+            model.addColumn(col);
+        }
+        
+//        model.addColumn("Id");
+//        model.addColumn("Imie");
+//        model.addColumn("Nazwisko");
+//        model.addColumn("Login");
+//        model.addColumn("Hasło");
+//        model.addColumn("Saldo");
+//        model.addColumn("Zniżka [%]");
+    }
+   
+    
+    
     public static void disableTableEdit(JTable table) {
         for (int c = 0; c < table.getColumnCount(); c++) {
             Class<?> col_class = table.getColumnClass(c);

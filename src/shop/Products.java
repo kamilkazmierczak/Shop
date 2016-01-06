@@ -44,6 +44,11 @@ public class Products extends javax.swing.JPanel {
     }
 
     private void addItems() {
+        
+        /*
+        SQL
+        */
+        
         _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
         _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
         _items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));

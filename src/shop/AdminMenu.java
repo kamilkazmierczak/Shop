@@ -125,7 +125,11 @@ public class AdminMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        JFrame frame = new JFrame("Zarządzaj towarem");
+        frame.setContentPane(new ItemsControl(frame));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);   
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

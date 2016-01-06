@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Login.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Shop.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Database.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/UserMenu.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Products.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/MainMenu.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/AdminMenu.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Functions.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Orders.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Accounts.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Order.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Discount.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/User.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/EditAddresses.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/OrderConfirmation.java</file>
             <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/Shop-Git2/src/shop/Item.java</file>
         </group>
     </open-files>

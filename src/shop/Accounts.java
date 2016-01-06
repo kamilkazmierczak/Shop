@@ -90,13 +90,6 @@ public class Accounts extends javax.swing.JPanel {
 
         DefaultTableModel model = (DefaultTableModel) jTableAccounts.getModel();
 
-//        Integer id = (Integer) jTableAccounts.getModel().getValueAt(tableRow, 0);
-//
-//        for (int i = 0; i < _discounts.size(); i++) {
-//            if (_discounts.get(i).getKod_znizki()== ) {
-//                
-//            }
-//        }
         Integer discountCode = _discounts.get(jComboBox1.getSelectedIndex()).getKod_znizki();
         _users.get(row).setKod_znizki(discountCode);
 

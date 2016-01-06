@@ -60,6 +60,7 @@ public class Shop {
         Notes:
         -jesli liczba sztuk towaru = 0 to nie dodawaj go do koszyka (jesli nie zrobisz bedzie powodowac bledy w weryfikacji)
         -jak sie usunie adres to zablokuj zeby go sie nie dalo zmodyfikowac (i na odwrot) (bledy)
+        -obsluga bledow userinput jest tylko w zarzadzaniu towarem
         */
        
     }
