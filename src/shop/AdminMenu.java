@@ -54,6 +54,11 @@ public class AdminMenu extends javax.swing.JPanel {
         });
 
         jButton2.setText("Konta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Towar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -134,6 +139,14 @@ public class AdminMenu extends javax.swing.JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);   
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JFrame frame = new JFrame("Zarządzaj kontami");
+        frame.setContentPane(new Accounts(frame));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

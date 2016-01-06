@@ -38,11 +38,29 @@ public class Functions {
             default:
                 return "nieznany status";
         }
+    }
         
-    
+    public static Float discountCodeToPercent(Integer code)
+    {
+        /*
+        SQL
+        */
         
-        
+        if (code == 817) {
+            return (float)50.0;
+        }else if (code == 0)
+        {
+            return (float)0;
+        }else if (code == 999)
+        {
+            return (float)60.2;
+        }else if (code == 888)
+        {
+            return (float)14;
+        }
 
+        
+        return (float)4.4;
     }
 
 }
