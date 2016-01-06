@@ -146,8 +146,8 @@ public class Products extends javax.swing.JPanel {
         jScrollPane2.getViewport().setView(CartTable);
         initListeners();
         infoLabel.setVisible(false);
-        //Function.disableTableEdit(jTable1);
-        //disableTableEdit(CartTable);
+        Functions.disableTableEdit(jTable1);
+        Functions.disableTableEdit(CartTable);
     }
 
     private void initListeners() {

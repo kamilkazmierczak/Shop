@@ -15,7 +15,7 @@ public class Functions {
     
     
         
-    private static void disableTableEdit(JTable table)
+    public static void disableTableEdit(JTable table)
     {
             for (int c = 0; c < table.getColumnCount(); c++) {
             Class<?> col_class = table.getColumnClass(c);
