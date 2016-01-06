@@ -30,11 +30,24 @@ public class Products extends javax.swing.JPanel {
     private Object[][] _tableContent;
     private ArrayList<Item> _cartContent = new ArrayList<Item>();
 
+    public Products(JFrame frame) {
+        initComponents();
+        initCart();
+        this._frame = frame;
+        addItems();
+        jScrollPane1.getViewport().setView(jTable1);
+        jScrollPane2.getViewport().setView(CartTable);
+        initListeners();
+        infoLabel.setVisible(false);
+        Functions.disableTableEdit(jTable1);
+        Functions.disableTableEdit(CartTable);
+    }
+
     private void addItems() {
         _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
         _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
         _items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));
-        
+
         _tableContent = new Object[_items.size()][];
         for (int i = 0; i < _items.size(); i++) {
             _tableContent[i] = ((Item) _items.get(i)).getItem();
@@ -54,11 +67,6 @@ public class Products extends javax.swing.JPanel {
         CartTable.removeColumn(CartTable.getColumnModel().getColumn(0));
 
     }
-    
-
-    
-    
-    
 
     private void addItemToCart(int tableRow) {
 
@@ -81,65 +89,44 @@ public class Products extends javax.swing.JPanel {
                     //System.out.println("WTF"+((Item)_items.get(i)).getNazwa());
                     _cartContent.add((Item) _items.get(i));
                     //System.out.println("WTF COUNT "+ _cartContent.size());
-                    model.addRow(new Object[]{_cartContent.get(_cartContent.size()-1).getId_towaru(),_cartContent.get(_cartContent.size()-1).getNazwa(),_cartContent.get(_cartContent.size()-1).getCena()});
+                    model.addRow(new Object[]{_cartContent.get(_cartContent.size() - 1).getId_towaru(), _cartContent.get(_cartContent.size() - 1).getNazwa(), _cartContent.get(_cartContent.size() - 1).getCena()});
                     //model.addRow(new Object[]{((Item) _items.get(i)).getId_towaru(),((Item) _items.get(i)).getNazwa(), ((Item) _items.get(i)).getCena()});
                 }
             }
         }
     }
-    
-    
+
     public void clearCartTable(final DefaultTableModel model) {
-    for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
-        model.removeRow(i);
-    }
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
         model.setColumnCount(0);
         model.addColumn("Id");
         model.addColumn("Nazwa");
         model.addColumn("Cena");
         CartTable.removeColumn(CartTable.getColumnModel().getColumn(0));
     }
-    
-    
-    
-     private void deleteItemFromCart(int tableRow) {
+
+    private void deleteItemFromCart(int tableRow) {
 
         DefaultTableModel model = (DefaultTableModel) CartTable.getModel();
 
         Integer id = (Integer) CartTable.getModel().getValueAt(tableRow, 0);
-        
-            for (int i = 0; i < _cartContent.size(); i++) {
-             if (Objects.equals(((Item) _cartContent.get(i)).getId_towaru(), id)) {
-             _cartContent.remove(i);
-             }
-         }
 
-        clearCartTable(model); 
-        for(Item item : _cartContent)
-        {
-            model.addRow(new Object[]{item.getId_towaru(),item.getNazwa(),item.getCena()});
-            System.out.println("left "+item.getId_towaru()+" "+item.getNazwa()+" "+item.getCena());
+        for (int i = 0; i < _cartContent.size(); i++) {
+            if (Objects.equals(((Item) _cartContent.get(i)).getId_towaru(), id)) {
+                _cartContent.remove(i);
+            }
         }
 
-         System.out.println("id"+id);
-         
-     }
-    
-    
-    
-    
+        clearCartTable(model);
+        for (Item item : _cartContent) {
+            model.addRow(new Object[]{item.getId_towaru(), item.getNazwa(), item.getCena()});
+            System.out.println("left " + item.getId_towaru() + " " + item.getNazwa() + " " + item.getCena());
+        }
 
-    public Products(JFrame frame) {
-        initComponents();
-        initCart();
-        this._frame = frame;
-        addItems();
-        jScrollPane1.getViewport().setView(jTable1);
-        jScrollPane2.getViewport().setView(CartTable);
-        initListeners();
-        infoLabel.setVisible(false);
-        Functions.disableTableEdit(jTable1);
-        Functions.disableTableEdit(CartTable);
+        System.out.println("id" + id);
+
     }
 
     private void initListeners() {
@@ -154,7 +141,7 @@ public class Products extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         CartTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 JTable table = (JTable) me.getSource();
@@ -315,7 +302,7 @@ public class Products extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      
+
         System.out.println("Zawartość koszyka:");
         for (int i = 0; i < _cartContent.size(); i++) {
 
@@ -328,28 +315,26 @@ public class Products extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       for(Item item : _cartContent)
-        {
+        for (Item item : _cartContent) {
             System.out.println(item.getNazwa());
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        if (_cartContent.size()>0) {
-        JFrame frame = new JFrame("Potwierdzenie");
-        frame.setContentPane(new OrderConfirmation(frame,_cartContent));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);  
-        infoLabel.setVisible(false);
-        }else
-        {
+
+        if (_cartContent.size() > 0) {
+            JFrame frame = new JFrame("Potwierdzenie");
+            frame.setContentPane(new OrderConfirmation(frame, _cartContent));
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+            infoLabel.setVisible(false);
+        } else {
             infoLabel.setText("Koszyk jest pusty");
             infoLabel.setVisible(true);
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

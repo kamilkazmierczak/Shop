@@ -101,6 +101,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Przegl&#x105;daj histori&#x119;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
