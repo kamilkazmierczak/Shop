@@ -14,6 +14,12 @@ public class Date {
     private Integer Day;
     private Integer Month;
     private Integer Year;
+    
+    
+    public static String dateToString(Date date)
+    {   
+        return date.getDay().toString() + "." + date.getMonth().toString() + "." + date.getYear().toString();
+    }
 
     public Date(Integer Day, Integer Month, Integer Year) {
         this.Day = Day;
