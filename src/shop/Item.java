@@ -16,6 +16,15 @@ public class Item {
     private Float _cena;
     private String _opis;
 
+    
+    public Item() {
+        this._id_towaru = null;
+        this._nazwa = null;
+        this._liczba_sztuk = null;
+        this._cena = null;
+        this._opis = null;
+    }
+    
     public Item(Integer _id_towaru, String _nazwa, Integer _liczba_sztuk, Float _cena, String _opis) {
         this._id_towaru = _id_towaru;
         this._nazwa = _nazwa;
