@@ -50,11 +50,11 @@ public class EditAddresses extends javax.swing.JPanel {
 
         /*
         SQL
-         */   
-        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorzy", "Stara Tuchorza"));
+         */
+        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
         _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
         _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
-        
+
         DefaultTableModel model = new DefaultTableModel();
         jTableAddresses = new JTable(model);
         model.addColumn("Miejscowość");
@@ -62,12 +62,11 @@ public class EditAddresses extends javax.swing.JPanel {
         model.addColumn("Nr domu");
         model.addColumn("Kod pocztowy");
         model.addColumn("Nr telefonu");
-                
-        for(Address addr : _addressess)
-        {
+
+        for (Address addr : _addressess) {
             model.addRow(addr.getAddress());
         }
-        
+
     }
 
     private void initListener() {
@@ -76,14 +75,14 @@ public class EditAddresses extends javax.swing.JPanel {
                 JTable table = (JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 2) {
+                if (me.getClickCount() == 1) {
                     selectAddress(row);
                 }
             }
         });
     }
 
-    private void deleteAddressFromCart(int tableRow) {
+    private void deleteAddress(int tableRow) {
 
         DefaultTableModel model = (DefaultTableModel) jTableAddresses.getModel();
 
@@ -103,6 +102,41 @@ public class EditAddresses extends javax.swing.JPanel {
             model.addRow(addr.getAddress());
         }
     }
+
+    private void modifyAddress(int tableRow) {
+
+        DefaultTableModel model = (DefaultTableModel) jTableAddresses.getModel();
+
+        //Integer id = (Integer) jTableAddresses.getModel().getValueAt(tableRow, 0);
+        Integer nr_domu = (Integer) jTableAddresses.getModel().getValueAt(tableRow, 2);
+        String miejscowosc = (String) jTableAddresses.getModel().getValueAt(tableRow, 0);
+
+        for (int i = 0; i < _addressess.size(); i++) {
+            if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
+                setNewData(_addressess.get(i));
+                //_addressess.get(i).setMiejscowosc("WORS");
+                
+                
+            }
+        }
+
+        clearAddressesTable(model);
+        for (Address addr : _addressess) {
+            //model.addRow(new Object[]{addr.getMiejscowosc(),addr.getUlica(),addr.getNr_domu(),addr.getKod_pocztowy(),addr.getNr_telefonu()});
+            model.addRow(addr.getAddress());
+        }
+    }
+    
+    private void setNewData(Address addr)
+    {
+        addr.setMiejscowosc(jTextFieldCity.getText());
+        addr.setKod_pocztowy(jTextFieldZipCode.getText());
+        addr.setNr_domu(Integer.parseInt(jTextFieldHomeNumber.getText()));      
+        addr.setNr_telefonu(Integer.parseInt(jTextFieldPhone.getText()));
+        addr.setUlica(jTextFieldAddress.getText());
+    }
+    
+    
 
     public void clearAddressesTable(final DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
@@ -197,6 +231,11 @@ public class EditAddresses extends javax.swing.JPanel {
         });
 
         jButtonModify.setText("Zmodyfikuj");
+        jButtonModify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonModifyActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Zapisz zmiany");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -321,8 +360,12 @@ public class EditAddresses extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-          deleteAddressFromCart(jTableAddresses.getSelectedRow());
+        deleteAddress(jTableAddresses.getSelectedRow());
     }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModifyActionPerformed
+        modifyAddress(jTableAddresses.getSelectedRow());
+    }//GEN-LAST:event_jButtonModifyActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
