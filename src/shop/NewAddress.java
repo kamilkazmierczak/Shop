@@ -5,6 +5,7 @@
  */
 package shop;
 
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
@@ -23,6 +24,37 @@ public class NewAddress extends javax.swing.JPanel {
         _frame = frame;
     }
 
+    
+    private boolean addAdress()
+    {
+        boolean state = true;
+        
+        String miasto = Functions.addApostrophes(jTextFieldCity.getText());
+        String ulica = Functions.addApostrophes(jTextFieldAddress.getText());
+        Integer nr_domu =  Integer.parseInt(jTextFieldHomeNumber.getText());
+        Integer nr_telefonu = Integer.parseInt(jTextFieldPhone.getText());
+        String kod_pocztowy = Functions.addApostrophes(jTextFieldZipCode.getText());
+        
+   
+        Database db = Database.getDatabase();
+        db.connect();   
+        
+        Integer userID =0;
+        String condition = "login = '" + db.getUser() + "'";
+
+        ArrayList<Object> data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+        for (Object result : data) {
+                userID = (Integer)result;
+        }
+        
+        String value = ulica+","+miasto+","+kod_pocztowy+","+nr_telefonu+","+nr_domu+","+userID;
+        state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu,uzytkownik", value);
+        db.close();
+        
+        return state;
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +65,7 @@ public class NewAddress extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelCity = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -49,8 +81,8 @@ public class NewAddress extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
         jLabel1.setText("Nowy adres");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setText("Miejscowość:");
+        jLabelCity.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabelCity.setText("Miejscowość:");
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel3.setText("Nr domu:");
@@ -66,6 +98,11 @@ public class NewAddress extends javax.swing.JPanel {
         jLabel6.setToolTipText("");
 
         jButton1.setText("Dodaj");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Zrezygnuj");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +123,7 @@ public class NewAddress extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
+                            .addComponent(jLabelCity)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
@@ -113,7 +150,7 @@ public class NewAddress extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(jLabelCity)
                     .addComponent(jTextFieldCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -143,16 +180,26 @@ public class NewAddress extends javax.swing.JPanel {
         _frame.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (addAdress()) {
+            System.out.println("dodano");
+        }else
+        {
+            System.out.println("nie udalo sie dodac");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelCity;
     private javax.swing.JTextField jTextFieldAddress;
     private javax.swing.JTextField jTextFieldCity;
     private javax.swing.JTextField jTextFieldHomeNumber;

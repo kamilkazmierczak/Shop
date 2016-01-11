@@ -134,6 +134,9 @@ public class EditAddresses extends javax.swing.JPanel {
         addr.setNr_domu(Integer.parseInt(jTextFieldHomeNumber.getText()));      
         addr.setNr_telefonu(Integer.parseInt(jTextFieldPhone.getText()));
         addr.setUlica(jTextFieldAddress.getText());
+        
+        
+        
     }
     
     

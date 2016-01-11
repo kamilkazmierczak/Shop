@@ -21,6 +21,8 @@ import java.util.logging.Logger;
  */
 public class Database {
 
+    private static String _currentUserLogin;
+    
     private static Database _database = null;
     private static Connection _conn = null;
     private static Properties _connectionProps = null;
@@ -34,6 +36,17 @@ public class Database {
         //_connectionProps.put("user", "inf117187");
         //_connectionProps.put("password", "inf117187");
     }
+    
+    public static void setUser(String login)
+    {
+        _currentUserLogin = login;
+    }
+    public static String getUser()
+    {
+        return _currentUserLogin;
+    }
+    
+    
 
     public static void connect() {
         try {

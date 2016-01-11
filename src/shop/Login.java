@@ -133,8 +133,11 @@ public class Login extends javax.swing.JPanel {
         for (Object result : data) {
             if (result.equals(passw)) {
                 status = true;
+                db.setUser(login);
             }
         }
+        
+        
         db.close();
         return status;
     }
