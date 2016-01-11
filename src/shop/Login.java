@@ -109,6 +109,14 @@ public class Login extends javax.swing.JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    
+    private void openAdminMenu(){
+        JFrame frame = new JFrame("Panel administratora");
+        frame.setContentPane(new AdminMenu(frame));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);      
+    }
 
     private boolean login(String login, String passw) {
         boolean status = false;
@@ -162,7 +170,7 @@ public class Login extends javax.swing.JPanel {
                     openUserMenu();
                     break;
                 case "admin":
-                    System.out.println("Witam admina");
+                    openAdminMenu();
                     break;
                 default:
                     System.out.println("Nieznany typ konta");

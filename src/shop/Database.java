@@ -40,7 +40,7 @@ public class Database {
             _conn = DriverManager.getConnection(
                     "jdbc:oracle:thin:@//admlab2-main.cs.put.poznan.pl:1521/dblab01.cs.put.poznan.pl",
                     _connectionProps);
-            System.out.println("Połączono z bazą danych");
+            //System.out.println("Połączono z bazą danych");
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE,
                     "nie udało się połączyć z bazą danych", ex);
@@ -54,7 +54,7 @@ public class Database {
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Odłączono od bazy danych");
+        //System.out.println("Odłączono od bazy danych");
     }
 
     public static ArrayList<Object> select(String what, String table, String condition, SelectTypes type) {
