@@ -110,19 +110,23 @@ public class Database {
         return results;
     }
 
-    public static String insert(String table, String what, String values) {
+    public static boolean insert(String table, String what, String values) {
         int changes;
-        String result = null;
+        //String result = null;
+        boolean status = false;
         Statement stmt = null;
 
         try {
             stmt = _conn.createStatement();
 
             changes = stmt.executeUpdate("INSERT INTO " + table + "(" + what + ") " + "VALUES(" + values + ")");
-            result = "Wstawiono " + changes + " krotek.";
-
+            //result = "Wstawiono " + changes + " krotek.";
+            System.out.println("Wstawiono " + changes + " krotek.");
+            status = true;
+            
         } catch (SQLException ex) {
             System.out.println("Bład wykonania polecenia" + ex.toString());
+            status = false;
         } finally {
             if (stmt != null) {
                 try {
@@ -132,7 +136,7 @@ public class Database {
             }
         }
 
-        return result;
+        return status;
     }
 
     public static String update(String table, String what, String condition) {

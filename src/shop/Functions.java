@@ -15,6 +15,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Functions {
 
+    public static String addApostrophes(String text)
+    {
+        return "'"+text+"'";
+    }
+    
+    
+    
+    
     public static void clearTable(final DefaultTableModel model, ArrayList<String> columns) {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);

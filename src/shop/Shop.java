@@ -39,8 +39,8 @@ public class Shop {
         
         
         
-//        Database db = Database.getDatabase();
-//        db.connect();      
+       // Database db = Database.getDatabase();
+        //db.connect();      
 //        ///* SELECT
 //        ArrayList<Object> data = db.select("nazwa","towar",null,SelectTypes.STRING);     
 //        for (Object result : data) {
@@ -52,7 +52,12 @@ public class Shop {
 ////        db.update("etaty", "placa_min = 0.4*placa_min", "nazwa = 'THREE'");
 ////        db.delete("etaty", "NAZWA = 'TWO'");
 //        
-//        db.close();
+        //if (db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", "'roger','gornecki','gorasta','ola',0,'user'")) {
+        //    System.err.println("fine");
+        //}
+       // db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", "'roger','gornecki','gorasta','ola',0,'user'");
+
+       // db.close();
 
  
 
