@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JSpinner;
 
 /**
  *
@@ -33,7 +35,17 @@ public class OrderConfirmation extends javax.swing.JPanel {
         _cartContent = cartContent;
          initComboAndMap();
          initAddress();
+         disabelSpinnerEdit();
+
+         
     }
+    
+    private void disabelSpinnerEdit()
+    {
+        JFormattedTextField tf = ((JSpinner.DefaultEditor) jSpinner1.getEditor()).getTextField();
+        tf.setEditable(false); 
+    }
+    
     
      private void initAddress()
      {
@@ -90,6 +102,8 @@ public class OrderConfirmation extends javax.swing.JPanel {
 //        }
 //        db.close();
         
+
+
         
         liczbaDostepnychSztuk = _cartContent.get(jComboBox1.getSelectedIndex()).getLiczba_sztuk();
           
@@ -185,6 +199,18 @@ public class OrderConfirmation extends javax.swing.JPanel {
         jSpinner1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jSpinner1MouseExited(evt);
+            }
+        });
+        jSpinner1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jSpinner1InputMethodTextChanged(evt);
+            }
+        });
+        jSpinner1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jSpinner1PropertyChange(evt);
             }
         });
 
@@ -359,6 +385,8 @@ public class OrderConfirmation extends javax.swing.JPanel {
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
         
+        //System.out.println("zmiana stanu");
+        
         if ((Integer)jSpinner1.getValue() < 1) {
             jSpinner1.setValue(1);
             _spinnerValue = (Integer)jSpinner1.getValue();
@@ -400,6 +428,16 @@ public class OrderConfirmation extends javax.swing.JPanel {
     private void jComboPayment2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPayment2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboPayment2ActionPerformed
+
+    private void jSpinner1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jSpinner1PropertyChange
+        // TODO add your handling code here:
+        System.out.println("property changed");
+    }//GEN-LAST:event_jSpinner1PropertyChange
+
+    private void jSpinner1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jSpinner1InputMethodTextChanged
+        // TODO add your handling code here:
+        System.out.println("method changed");
+    }//GEN-LAST:event_jSpinner1InputMethodTextChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
