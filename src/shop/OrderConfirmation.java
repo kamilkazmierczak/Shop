@@ -21,6 +21,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
    
     private JFrame _frame;
     private ArrayList<Item> _cartContent;
+    private Integer _spinnerValue;
     Map<Integer, Integer> _item = new HashMap<Integer, Integer>();
     
     /**
@@ -70,6 +71,39 @@ public class OrderConfirmation extends javax.swing.JPanel {
         }
     }
     
+    
+    private boolean checkForAddItemNumber()
+    {
+       boolean status =false; //false jesli nie wolno dodac wiecej sztuk produktu
+       Integer liczbaDostepnychSztuk = 0;
+       
+       
+       //wersja ze sprawdzeniem bazy danych
+//       Database db = Database.getDatabase();
+//       db.connect();      
+//
+//        String  selectedItem = _cartContent.get(jComboBox1.getSelectedIndex()).getNazwa();
+//        String condition = "nazwa = '"+selectedItem+"'";
+//        ArrayList<Object> data = db.select("liczba_sztuk","towar",condition,SelectTypes.INT);     
+//        for (Object result : data) {
+//            liczbaDostepnychSztuk = (Integer)result;
+//        }
+//        db.close();
+        
+        
+        liczbaDostepnychSztuk = _cartContent.get(jComboBox1.getSelectedIndex()).getLiczba_sztuk();
+          
+        
+        if (liczbaDostepnychSztuk +1 == (Integer)jSpinner1.getValue()) {
+            status =false;
+        }else
+        {
+            status = true;
+        }
+ 
+        
+        return status;
+    }
     
     
     
@@ -232,8 +266,8 @@ public class OrderConfirmation extends javax.swing.JPanel {
                                         .addComponent(jLabel4))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -327,10 +361,21 @@ public class OrderConfirmation extends javax.swing.JPanel {
         
         if ((Integer)jSpinner1.getValue() < 1) {
             jSpinner1.setValue(1);
+            _spinnerValue = (Integer)jSpinner1.getValue();
         }else
         {
-           _item.put(_cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru(),(Integer)jSpinner1.getValue()); 
+            
+            if (checkForAddItemNumber()) {
+                _item.put(_cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru(),(Integer)jSpinner1.getValue());
+                _spinnerValue = (Integer)jSpinner1.getValue();
+            }else
+            {
+                jSpinner1.setValue(_spinnerValue);
+            }
+            
+            
         }
+        
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jSpinner1StateChanged

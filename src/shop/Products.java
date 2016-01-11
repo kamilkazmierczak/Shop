@@ -105,13 +105,9 @@ public class Products extends javax.swing.JPanel {
                                 liczba_sztukArr.get(i),
                                 cenaArr.get(i),
                                 opisArr.get(i)
-                                ));
-            
-            
+                                ));    
         }
-        
-        
-        
+         
         db.close();
      
        // _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
