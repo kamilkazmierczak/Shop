@@ -64,18 +64,35 @@ public class Functions {
         /*
         SQL
          */
-
-        if (code == 817) {
-            return (float) 50.0;
-        } else if (code == 0) {
-            return (float) 0;
-        } else if (code == 999) {
-            return (float) 60.2;
-        } else if (code == 888) {
-            return (float) 14;
+        Float discount = (float)0;
+        Database db = Database.getDatabase();
+        db.connect();
+   
+     
+        ArrayList<Object> data;
+              
+        String condition = "kod_znizki = "+code;
+        
+        data = db.select("ile", "znizka", condition, SelectTypes.FLOAT);
+        for (Object result : data) {
+            discount= (float)result;
         }
+        
+        db.close();
 
-        return (float) 4.4;
+//        if (code == 817) {
+//            return (float) 50.0;
+//        } else if (code == 0) {
+//            return (float) 0;
+//        } else if (code == 999) {
+//            return (float) 60.2;
+//        } else if (code == 888) {
+//            return (float) 14;
+//        }
+//
+//        return (float) 4.4;
+        
+    return discount;
     }
 
 }

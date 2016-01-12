@@ -41,8 +41,73 @@ public class Accounts extends javax.swing.JPanel {
         /*
         SQL
          */
-        _users.add(new User(7, "Kamil", "Kazmierczak", "Vesperus", "haslo1", (float) 400.16, 817)); //ostatnie to kod znizki (jesli nie podany to wstawia 0)
-        _users.add(new User(43, "Hipi", "Trol", "Austin", "nnpswd1", (float) 12.36));
+        
+        
+        ArrayList<Integer> idArr = new ArrayList<Integer>();
+        ArrayList<String> imieArr = new ArrayList<String>();
+        ArrayList<String> nazwiskoArr = new ArrayList<String>();
+        ArrayList<String> loginArr = new ArrayList<String>();
+        ArrayList<String> hasloArr = new ArrayList<String>();
+        ArrayList<Integer> znizka_kodArr = new ArrayList<Integer>();
+
+        String condition = "typ_konta != 'admin'";
+        
+        Database db = Database.getDatabase();
+        db.connect();
+   
+     
+        ArrayList<Object> data;
+              
+        data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+        for (Object result : data) {
+            idArr.add((Integer)result);
+        }
+        
+        data = db.select("imie", "uzytkownik", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            imieArr.add((String)result);
+        }
+        
+        data = db.select("nazwisko", "uzytkownik", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            nazwiskoArr.add((String)result);
+        }
+        
+        data = db.select("login", "uzytkownik", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            loginArr.add((String)result);
+        }
+        
+        data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            hasloArr.add((String)result);
+        }
+
+        data = db.select("znizka", "uzytkownik", condition, SelectTypes.INT);
+        for (Object result : data) {
+            znizka_kodArr.add((Integer)result);
+        }
+        
+        for (int i = 0; i < idArr.size(); i++) {
+   
+            _users.add(new User(idArr.get(i), 
+                                imieArr.get(i), 
+                                nazwiskoArr.get(i), 
+                                loginArr.get(i), 
+                                hasloArr.get(i), 
+                                znizka_kodArr.get(i)
+                                ));
+        }
+         
+        db.close();
+        
+        
+        
+        
+        
+        
+        //_users.add(new User(7, "Kamil", "Kazmierczak", "Vesperus", "haslo1", 817)); //ostatnie to kod znizki (jesli nie podany to wstawia 0)
+        //_users.add(new User(43, "Hipi", "Trol", "Austin", "nnpswd1"));
 
         DefaultTableModel model = new DefaultTableModel();
         jTableAccounts = new JTable(model);
@@ -51,7 +116,6 @@ public class Accounts extends javax.swing.JPanel {
         model.addColumn("Nazwisko");
         model.addColumn("Login");
         model.addColumn("Hasło");
-        model.addColumn("Saldo");
         model.addColumn("Zniżka [%]");
 
         for (User user : _users) {
@@ -116,7 +180,6 @@ public class Accounts extends javax.swing.JPanel {
         model.addColumn("Nazwisko");
         model.addColumn("Login");
         model.addColumn("Hasło");
-        model.addColumn("Saldo");
         model.addColumn("Zniżka [%]");
     }
 

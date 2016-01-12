@@ -16,26 +16,23 @@ public class User {
     private String _nazwisko;
     private String _login;
     private String _haslo;
-    private Float _saldo;
     private Integer _kod_znizki;
 
-    public User(Integer _id_uzytkownika, String _imie, String _nazwisko, String _login, String _haslo, Float _saldo, Integer _kod_znizki) {
+    public User(Integer _id_uzytkownika, String _imie, String _nazwisko, String _login, String _haslo, Integer _kod_znizki) {
         this._id_uzytkownika = _id_uzytkownika;
         this._imie = _imie;
         this._nazwisko = _nazwisko;
         this._login = _login;
         this._haslo = _haslo;
-        this._saldo = _saldo;
         this._kod_znizki = _kod_znizki;
     }
     
-    public User(Integer _id_uzytkownika, String _imie, String _nazwisko, String _login, String _haslo, Float _saldo) {
+    public User(Integer _id_uzytkownika, String _imie, String _nazwisko, String _login, String _haslo) {
         this._id_uzytkownika = _id_uzytkownika;
         this._imie = _imie;
         this._nazwisko = _nazwisko;
         this._login = _login;
         this._haslo = _haslo;
-        this._saldo = _saldo;
         this._kod_znizki = 0;
     }
     
@@ -80,14 +77,6 @@ public class User {
         this._haslo = _haslo;
     }
 
-    public Float getSaldo() {
-        return _saldo;
-    }
-
-    public void setSaldo(Float _saldo) {
-        this._saldo = _saldo;
-    }
-
     public Integer getKod_znizki() {
         return _kod_znizki;
     }
@@ -97,7 +86,7 @@ public class User {
     }
     
     public Object[] getUser(){
-        Object[] user = {this._id_uzytkownika,this._imie,this._nazwisko,this._login,this._haslo,this._saldo,Functions.discountCodeToPercent(this._kod_znizki)};
+        Object[] user = {this._id_uzytkownika,this._imie,this._nazwisko,this._login,this._haslo,Functions.discountCodeToPercent(this._kod_znizki)};
         return user;
     }
     
