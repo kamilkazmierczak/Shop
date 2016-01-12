@@ -163,13 +163,15 @@ public class EditAddresses extends javax.swing.JPanel {
             if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
                 
                 //_addressess.get(i).getID - >sql modify wgere id == getID
+                Database db = Database.getDatabase();
+                db.connect();
+                Integer id = _addressess.get(i).getId();
+                String condition = "id = "+id;
+                db.delete("adres", condition);         
+                db.close();
                 
                 _addressess.remove(i);
-                
-                
-                
-                
-                
+ 
             }
         }
 

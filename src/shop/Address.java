@@ -45,6 +45,14 @@ public class Address {
         this._id = null;
     }
 
+    public Integer getId() {
+        return _id;
+    }
+
+    public void setId(Integer _id) {
+        this._id = _id;
+    }
+
     public Integer getNr_telefonu() {
         return _nr_telefonu;
     }

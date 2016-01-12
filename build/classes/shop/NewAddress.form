@@ -38,6 +38,7 @@
                           <Component id="jTextFieldAddress" min="-2" pref="156" max="-2" attributes="0"/>
                           <Component id="jTextFieldHomeNumber" min="-2" pref="156" max="-2" attributes="0"/>
                           <Component id="jTextFieldPhone" min="-2" pref="156" max="-2" attributes="0"/>
+                          <Component id="jLabelStatus" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -82,7 +83,9 @@
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTextFieldPhone" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="36" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jLabelStatus" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton2" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
@@ -167,6 +170,14 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelStatus">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Dodano adres"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

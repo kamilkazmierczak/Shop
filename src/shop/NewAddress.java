@@ -22,6 +22,7 @@ public class NewAddress extends javax.swing.JPanel {
     public NewAddress(JFrame frame) {
         initComponents();
         _frame = frame;
+        jLabelStatus.setVisible(false);
     }
 
     
@@ -96,6 +97,7 @@ public class NewAddress extends javax.swing.JPanel {
         jTextFieldPhone = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabelStatus = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
         jLabel1.setText("Nowy adres");
@@ -130,6 +132,9 @@ public class NewAddress extends javax.swing.JPanel {
             }
         });
 
+        jLabelStatus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelStatus.setText("Dodano adres");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,7 +158,8 @@ public class NewAddress extends javax.swing.JPanel {
                             .addComponent(jTextFieldCity, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldHomeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelStatus))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -187,7 +193,9 @@ public class NewAddress extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelStatus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -202,10 +210,17 @@ public class NewAddress extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (addAdress()) {
-            System.out.println("dodano");
+            //System.out.println("dodano");
+            jLabelStatus.setVisible(true);
+            jTextFieldAddress.setText("");
+            jTextFieldCity.setText("");
+            jTextFieldPhone.setText("");
+            jTextFieldHomeNumber.setText("");
+            jTextFieldZipCode.setText("");
+            
         }else
         {
-            System.out.println("nie udalo sie dodac");
+            //System.out.println("nie udalo sie dodac");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -219,6 +234,7 @@ public class NewAddress extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabelCity;
+    private javax.swing.JLabel jLabelStatus;
     private javax.swing.JTextField jTextFieldAddress;
     private javax.swing.JTextField jTextFieldCity;
     private javax.swing.JTextField jTextFieldHomeNumber;
