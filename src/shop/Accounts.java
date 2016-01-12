@@ -41,8 +41,7 @@ public class Accounts extends javax.swing.JPanel {
         /*
         SQL
          */
-        
-        
+
         ArrayList<Integer> idArr = new ArrayList<Integer>();
         ArrayList<String> imieArr = new ArrayList<String>();
         ArrayList<String> nazwiskoArr = new ArrayList<String>();
@@ -51,64 +50,57 @@ public class Accounts extends javax.swing.JPanel {
         ArrayList<Integer> znizka_kodArr = new ArrayList<Integer>();
 
         String condition = "typ_konta != 'admin'";
-        
+
         Database db = Database.getDatabase();
         db.connect();
-   
-     
+
         ArrayList<Object> data;
-              
+
         data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
         for (Object result : data) {
-            idArr.add((Integer)result);
+            idArr.add((Integer) result);
         }
-        
+
         data = db.select("imie", "uzytkownik", condition, SelectTypes.STRING);
         for (Object result : data) {
-            imieArr.add((String)result);
+            imieArr.add((String) result);
         }
-        
+
         data = db.select("nazwisko", "uzytkownik", condition, SelectTypes.STRING);
         for (Object result : data) {
-            nazwiskoArr.add((String)result);
+            nazwiskoArr.add((String) result);
         }
-        
+
         data = db.select("login", "uzytkownik", condition, SelectTypes.STRING);
         for (Object result : data) {
-            loginArr.add((String)result);
+            loginArr.add((String) result);
         }
-        
+
         data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING);
         for (Object result : data) {
-            hasloArr.add((String)result);
+            hasloArr.add((String) result);
         }
 
         data = db.select("znizka", "uzytkownik", condition, SelectTypes.INT);
         for (Object result : data) {
-            znizka_kodArr.add((Integer)result);
+            znizka_kodArr.add((Integer) result);
         }
-        
+
         for (int i = 0; i < idArr.size(); i++) {
-   
-            _users.add(new User(idArr.get(i), 
-                                imieArr.get(i), 
-                                nazwiskoArr.get(i), 
-                                loginArr.get(i), 
-                                hasloArr.get(i), 
-                                znizka_kodArr.get(i)
-                                ));
+
+            _users.add(new User(idArr.get(i),
+                    imieArr.get(i),
+                    nazwiskoArr.get(i),
+                    loginArr.get(i),
+                    hasloArr.get(i),
+                    znizka_kodArr.get(i)
+            ));
         }
-         
+
         db.close();
-        
-        
-        
-        
-        
-        
+
         //_users.add(new User(7, "Kamil", "Kazmierczak", "Vesperus", "haslo1", 817)); //ostatnie to kod znizki (jesli nie podany to wstawia 0)
         //_users.add(new User(43, "Hipi", "Trol", "Austin", "nnpswd1"));
-
         DefaultTableModel model = new DefaultTableModel();
         jTableAccounts = new JTable(model);
         model.addColumn("Id");
@@ -128,16 +120,43 @@ public class Accounts extends javax.swing.JPanel {
         /*
         SQL
          */
-        _discounts.add(new Discount(999, (float) 60.2));
-        _discounts.add(new Discount(888, (float) 14));
+
+        ArrayList<Integer> kod_znizkiArr = new ArrayList<Integer>();
+        ArrayList<Float> ileArr = new ArrayList<Float>();
         
+        Database db = Database.getDatabase();
+        db.connect();
+
+        ArrayList<Object> data;
+        
+
+        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT);
+        for (Object result : data) {
+            kod_znizkiArr.add((Integer) result);
+        }
+        
+        data = db.select("ile", "znizka", null, SelectTypes.FLOAT);
+        for (Object result : data) {
+            ileArr.add((float)result);
+        }
+        
+        for (int i = 0; i < kod_znizkiArr.size(); i++) {        
+             _discounts.add(new Discount(
+                     kod_znizkiArr.get(i),
+                     ileArr.get(i)
+             ));           
+        }
+
+        db.close();
+
+        //_discounts.add(new Discount(999, (float) 60.2));
+        // _discounts.add(new Discount(888, (float) 14));
         /*
         INFO
         User ma kod znizki i przy user.getUser() zwraca wartosc [%] (funkcja)
         i ta funkcja potrzebuje SQL zeby sobie to zamienic na razie jest dla testow
         initDiscounts dodaje mi wszystkie znizki do comboboxa
-        */
-
+         */
         for (Discount disc : _discounts) {
             jComboBox1.addItem(disc.getIle().toString());
         }
