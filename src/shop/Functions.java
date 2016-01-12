@@ -73,7 +73,7 @@ public class Functions {
               
         String condition = "kod_znizki = "+code;
         
-        data = db.select("ile", "znizka", condition, SelectTypes.FLOAT);
+        data = db.select("ile", "znizka", condition, SelectTypes.FLOAT,"kod_znizki");
         for (Object result : data) {
             discount= (float)result;
         }

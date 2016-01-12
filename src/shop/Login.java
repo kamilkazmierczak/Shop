@@ -129,7 +129,7 @@ public class Login extends javax.swing.JPanel {
         db.connect();
         String condition = "login = '" + login + "'";
         //System.out.println(condition);
-        ArrayList<Object> data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING);
+        ArrayList<Object> data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             if (result.equals(passw)) {
                 status = true;
@@ -137,7 +137,7 @@ public class Login extends javax.swing.JPanel {
                 //get userUD
                 Integer userID = 0;
                 String cond = "login = '" + db.getUser() + "'";
-                ArrayList<Object> data2 = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+                ArrayList<Object> data2 = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
                 for (Object result2 : data2) {
                     userID = (Integer) result2;
                 }
@@ -157,7 +157,7 @@ public class Login extends javax.swing.JPanel {
         db.connect();
         String condition = "login = '" + login + "'";
         //System.out.println(condition);
-        ArrayList<Object> data = db.select("typ_konta", "uzytkownik", condition, SelectTypes.STRING);
+        ArrayList<Object> data = db.select("typ_konta", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             type = (String) result;
         }

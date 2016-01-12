@@ -53,7 +53,7 @@ public class NewAddress extends javax.swing.JPanel {
         Integer userID =0;
         String condition = "login = '" + db.getUser() + "'";
 
-        ArrayList<Object> data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+        ArrayList<Object> data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
         for (Object result : data) {
                 userID = (Integer)result;
         }

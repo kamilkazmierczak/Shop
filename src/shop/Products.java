@@ -63,31 +63,31 @@ public class Products extends javax.swing.JPanel {
      
         ArrayList<Object> data;
               
-        data = db.select("id_towaru", "towar", null, SelectTypes.INT);
+        data = db.select("id_towaru", "towar", null, SelectTypes.INT,"id_towaru");
         for (Object result : data) {
             idArr.add((Integer)result);
             //System.out.println(result);
         }
         
-        data = db.select("nazwa", "towar", null, SelectTypes.STRING);
+        data = db.select("nazwa", "towar", null, SelectTypes.STRING,"id_towaru");
         for (Object result : data) {
             nazwaArr.add((String)result);
             //System.out.println(result);
         }
    
-        data = db.select("liczba_sztuk", "towar", null, SelectTypes.INT);
+        data = db.select("liczba_sztuk", "towar", null, SelectTypes.INT,"id_towaru");
         for (Object result : data) {
             liczba_sztukArr.add((Integer)result);
             //System.out.println(result);
         }
         
-        data = db.select("cena", "towar", null, SelectTypes.FLOAT);
+        data = db.select("cena", "towar", null, SelectTypes.FLOAT,"id_towaru");
         for (Object result : data) {
             cenaArr.add((Float)result);
             //System.out.println(result);
         }
         
-        data = db.select("opis", "towar", null, SelectTypes.STRING);
+        data = db.select("opis", "towar", null, SelectTypes.STRING,"id_towaru");
         for (Object result : data) {
             
             if ( result == null) {

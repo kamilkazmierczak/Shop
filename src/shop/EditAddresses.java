@@ -72,33 +72,33 @@ public class EditAddresses extends javax.swing.JPanel {
         String condition = "uzytkownik = "+db.getUserID();
         ArrayList<Object> data;
               
-        data = db.select("id", "adres", condition, SelectTypes.INT);
+        data = db.select("id", "adres", condition, SelectTypes.INT,"id");
         for (Object result : data) {
             idArr.add((Integer)result);
         }
       
-        data = db.select("ulica", "adres", condition, SelectTypes.STRING);
+        data = db.select("ulica", "adres", condition, SelectTypes.STRING,"id");
         for (Object result : data) {
             ulicaArr.add((String)result);
         }
         
-        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING);
+        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING,"id");
         for (Object result : data) {
             miejscowoscArr.add((String)result);
         }
         
-        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING);
+        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING,"id");
         for (Object result : data) {
             kod_pocztowyArr.add((String)result);
         }
         
-        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT);
+        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT,"id");
         for (Object result : data) {
             //System.out.println((Integer)result);
             nr_telefonuArr.add((Integer)result);
         }
         
-        data = db.select("nr_domu", "adres", condition, SelectTypes.INT);
+        data = db.select("nr_domu", "adres", condition, SelectTypes.INT,"id");
         for (Object result : data) {
             nr_domuArr.add((Integer)result);
         }

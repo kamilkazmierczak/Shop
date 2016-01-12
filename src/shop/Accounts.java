@@ -56,32 +56,32 @@ public class Accounts extends javax.swing.JPanel {
 
         ArrayList<Object> data;
 
-        data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+        data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
         for (Object result : data) {
             idArr.add((Integer) result);
         }
 
-        data = db.select("imie", "uzytkownik", condition, SelectTypes.STRING);
+        data = db.select("imie", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             imieArr.add((String) result);
         }
 
-        data = db.select("nazwisko", "uzytkownik", condition, SelectTypes.STRING);
+        data = db.select("nazwisko", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             nazwiskoArr.add((String) result);
         }
 
-        data = db.select("login", "uzytkownik", condition, SelectTypes.STRING);
+        data = db.select("login", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             loginArr.add((String) result);
         }
 
-        data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING);
+        data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             hasloArr.add((String) result);
         }
 
-        data = db.select("znizka", "uzytkownik", condition, SelectTypes.INT);
+        data = db.select("znizka", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
         for (Object result : data) {
             znizka_kodArr.add((Integer) result);
         }
@@ -131,12 +131,12 @@ public class Accounts extends javax.swing.JPanel {
 
         ArrayList<Object> data;
 
-        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT);
+        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT,"kod_znizki");
         for (Object result : data) {
             kod_znizkiArr.add((Integer) result);
         }
 
-        data = db.select("ile", "znizka", null, SelectTypes.FLOAT);
+        data = db.select("ile", "znizka", null, SelectTypes.FLOAT,"kod_znizki");
         for (Object result : data) {
             ileArr.add((float) result);
         }

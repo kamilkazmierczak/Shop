@@ -79,7 +79,7 @@ public class Database {
         //System.out.println("Odłączono od bazy danych");
     }
 
-    public static ArrayList<Object> select(String what, String table, String condition, SelectTypes type) {
+    public static ArrayList<Object> select(String what, String table, String condition, SelectTypes type,String order) {
         ArrayList<Object> results = new ArrayList<Object>();
 
         Statement stmt = null;
@@ -88,9 +88,9 @@ public class Database {
             stmt = _conn.createStatement();
 
             if (condition != null) {
-                rs = stmt.executeQuery("select " + what + " from " + table + " where " + condition);
+                rs = stmt.executeQuery("select " + what + " from " + table + " where " + condition+" order by "+order);
             } else {
-                rs = stmt.executeQuery("select " + what + " from " + table);
+                rs = stmt.executeQuery("select " + what + " from " + table+" order by "+order);
             }
 
             switch (type) {
