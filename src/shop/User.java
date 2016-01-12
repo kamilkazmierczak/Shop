@@ -17,7 +17,8 @@ public class User {
     private String _login;
     private String _haslo;
     private Integer _kod_znizki;
-
+    private Float _procentZnizki;
+    
     public User(Integer _id_uzytkownika, String _imie, String _nazwisko, String _login, String _haslo, Integer _kod_znizki) {
         this._id_uzytkownika = _id_uzytkownika;
         this._imie = _imie;
@@ -34,6 +35,14 @@ public class User {
         this._login = _login;
         this._haslo = _haslo;
         this._kod_znizki = 0;
+    }
+
+    public Float getProcentZnizki() {
+        return _procentZnizki;
+    }
+
+    public void setProcentZnizki(Float _procentZnizki) {
+        this._procentZnizki = _procentZnizki;
     }
     
 
@@ -86,7 +95,16 @@ public class User {
     }
     
     public Object[] getUser(){
-        Object[] user = {this._id_uzytkownika,this._imie,this._nazwisko,this._login,this._haslo,Functions.discountCodeToPercent(this._kod_znizki)};
+        Float procentZnizki = Functions.discountCodeToPercent(this._kod_znizki);
+        this._procentZnizki = procentZnizki;
+        
+        Object[] user = {this._id_uzytkownika,this._imie,this._nazwisko,this._login,this._haslo,procentZnizki};
+        
+        return user;
+    }
+    
+    public Object[] getUserWithPercent(){
+        Object[] user = {this._id_uzytkownika,this._imie,this._nazwisko,this._login,this._haslo,this._procentZnizki};
         return user;
     }
     

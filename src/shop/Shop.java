@@ -69,6 +69,11 @@ public class Shop {
         
         >opisow bledow szukaj jako ERROR
         >opisow szukaj jako INFO
+       
+       
+       ISTOTNE
+       idiotyczna jest funckja discountCodeToPercent bo trzeba sie polaczyc do bazy przed jej uzyciem i rozlaczyc po uzyciu, sama w sobie tego nie robi
+       bo zajmuje to wieki
         */
        
     }

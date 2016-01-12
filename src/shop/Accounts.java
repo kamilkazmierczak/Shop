@@ -97,7 +97,7 @@ public class Accounts extends javax.swing.JPanel {
             ));
         }
 
-        db.close();
+        
 
         //_users.add(new User(7, "Kamil", "Kazmierczak", "Vesperus", "haslo1", 817)); //ostatnie to kod znizki (jesli nie podany to wstawia 0)
         //_users.add(new User(43, "Hipi", "Trol", "Austin", "nnpswd1"));
@@ -113,6 +113,8 @@ public class Accounts extends javax.swing.JPanel {
         for (User user : _users) {
             model.addRow(user.getUser());
         }
+        
+        db.close();
     }
 
     private void initDiscounts() {
@@ -123,28 +125,27 @@ public class Accounts extends javax.swing.JPanel {
 
         ArrayList<Integer> kod_znizkiArr = new ArrayList<Integer>();
         ArrayList<Float> ileArr = new ArrayList<Float>();
-        
+
         Database db = Database.getDatabase();
         db.connect();
 
         ArrayList<Object> data;
-        
 
         data = db.select("kod_znizki", "znizka", null, SelectTypes.INT);
         for (Object result : data) {
             kod_znizkiArr.add((Integer) result);
         }
-        
+
         data = db.select("ile", "znizka", null, SelectTypes.FLOAT);
         for (Object result : data) {
-            ileArr.add((float)result);
+            ileArr.add((float) result);
         }
-        
-        for (int i = 0; i < kod_znizkiArr.size(); i++) {        
-             _discounts.add(new Discount(
-                     kod_znizkiArr.get(i),
-                     ileArr.get(i)
-             ));           
+
+        for (int i = 0; i < kod_znizkiArr.size(); i++) {
+            _discounts.add(new Discount(
+                    kod_znizkiArr.get(i),
+                    ileArr.get(i)
+            ));
         }
 
         db.close();
@@ -182,11 +183,23 @@ public class Accounts extends javax.swing.JPanel {
 
         Integer discountCode = _discounts.get(jComboBox1.getSelectedIndex()).getKod_znizki();
         _users.get(row).setKod_znizki(discountCode);
+        
+        Float ilezniski = _discounts.get(jComboBox1.getSelectedIndex()).getIle();
+        _users.get(row).setProcentZnizki(ilezniski);
+        
+        Database db = Database.getDatabase();
+        db.connect();
+        Integer id = _users.get(row).getId_uzytkownika();
+        String condition = "id_uzytkownika = " + id;
+        db.update("uzytkownik", "znizka = " + discountCode, condition);
+        db.close();
 
         clearAccountTable(model);
         for (User user : _users) {
-            model.addRow(user.getUser());
+            model.addRow(user.getUserWithPercent());
         }
+        
+        
     }
 
     public void clearAccountTable(final DefaultTableModel model) {

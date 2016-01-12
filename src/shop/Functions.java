@@ -66,7 +66,7 @@ public class Functions {
          */
         Float discount = (float)0;
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
    
      
         ArrayList<Object> data;
@@ -78,7 +78,7 @@ public class Functions {
             discount= (float)result;
         }
         
-        db.close();
+        //db.close();
 
 //        if (code == 817) {
 //            return (float) 50.0;
