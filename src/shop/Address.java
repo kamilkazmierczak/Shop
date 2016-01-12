@@ -10,11 +10,22 @@ package shop;
  * @author Kamil
  */
 public class Address {
+
     private Integer _nr_telefonu;
     private Integer _nr_domu;
     private String _kod_pocztowy;
     private String _miejscowosc;
     private String _ulica;
+    private Integer _id;
+
+    public Address(Integer id, Integer _nr_telefonu, Integer _nr_domu, String _kod_pocztowy, String _miejscowosc, String _ulica) {
+        this._nr_telefonu = _nr_telefonu;
+        this._nr_domu = _nr_domu;
+        this._kod_pocztowy = _kod_pocztowy;
+        this._miejscowosc = _miejscowosc;
+        this._ulica = _ulica;
+        this._id = id;
+    }
 
     public Address(Integer _nr_telefonu, Integer _nr_domu, String _kod_pocztowy, String _miejscowosc, String _ulica) {
         this._nr_telefonu = _nr_telefonu;
@@ -22,14 +33,16 @@ public class Address {
         this._kod_pocztowy = _kod_pocztowy;
         this._miejscowosc = _miejscowosc;
         this._ulica = _ulica;
+        this._id = null;
     }
- 
+
     public Address(Integer _nr_domu, String _kod_pocztowy, String _miejscowosc, String _ulica) {
         this._nr_telefonu = 0;
         this._nr_domu = _nr_domu;
         this._kod_pocztowy = _kod_pocztowy;
         this._miejscowosc = _miejscowosc;
         this._ulica = _ulica;
+        this._id = null;
     }
 
     public Integer getNr_telefonu() {
@@ -71,12 +84,18 @@ public class Address {
     public void setUlica(String _ulica) {
         this._ulica = _ulica;
     }
-    
-    
-    public Object[] getAddress(){
-        Object[] address = {this._miejscowosc,this._ulica,this._nr_domu,this._kod_pocztowy,this._nr_telefonu};
-        return address;
+
+    public Object[] getAddress() {
+        if (this._nr_telefonu == 0) {
+        Object[] address = {this._miejscowosc, this._ulica, this._nr_domu, this._kod_pocztowy, ""};
+        return address; 
+        }else
+        {
+        Object[] address = {this._miejscowosc, this._ulica, this._nr_domu, this._kod_pocztowy, this._nr_telefonu};
+        return address;  
+        }
+        
+       
     }
-    
-    
+
 }

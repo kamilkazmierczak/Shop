@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 public class Database {
 
     private static String _currentUserLogin;
+    private static Integer _userID;
     
     private static Database _database = null;
     private static Connection _conn = null;
@@ -46,7 +47,15 @@ public class Database {
         return _currentUserLogin;
     }
     
-    
+        
+    public static void setUserID(Integer login)
+    {
+        _userID = login;
+    }
+    public static Integer getUserID()
+    {
+        return _userID;
+    }
 
     public static void connect() {
         try {

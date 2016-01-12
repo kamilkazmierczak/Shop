@@ -42,8 +42,13 @@ public class EditAddresses extends javax.swing.JPanel {
         jTextFieldAddress.setText(_addressess.get(row).getUlica());
         jTextFieldHomeNumber.setText((_addressess.get(row).getNr_domu()).toString());
         jTextFieldZipCode.setText(_addressess.get(row).getKod_pocztowy());
+        
+        if (_addressess.get(row).getNr_telefonu() == 0) {
+            jTextFieldPhone.setText("");
+        }else
+        {
         jTextFieldPhone.setText((_addressess.get(row).getNr_telefonu()).toString());
-
+        }
     }
 
     private void initAddresses() {
@@ -51,9 +56,73 @@ public class EditAddresses extends javax.swing.JPanel {
         /*
         SQL
          */
-        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
-        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
-        _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
+        
+        ArrayList<Integer> idArr = new ArrayList<Integer>();
+        ArrayList<String> ulicaArr = new ArrayList<String>();
+        ArrayList<String> miejscowoscArr = new ArrayList<String>();
+        ArrayList<String> kod_pocztowyArr = new ArrayList<String>();
+        ArrayList<Integer> nr_telefonuArr = new ArrayList<Integer>();
+        ArrayList<Integer> nr_domuArr = new ArrayList<Integer>();
+
+        
+        
+        Database db = Database.getDatabase();
+        db.connect();
+   
+        String condition = "uzytkownik = "+db.getUserID();
+        ArrayList<Object> data;
+              
+        data = db.select("id", "adres", condition, SelectTypes.INT);
+        for (Object result : data) {
+            idArr.add((Integer)result);
+        }
+      
+        data = db.select("ulica", "adres", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            ulicaArr.add((String)result);
+        }
+        
+        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            miejscowoscArr.add((String)result);
+        }
+        
+        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING);
+        for (Object result : data) {
+            kod_pocztowyArr.add((String)result);
+        }
+        
+        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT);
+        for (Object result : data) {
+            //System.out.println((Integer)result);
+            nr_telefonuArr.add((Integer)result);
+        }
+        
+        data = db.select("nr_domu", "adres", condition, SelectTypes.INT);
+        for (Object result : data) {
+            nr_domuArr.add((Integer)result);
+        }
+        
+        
+        
+        for (int i = 0; i < idArr.size(); i++) {
+            
+            _addressess.add(new Address(idArr.get(i),
+                                nr_telefonuArr.get(i),
+                                nr_domuArr.get(i), 
+                                kod_pocztowyArr.get(i), 
+                                miejscowoscArr.get(i), 
+                                ulicaArr.get(i)
+                                ));
+        }
+         
+        db.close();
+        
+        
+        
+//        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
+//        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
+//        _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
 
         DefaultTableModel model = new DefaultTableModel();
         jTableAddresses = new JTable(model);
@@ -92,7 +161,15 @@ public class EditAddresses extends javax.swing.JPanel {
 
         for (int i = 0; i < _addressess.size(); i++) {
             if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
+                
+                //_addressess.get(i).getID - >sql modify wgere id == getID
+                
                 _addressess.remove(i);
+                
+                
+                
+                
+                
             }
         }
 

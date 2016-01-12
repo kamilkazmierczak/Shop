@@ -28,11 +28,21 @@ public class NewAddress extends javax.swing.JPanel {
     private boolean addAdress()
     {
         boolean state = true;
+        boolean addPhone = true;
         
         String miasto = Functions.addApostrophes(jTextFieldCity.getText());
         String ulica = Functions.addApostrophes(jTextFieldAddress.getText());
         Integer nr_domu =  Integer.parseInt(jTextFieldHomeNumber.getText());
-        Integer nr_telefonu = Integer.parseInt(jTextFieldPhone.getText());
+        
+        Integer nr_telefonu =0;
+        if (jTextFieldPhone.getText().length()>0) {
+            nr_telefonu = Integer.parseInt(jTextFieldPhone.getText());
+        }else
+        {
+            addPhone = false;
+        }
+        
+        
         String kod_pocztowy = Functions.addApostrophes(jTextFieldZipCode.getText());
         
    
@@ -47,8 +57,17 @@ public class NewAddress extends javax.swing.JPanel {
                 userID = (Integer)result;
         }
         
+        if(addPhone)
+        {
         String value = ulica+","+miasto+","+kod_pocztowy+","+nr_telefonu+","+nr_domu+","+userID;
         state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu,uzytkownik", value);
+        }else
+        {
+            //System.out.println("bez telefonu");
+        String value = ulica+","+miasto+","+kod_pocztowy+","+nr_domu+","+userID;
+        state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
+        }
+        
         db.close();
         
         return state;

@@ -113,13 +113,13 @@ public class Login extends javax.swing.JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    private void openAdminMenu(){
+
+    private void openAdminMenu() {
         JFrame frame = new JFrame("Panel administratora");
         frame.setContentPane(new AdminMenu(frame));
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);      
+        frame.setVisible(true);
     }
 
     private boolean login(String login, String passw) {
@@ -134,29 +134,35 @@ public class Login extends javax.swing.JPanel {
             if (result.equals(passw)) {
                 status = true;
                 db.setUser(login);
+                //get userUD
+                Integer userID = 0;
+                String cond = "login = '" + db.getUser() + "'";
+                ArrayList<Object> data2 = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT);
+                for (Object result2 : data2) {
+                    userID = (Integer) result2;
+                }
+                db.setUserID(userID);
+                //
             }
         }
-        
-        
+
         db.close();
         return status;
     }
-    
-    
-    private String accountType(String login)
-    {
+
+    private String accountType(String login) {
         String type = "";
-        
+
         Database db = Database.getDatabase();
         db.connect();
         String condition = "login = '" + login + "'";
         //System.out.println(condition);
         ArrayList<Object> data = db.select("typ_konta", "uzytkownik", condition, SelectTypes.STRING);
         for (Object result : data) {
-            type = (String)result;
+            type = (String) result;
         }
         db.close();
-     
+
         return type;
     }
 
@@ -170,9 +176,8 @@ public class Login extends javax.swing.JPanel {
         //System.out.println("paswd "+password);
         if (login(login, password)) {
             jLabelStatus.setVisible(false);
-            
-            switch(accountType(login))
-            {
+
+            switch (accountType(login)) {
                 case "user":
                     openUserMenu();
                     break;
@@ -182,14 +187,12 @@ public class Login extends javax.swing.JPanel {
                 default:
                     System.out.println("Nieznany typ konta");
             }
-            
-            
-            
+
         } else {
             jLabelStatus.setVisible(true);
         }
 
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
