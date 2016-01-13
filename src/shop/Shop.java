@@ -28,8 +28,7 @@ public class Shop {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-       
+
 //        JFrame frame = new JFrame("Menu główne");
 //        //frame.setSize(1300, 1600);
 //        frame.setContentPane(new MainMenu());
@@ -37,24 +36,45 @@ public class Shop {
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-        
-        
+
+
+
+        //select2
         Database db = Database.getDatabase();
-        db.connect();      
-        ///* SELECT
-        ArrayList<ArrayList<Object>> data2d = db.select2("nazwa,opis","towar",null,
-                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.STRING,SelectTypes.STRING)));  
-        
+        db.connect();
+
+        String condition = "liczba_sztuk > 5";
+        ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", condition,
+                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.INT,
+                        SelectTypes.STRING,
+                        SelectTypes.INT,
+                        SelectTypes.FLOAT,
+                        SelectTypes.STRING)));
+
         for (ArrayList<Object> row : data2d) {
             for (Object cell : row) {
-                System.out.println(cell);
-            }      
+                //cell
+            }
+            System.out.println(row);
         }
-        
         db.close();
 
-
-
+        
+        
+        
+        
+//        Database db = Database.getDatabase();
+//        db.connect();      
+//        ///* SELECT
+//        ArrayList<ArrayList<Object>> data2d = db.select2("nazwa,opis","towar",null,
+//                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.STRING,SelectTypes.STRING)));  
+//        
+//        for (ArrayList<Object> row : data2d) {
+//            for (Object cell : row) {
+//                System.out.println(cell);
+//            }      
+//        }      
+//        db.close();
 //2D arr
 //        ArrayList<ArrayList<Object>> my2DList = new ArrayList<ArrayList<Object>>();
 //        
@@ -76,11 +96,6 @@ public class Shop {
 //                System.out.println(cell);
 //            }      
 //        }
-        
-        
-        
-        
-        
 //        my2DList.add(new ArrayList<Object>(Arrays.asList("1 kolumna w 2 wierszu", 13)));
 //        
 //        a = my2DList.get(1).get(0).toString();
@@ -88,8 +103,6 @@ public class Shop {
 //      
 //        System.out.println(a+"\n"+c);
 //end of 2D arr
-        
-        
 //        Database db = Database.getDatabase();
 //        db.connect();      
 //        ///* SELECT
@@ -99,11 +112,7 @@ public class Shop {
 //        }
 //       
 //        db.close(); 
-
-
-
-        
-       // Database db = Database.getDatabase();
+        // Database db = Database.getDatabase();
         //db.connect();      
 //        ///* SELECT
 //        ArrayList<Object> data = db.select("nazwa","towar",null,SelectTypes.STRING);     
@@ -119,12 +128,8 @@ public class Shop {
         //if (db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", "'roger','gornecki','gorasta','ola',0,'user'")) {
         //    System.err.println("fine");
         //}
-       // db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", "'roger','gornecki','gorasta','ola',0,'user'");
-
-       // db.close();
-
- 
-
+        // db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", "'roger','gornecki','gorasta','ola',0,'user'");
+        // db.close();
         /*
         Notes:
         -jesli liczba sztuk towaru = 0 to nie dodawaj go do koszyka (jesli nie zrobisz bedzie powodowac bledy w weryfikacji)
@@ -148,8 +153,7 @@ public class Shop {
        ISTOTNE
        idiotyczna jest funckja discountCodeToPercent bo trzeba sie polaczyc do bazy przed jej uzyciem i rozlaczyc po uzyciu, sama w sobie tego nie robi
        bo zajmuje to wieki
-        */
-       
+         */
     }
-    
+
 }
