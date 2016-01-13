@@ -39,26 +39,54 @@ public class Shop {
 //        frame.setVisible(true);
         
         
+        Database db = Database.getDatabase();
+        db.connect();      
+        ///* SELECT
+        ArrayList<ArrayList<Object>> data2d = db.select2("nazwa,opis","towar",null,
+                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.STRING,SelectTypes.STRING)));  
+        
+        for (ArrayList<Object> row : data2d) {
+            for (Object cell : row) {
+                System.out.println(cell);
+            }      
+        }
+        
+        db.close();
+
+
 
 //2D arr
-        ArrayList<ArrayList<Object>> my2DList = new ArrayList<ArrayList<Object>>();
+//        ArrayList<ArrayList<Object>> my2DList = new ArrayList<ArrayList<Object>>();
+//        
+//        ArrayList<Object> newRow;
+//        
+//        newRow= new ArrayList<Object>();
+//        newRow.add("1 kolumna w 1 wierszu");
+//        newRow.add("2 kolumna w 1 wierszu");
+//        my2DList.add(newRow); //new row
+//        
+//        newRow = new ArrayList<Object>();
+//        newRow.add("1 kolumna w 2 wierszu");
+//        newRow.add(32);
+//        my2DList.add(newRow);
+//        
+//
+//        for (ArrayList<Object> row : my2DList) {
+//            for (Object cell : row) {
+//                System.out.println(cell);
+//            }      
+//        }
         
-        ArrayList<Object> newRow = new ArrayList<Object>();
-        newRow.add("1 kolumna w 1 wierszu");
-        newRow.add("2 kolumna w 1 wierszu");
-        my2DList.add(newRow); //new row
         
-        String a = my2DList.get(0).get(0).toString();
-        String b = my2DList.get(0).get(1).toString();
         
-        System.out.println(a+"\n"+b);
         
-        my2DList.add(new ArrayList<Object>(Arrays.asList("1 kolumna w 2 wierszu", 13)));
         
-        a = my2DList.get(1).get(0).toString();
-        Integer c = (Integer)my2DList.get(1).get(1);
-      
-        System.out.println(a+"\n"+c);
+//        my2DList.add(new ArrayList<Object>(Arrays.asList("1 kolumna w 2 wierszu", 13)));
+//        
+//        a = my2DList.get(1).get(0).toString();
+//        Integer c = (Integer)my2DList.get(1).get(1);
+//      
+//        System.out.println(a+"\n"+c);
 //end of 2D arr
         
         
