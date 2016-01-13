@@ -30,7 +30,7 @@ public class Discounts extends javax.swing.JPanel {
 
     public Discounts(JFrame frame) {
         initComponents();
-        initDiscounts();
+        initDiscounts(true);
         _frame = frame;
         jScrollPane1.getViewport().setView(jTableDiscounts);
         Functions.disableTableEdit(jTableDiscounts);
@@ -38,23 +38,50 @@ public class Discounts extends javax.swing.JPanel {
         jLabelInfo.setVisible(false);
     }
 
-    private void initDiscounts() {
+    private void initDiscounts(boolean init) {
 
         /*
         SQL
          */
-        _discounts.add(new Discount(999, (float) 60.2));
-        _discounts.add(new Discount(888, (float) 14));
+        ArrayList<Integer> kod_znizkiArr = new ArrayList<Integer>();
+        ArrayList<Float> ileArr = new ArrayList<Float>();
 
-        DefaultTableModel model = new DefaultTableModel();
-        jTableDiscounts = new JTable(model);
+        Database db = Database.getDatabase();
+        db.connect();
 
-        for (String col : _tableColumns) {
-            model.addColumn(col);
+        ArrayList<Object> data;
+
+        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT, "kod_znizki");
+        for (Object result : data) {
+            kod_znizkiArr.add((Integer) result);
         }
 
-        for (Discount disc : _discounts) {
-            model.addRow(disc.getDiscount());
+        data = db.select("ile", "znizka", null, SelectTypes.FLOAT, "kod_znizki");
+        for (Object result : data) {
+            ileArr.add((float) result);
+        }
+
+        for (int i = 0; i < kod_znizkiArr.size(); i++) {
+            _discounts.add(new Discount(
+                    kod_znizkiArr.get(i),
+                    ileArr.get(i)
+            ));
+        }
+
+        db.close();
+
+        // _discounts.add(new Discount(999, (float) 60.2));
+        //_discounts.add(new Discount(888, (float) 14));
+        if (init) {
+            DefaultTableModel model = new DefaultTableModel();
+            jTableDiscounts = new JTable(model);
+            for (String col : _tableColumns) {
+                model.addColumn(col);
+            }
+
+            for (Discount disc : _discounts) {
+                model.addRow(disc.getDiscount());
+            }
         }
 
     }
@@ -80,6 +107,14 @@ public class Discounts extends javax.swing.JPanel {
     private void modifyItem(int row) {
         DefaultTableModel model = (DefaultTableModel) jTableDiscounts.getModel();
         setNewData(_discounts.get(row));
+
+        Database db = Database.getDatabase();
+        db.connect();
+        Integer kod_znizki = _discounts.get(row).getKod_znizki();
+        String condition = "kod_znizki = " + kod_znizki;
+        Float ile_ = _discounts.get(row).getIle();
+        db.update("znizka", "ile = " + ile_, condition);
+
         Functions.clearTable(model, _tableColumns);
         for (Discount disc : _discounts) {
             model.addRow(disc.getDiscount());
@@ -87,7 +122,7 @@ public class Discounts extends javax.swing.JPanel {
     }
 
     private void setNewData(Discount disc) {
-            disc.setIle(Float.parseFloat(jTextFieldDiscountValue.getText()));      
+        disc.setIle(Float.parseFloat(jTextFieldDiscountValue.getText()));
     }
 
     private boolean checkUserInput() {
@@ -113,6 +148,14 @@ public class Discounts extends javax.swing.JPanel {
 
     private void deleteItem(int tableRow) {
         DefaultTableModel model = (DefaultTableModel) jTableDiscounts.getModel();
+
+        Database db = Database.getDatabase();
+        db.connect();
+        Integer id = _discounts.get(tableRow).getKod_znizki();
+        String condition = "kod_znizki = " + id;
+        db.delete("znizka", condition);
+        db.close();
+
         _discounts.remove(tableRow);
         Functions.clearTable(model, _tableColumns);
         for (Discount disc : _discounts) {
@@ -129,6 +172,16 @@ public class Discounts extends javax.swing.JPanel {
             Discount newDiscount = new Discount();
             setNewData(newDiscount);
             _discounts.add(newDiscount);
+
+            Database db = Database.getDatabase();
+            db.connect();
+            db.insert("znizka", "ile", newDiscount.getIle().toString());
+            db.close();
+
+            //Functions.clearTable(model, _tableColumns);
+            _discounts.clear();
+            initDiscounts(false);
+
             /*
         ERROR
         TU BEDA BLEDY!!!

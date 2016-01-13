@@ -66,7 +66,12 @@ public class Shop {
         -jesli liczba sztuk towaru = 0 to nie dodawaj go do koszyka (jesli nie zrobisz bedzie powodowac bledy w weryfikacji)
         -jak sie usunie adres to zablokuj zeby go sie nie dalo zmodyfikowac (i na odwrot) (bledy)
         -obsluga bledow userinput jest tylko w zarzadzaniu towarem
-        
+       
+       -jak usuniesz znizke z ktorej ktos korzysta musisz mu wstawic nowa = 0, -- w sumie to glupie- lepiej
+       sprawdzic czy jest jakas znizka
+       
+       -czy jak mam w tabelach ddane recznie jakies id (np kod znizki a sekwencja jest na nizszej wartosci to sie skrzaczy?)
+       
         >opisow bledow szukaj jako ERROR
         >opisow szukaj jako INFO
        
