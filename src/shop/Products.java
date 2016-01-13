@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -50,65 +51,31 @@ public class Products extends javax.swing.JPanel {
         /*
         SQL
         */
-        ArrayList<Integer> idArr = new ArrayList<Integer>();
-        ArrayList<String> nazwaArr = new ArrayList<String>();
-        ArrayList<Integer> liczba_sztukArr = new ArrayList<Integer>();
-        ArrayList<Float> cenaArr = new ArrayList<Float>();
-        ArrayList<String> opisArr = new ArrayList<String>();
-        
         
         Database db = Database.getDatabase();
         db.connect();
-   
-     
-        ArrayList<Object> data;
-              
-        data = db.select("id_towaru", "towar", null, SelectTypes.INT,"id_towaru");
-        for (Object result : data) {
-            idArr.add((Integer)result);
-            //System.out.println(result);
+        ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", null,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.STRING,
+                        SelectTypes.INT,
+                        SelectTypes.FLOAT,
+                        SelectTypes.STRING)));
+
+        for (ArrayList<Object> row : data2d) {
+            _items.add(new Item(
+                    (Integer) row.get(0),
+                    (String) row.get(1),
+                    (Integer) row.get(2),
+                    (float) row.get(3),
+                    (String) row.get(4)  //ERROR - nie wiem czy nie wstawi null zamiast "" , ale wydaje sie dzialac
+            ));
+
         }
-        
-        data = db.select("nazwa", "towar", null, SelectTypes.STRING,"id_towaru");
-        for (Object result : data) {
-            nazwaArr.add((String)result);
-            //System.out.println(result);
-        }
-   
-        data = db.select("liczba_sztuk", "towar", null, SelectTypes.INT,"id_towaru");
-        for (Object result : data) {
-            liczba_sztukArr.add((Integer)result);
-            //System.out.println(result);
-        }
-        
-        data = db.select("cena", "towar", null, SelectTypes.FLOAT,"id_towaru");
-        for (Object result : data) {
-            cenaArr.add((Float)result);
-            //System.out.println(result);
-        }
-        
-        data = db.select("opis", "towar", null, SelectTypes.STRING,"id_towaru");
-        for (Object result : data) {
-            
-            if ( result == null) {
-                result = "";
-            }
-            
-            opisArr.add((String)result);
-            //System.out.println(result);
-        }
-        
-        for (int i = 0; i < idArr.size(); i++) {
-            
-            _items.add(new Item(idArr.get(i),
-                                nazwaArr.get(i),
-                                liczba_sztukArr.get(i),
-                                cenaArr.get(i),
-                                opisArr.get(i)
-                                ));    
-        }
-         
+
         db.close();
+        
+        
      
        // _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
         //_items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));

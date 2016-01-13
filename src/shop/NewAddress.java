@@ -51,13 +51,8 @@ public class NewAddress extends javax.swing.JPanel {
         db.connect();   
         
         Integer userID =0;
-        String condition = "login = '" + db.getUser() + "'";
+        userID = db.getUserID();
 
-        ArrayList<Object> data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
-        for (Object result : data) {
-                userID = (Integer)result;
-        }
-        
         if(addPhone)
         {
         String value = ulica+","+miasto+","+kod_pocztowy+","+nr_telefonu+","+nr_domu+","+userID;
