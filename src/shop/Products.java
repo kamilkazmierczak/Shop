@@ -52,6 +52,7 @@ public class Products extends javax.swing.JPanel {
         SQL
         */
         
+        
         Database db = Database.getDatabase();
         db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", null,
