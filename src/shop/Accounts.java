@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -38,69 +39,24 @@ public class Accounts extends javax.swing.JPanel {
     }
 
     private void initUsers() {
-        /*
-        SQL
-         */
-
-        ArrayList<Integer> idArr = new ArrayList<Integer>();
-        ArrayList<String> imieArr = new ArrayList<String>();
-        ArrayList<String> nazwiskoArr = new ArrayList<String>();
-        ArrayList<String> loginArr = new ArrayList<String>();
-        ArrayList<String> hasloArr = new ArrayList<String>();
-        ArrayList<Integer> znizka_kodArr = new ArrayList<Integer>();
-
-        String condition = "typ_konta != 'admin'";
 
         Database db = Database.getDatabase();
         db.connect();
+        String condition = "typ_konta != 'admin'";
+        ArrayList<ArrayList<Object>> data2d = db.select2("id_uzytkownika,imie,nazwisko,login,haslo,znizka", "uzytkownik", condition,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.INT)));
 
-        ArrayList<Object> data;
-
-        data = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
-        for (Object result : data) {
-            idArr.add((Integer) result);
+        for (ArrayList<Object> row : data2d) {
+            _users.add(new User((Integer) row.get(0), (String) row.get(1), (String) row.get(2), (String) row.get(3), (String) row.get(4), (Integer) row.get(5)));
         }
 
-        data = db.select("imie", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
-        for (Object result : data) {
-            imieArr.add((String) result);
-        }
-
-        data = db.select("nazwisko", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
-        for (Object result : data) {
-            nazwiskoArr.add((String) result);
-        }
-
-        data = db.select("login", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
-        for (Object result : data) {
-            loginArr.add((String) result);
-        }
-
-        data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
-        for (Object result : data) {
-            hasloArr.add((String) result);
-        }
-
-        data = db.select("znizka", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
-        for (Object result : data) {
-            znizka_kodArr.add((Integer) result);
-        }
-
-        for (int i = 0; i < idArr.size(); i++) {
-
-            _users.add(new User(idArr.get(i),
-                    imieArr.get(i),
-                    nazwiskoArr.get(i),
-                    loginArr.get(i),
-                    hasloArr.get(i),
-                    znizka_kodArr.get(i)
-            ));
-        }
-
-        
-
-        //_users.add(new User(7, "Kamil", "Kazmierczak", "Vesperus", "haslo1", 817)); //ostatnie to kod znizki (jesli nie podany to wstawia 0)
-        //_users.add(new User(43, "Hipi", "Trol", "Austin", "nnpswd1"));
+        //close jest na koncu bo jest jeszcze
         DefaultTableModel model = new DefaultTableModel();
         jTableAccounts = new JTable(model);
         model.addColumn("Id");
@@ -113,7 +69,7 @@ public class Accounts extends javax.swing.JPanel {
         for (User user : _users) {
             model.addRow(user.getUser());
         }
-        
+
         db.close();
     }
 
@@ -123,33 +79,22 @@ public class Accounts extends javax.swing.JPanel {
         SQL
          */
 
-        ArrayList<Integer> kod_znizkiArr = new ArrayList<Integer>();
-        ArrayList<Float> ileArr = new ArrayList<Float>();
 
         Database db = Database.getDatabase();
         db.connect();
+        ArrayList<ArrayList<Object>> data2d = db.select2("kod_znizki,ile", "znizka", null,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.FLOAT)));
 
-        ArrayList<Object> data;
-
-        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT,"kod_znizki");
-        for (Object result : data) {
-            kod_znizkiArr.add((Integer) result);
-        }
-
-        data = db.select("ile", "znizka", null, SelectTypes.FLOAT,"kod_znizki");
-        for (Object result : data) {
-            ileArr.add((float) result);
-        }
-
-        for (int i = 0; i < kod_znizkiArr.size(); i++) {
+        for (ArrayList<Object> row : data2d) {
             _discounts.add(new Discount(
-                    kod_znizkiArr.get(i),
-                    ileArr.get(i)
-            ));
+                    (Integer) row.get(0),
+                    (float) row.get(1)));
         }
 
         db.close();
-
+        
         //_discounts.add(new Discount(999, (float) 60.2));
         // _discounts.add(new Discount(888, (float) 14));
         /*
@@ -183,10 +128,10 @@ public class Accounts extends javax.swing.JPanel {
 
         Integer discountCode = _discounts.get(jComboBox1.getSelectedIndex()).getKod_znizki();
         _users.get(row).setKod_znizki(discountCode);
-        
+
         Float ilezniski = _discounts.get(jComboBox1.getSelectedIndex()).getIle();
         _users.get(row).setProcentZnizki(ilezniski);
-        
+
         Database db = Database.getDatabase();
         db.connect();
         Integer id = _users.get(row).getId_uzytkownika();
@@ -198,8 +143,7 @@ public class Accounts extends javax.swing.JPanel {
         for (User user : _users) {
             model.addRow(user.getUserWithPercent());
         }
-        
-        
+
     }
 
     public void clearAccountTable(final DefaultTableModel model) {

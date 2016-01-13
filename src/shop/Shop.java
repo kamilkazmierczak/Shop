@@ -29,35 +29,35 @@ public class Shop {
     public static void main(String[] args) {
         // TODO code application logic here
 
-//        JFrame frame = new JFrame("Menu główne");
-//        //frame.setSize(1300, 1600);
-//        frame.setContentPane(new MainMenu());
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
+        JFrame frame = new JFrame("Menu główne");
+        //frame.setSize(1300, 1600);
+        frame.setContentPane(new MainMenu());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
 
 
         //select2
-        Database db = Database.getDatabase();
-        db.connect();
-
-        String condition = "liczba_sztuk > 5";
-        ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", condition,
-                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.INT,
-                        SelectTypes.STRING,
-                        SelectTypes.INT,
-                        SelectTypes.FLOAT,
-                        SelectTypes.STRING)));
-
-        for (ArrayList<Object> row : data2d) {
-            for (Object cell : row) {
-                //cell
-            }
-            System.out.println(row);
-        }
-        db.close();
+//        Database db = Database.getDatabase();
+//        db.connect();
+//
+//        String condition = "liczba_sztuk > 5";
+//        ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", condition,
+//                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.INT,
+//                        SelectTypes.STRING,
+//                        SelectTypes.INT,
+//                        SelectTypes.FLOAT,
+//                        SelectTypes.STRING)));
+//
+//        for (ArrayList<Object> row : data2d) {
+//            for (Object cell : row) {
+//                //cell
+//            }
+//            System.out.println(row);
+//        }
+//        db.close();
 
         
         

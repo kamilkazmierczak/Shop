@@ -43,32 +43,24 @@ public class Discounts extends javax.swing.JPanel {
         /*
         SQL
          */
-        ArrayList<Integer> kod_znizkiArr = new ArrayList<Integer>();
-        ArrayList<Float> ileArr = new ArrayList<Float>();
 
         Database db = Database.getDatabase();
         db.connect();
+        ArrayList<ArrayList<Object>> data2d = db.select2("kod_znizki,ile", "znizka", null,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.FLOAT)));
 
-        ArrayList<Object> data;
-
-        data = db.select("kod_znizki", "znizka", null, SelectTypes.INT, "kod_znizki");
-        for (Object result : data) {
-            kod_znizkiArr.add((Integer) result);
-        }
-
-        data = db.select("ile", "znizka", null, SelectTypes.FLOAT, "kod_znizki");
-        for (Object result : data) {
-            ileArr.add((float) result);
-        }
-
-        for (int i = 0; i < kod_znizkiArr.size(); i++) {
+        for (ArrayList<Object> row : data2d) {
             _discounts.add(new Discount(
-                    kod_znizkiArr.get(i),
-                    ileArr.get(i)
-            ));
+                    (Integer) row.get(0),
+                    (float) row.get(1)));
         }
 
         db.close();
+
+
+
 
         // _discounts.add(new Discount(999, (float) 60.2));
         //_discounts.add(new Discount(888, (float) 14));

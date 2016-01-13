@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -42,12 +43,11 @@ public class EditAddresses extends javax.swing.JPanel {
         jTextFieldAddress.setText(_addressess.get(row).getUlica());
         jTextFieldHomeNumber.setText((_addressess.get(row).getNr_domu()).toString());
         jTextFieldZipCode.setText(_addressess.get(row).getKod_pocztowy());
-        
+
         if (_addressess.get(row).getNr_telefonu() == 0) {
             jTextFieldPhone.setText("");
-        }else
-        {
-        jTextFieldPhone.setText((_addressess.get(row).getNr_telefonu()).toString());
+        } else {
+            jTextFieldPhone.setText((_addressess.get(row).getNr_telefonu()).toString());
         }
     }
 
@@ -56,74 +56,94 @@ public class EditAddresses extends javax.swing.JPanel {
         /*
         SQL
          */
-        
-        ArrayList<Integer> idArr = new ArrayList<Integer>();
-        ArrayList<String> ulicaArr = new ArrayList<String>();
-        ArrayList<String> miejscowoscArr = new ArrayList<String>();
-        ArrayList<String> kod_pocztowyArr = new ArrayList<String>();
-        ArrayList<Integer> nr_telefonuArr = new ArrayList<Integer>();
-        ArrayList<Integer> nr_domuArr = new ArrayList<Integer>();
-
-        
-        
+//        ArrayList<Integer> idArr = new ArrayList<Integer>();
+//        ArrayList<String> ulicaArr = new ArrayList<String>();
+//        ArrayList<String> miejscowoscArr = new ArrayList<String>();
+//        ArrayList<String> kod_pocztowyArr = new ArrayList<String>();
+//        ArrayList<Integer> nr_telefonuArr = new ArrayList<Integer>();
+//        ArrayList<Integer> nr_domuArr = new ArrayList<Integer>();
+//
+//        
+//        
+//        Database db = Database.getDatabase();
+//        db.connect();
+//   
+//        String condition = "uzytkownik = "+db.getUserID();
+//        ArrayList<Object> data;
+//              
+//        data = db.select("id", "adres", condition, SelectTypes.INT,"id");
+//        for (Object result : data) {
+//            idArr.add((Integer)result);
+//        }
+//      
+//        data = db.select("ulica", "adres", condition, SelectTypes.STRING,"id");
+//        for (Object result : data) {
+//            ulicaArr.add((String)result);
+//        }
+//        
+//        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING,"id");
+//        for (Object result : data) {
+//            miejscowoscArr.add((String)result);
+//        }
+//        
+//        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING,"id");
+//        for (Object result : data) {
+//            kod_pocztowyArr.add((String)result);
+//        }
+//        
+//        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT,"id");
+//        for (Object result : data) {
+//            //System.out.println((Integer)result);
+//            nr_telefonuArr.add((Integer)result);
+//        }
+//        
+//        data = db.select("nr_domu", "adres", condition, SelectTypes.INT,"id");
+//        for (Object result : data) {
+//            nr_domuArr.add((Integer)result);
+//        }
+//        
+//        
+//        
+//        for (int i = 0; i < idArr.size(); i++) {
+//            
+//            _addressess.add(new Address(idArr.get(i),
+//                                nr_telefonuArr.get(i),
+//                                nr_domuArr.get(i), 
+//                                kod_pocztowyArr.get(i), 
+//                                miejscowoscArr.get(i), 
+//                                ulicaArr.get(i)
+//                                ));
+//        }
+//         
+//        db.close();
         Database db = Database.getDatabase();
         db.connect();
-   
-        String condition = "uzytkownik = "+db.getUserID();
-        ArrayList<Object> data;
-              
-        data = db.select("id", "adres", condition, SelectTypes.INT,"id");
-        for (Object result : data) {
-            idArr.add((Integer)result);
+        String condition = "uzytkownik = " + db.getUserID();
+        ArrayList<ArrayList<Object>> data2d = db.select2("id,ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu", "adres", condition,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.INT,
+                        SelectTypes.INT)));
+
+        for (ArrayList<Object> row : data2d) {
+            _addressess.add(new Address(
+                    (Integer) row.get(0),
+                    (Integer) row.get(4),
+                    (Integer) row.get(5),
+                    (String) row.get(3),
+                    (String) row.get(2),
+                    (String) row.get(1)));
+
         }
-      
-        data = db.select("ulica", "adres", condition, SelectTypes.STRING,"id");
-        for (Object result : data) {
-            ulicaArr.add((String)result);
-        }
-        
-        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING,"id");
-        for (Object result : data) {
-            miejscowoscArr.add((String)result);
-        }
-        
-        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING,"id");
-        for (Object result : data) {
-            kod_pocztowyArr.add((String)result);
-        }
-        
-        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT,"id");
-        for (Object result : data) {
-            //System.out.println((Integer)result);
-            nr_telefonuArr.add((Integer)result);
-        }
-        
-        data = db.select("nr_domu", "adres", condition, SelectTypes.INT,"id");
-        for (Object result : data) {
-            nr_domuArr.add((Integer)result);
-        }
-        
-        
-        
-        for (int i = 0; i < idArr.size(); i++) {
-            
-            _addressess.add(new Address(idArr.get(i),
-                                nr_telefonuArr.get(i),
-                                nr_domuArr.get(i), 
-                                kod_pocztowyArr.get(i), 
-                                miejscowoscArr.get(i), 
-                                ulicaArr.get(i)
-                                ));
-        }
-         
+
         db.close();
-        
-        
-        
+
 //        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
 //        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
 //        _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
-
         DefaultTableModel model = new DefaultTableModel();
         jTableAddresses = new JTable(model);
         model.addColumn("Miejscowość");
@@ -161,17 +181,17 @@ public class EditAddresses extends javax.swing.JPanel {
 
         for (int i = 0; i < _addressess.size(); i++) {
             if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
-                
+
                 //_addressess.get(i).getID - >sql modify wgere id == getID
                 Database db = Database.getDatabase();
                 db.connect();
                 Integer id = _addressess.get(i).getId();
-                String condition = "id = "+id;
-                db.delete("adres", condition);         
+                String condition = "id = " + id;
+                db.delete("adres", condition);
                 db.close();
-                
+
                 _addressess.remove(i);
- 
+
             }
         }
 
@@ -192,28 +212,28 @@ public class EditAddresses extends javax.swing.JPanel {
 
         for (int i = 0; i < _addressess.size(); i++) {
             if (_addressess.get(i).getNr_domu() == nr_domu && _addressess.get(i).getMiejscowosc() == miejscowosc) {
-                
+
                 setNewData(_addressess.get(i));
-                
+
                 Database db = Database.getDatabase();
                 db.connect();
                 Integer id = _addressess.get(i).getId();
-                String condition = "id = "+id;
-                      
+                String condition = "id = " + id;
+
                 String ulica_ = Functions.addApostrophes(_addressess.get(i).getUlica());
                 String miejscowosc_ = Functions.addApostrophes(_addressess.get(i).getMiejscowosc());
                 String kod_pocztowy_ = Functions.addApostrophes(_addressess.get(i).getKod_pocztowy());
                 Integer nr_telefonu_ = _addressess.get(i).getNr_telefonu();
                 Integer nr_domu_ = _addressess.get(i).getNr_domu();
-     
-                db.update("adres", "ulica = "+ulica_, condition);
-                db.update("adres", "miejscowosc = "+miejscowosc_, condition);
-                db.update("adres", "kod_pocztowy = "+kod_pocztowy_, condition);
-                db.update("adres", "nr_telefonu = "+nr_telefonu_, condition);
-                db.update("adres", "nr_domu = "+nr_domu_, condition);
-                
+
+                db.update("adres", "ulica = " + ulica_, condition);
+                db.update("adres", "miejscowosc = " + miejscowosc_, condition);
+                db.update("adres", "kod_pocztowy = " + kod_pocztowy_, condition);
+                db.update("adres", "nr_telefonu = " + nr_telefonu_, condition);
+                db.update("adres", "nr_domu = " + nr_domu_, condition);
+
                 db.close();
-                
+
             }
         }
 
@@ -223,20 +243,15 @@ public class EditAddresses extends javax.swing.JPanel {
             model.addRow(addr.getAddress());
         }
     }
-    
-    private void setNewData(Address addr)
-    {
+
+    private void setNewData(Address addr) {
         addr.setMiejscowosc(jTextFieldCity.getText());
         addr.setKod_pocztowy(jTextFieldZipCode.getText());
-        addr.setNr_domu(Integer.parseInt(jTextFieldHomeNumber.getText()));      
+        addr.setNr_domu(Integer.parseInt(jTextFieldHomeNumber.getText()));
         addr.setNr_telefonu(Integer.parseInt(jTextFieldPhone.getText()));
         addr.setUlica(jTextFieldAddress.getText());
-        
-        
-        
+
     }
-    
-    
 
     public void clearAddressesTable(final DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
