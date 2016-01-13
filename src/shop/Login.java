@@ -6,6 +6,7 @@
 package shop;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFrame;
 
 /**
@@ -128,25 +129,27 @@ public class Login extends javax.swing.JPanel {
         Database db = Database.getDatabase();
         db.connect();
         String condition = "login = '" + login + "'";
-        //System.out.println(condition);
-        ArrayList<Object> data = db.select("haslo", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
-        for (Object result : data) {
-            if (result.equals(passw)) {
-                status = true;
-                db.setUser(login);
-                //get userUD
-                Integer userID = 0;
-                String cond = "login = '" + db.getUser() + "'";
-                ArrayList<Object> data2 = db.select("id_uzytkownika", "uzytkownik", condition, SelectTypes.INT,"id_uzytkownika");
-                for (Object result2 : data2) {
-                    userID = (Integer) result2;
-                }
-                db.setUserID(userID);
-                //
-            }
+        ArrayList<ArrayList<Object>> data2d = db.select2("id_uzytkownika,haslo", "uzytkownik", condition,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.STRING)));
+
+        for (ArrayList<Object> row : data2d) {
+          if (row.get(1).equals(passw))
+          {
+              status = true;
+              db.setUser(login);
+              Integer userID = 0;
+              userID = (Integer)row.get(0);
+              db.setUserID(userID);
+          }
         }
 
-        db.close();
+        db.close();        
+
+
+
+        
         return status;
     }
 

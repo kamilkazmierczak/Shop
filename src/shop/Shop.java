@@ -146,6 +146,10 @@ public class Shop {
        -czy jak mam w tabelach ddane recznie jakies id (np kod znizki a sekwencja jest na nizszej wartosci to sie skrzaczy?)
         @wywali sie -przelec po nim i tyle potem bd ok (w sensie dodaj wiele razy raz blad potem nie)
        
+        
+        -jakis komunikat jesli nie uda sie wstawic towaru ktory juz ma taka sama naze ->latwo o ten blad bo jak sie zrobi dodaj i kliknie na jakis item to nazwa ta sama i wysztko wskooczy
+        cout wywali ze naruszona wizey uniaktowe
+        
         >opisow bledow szukaj jako ERROR
         >opisow szukaj jako INFO
        
