@@ -70,7 +70,12 @@ public class Shop {
        -jak usuniesz znizke z ktorej ktos korzysta musisz mu wstawic nowa = 0, -- w sumie to glupie- lepiej
        sprawdzic czy jest jakas znizka
        
+       -zablokuj mozliwosc usuniecia znizki o id = 0, zrob tak ze jak zwroci Ci przy usuwaniu
+       Bład wykonania poleceniajava.sql.SQLIntegrityConstraintViolationException: ORA-02292: naruszono więzy spójności (INF117293.FK_UZYTKOWNIK__ZNIZKA) - znaleziono rekord podrzędny
+       (bo ktos ma taka znizke -> to znajdzie wszystkich userow z ta znizka i ustaw im znizke na te z id=0 to zmnizka 0% i potem wywal znizke co chciales usunac
+       
        -czy jak mam w tabelach ddane recznie jakies id (np kod znizki a sekwencja jest na nizszej wartosci to sie skrzaczy?)
+        @wywali sie -przelec po nim i tyle potem bd ok (w sensie dodaj wiele razy raz blad potem nie)
        
         >opisow bledow szukaj jako ERROR
         >opisow szukaj jako INFO
