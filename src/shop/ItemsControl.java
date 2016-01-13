@@ -33,7 +33,7 @@ public class ItemsControl extends javax.swing.JPanel {
 
     public ItemsControl(JFrame frame) {
         initComponents();
-        initItems();
+        initItems(true);
         _frame = frame;
         jScrollPane1.getViewport().setView(jTableItems);
         Functions.disableTableEdit(jTableItems);
@@ -87,7 +87,6 @@ public class ItemsControl extends javax.swing.JPanel {
         db.update("towar", "cena = " + cena_, condition);
         db.update("towar", "opis = " + opis_, condition);
 
-
         //db.update("towar", "nr_domu = "+nr_domu_, condition);
         //db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
         db.close();
@@ -107,40 +106,33 @@ public class ItemsControl extends javax.swing.JPanel {
         if (checkUserInput()) {
             Item newItem = new Item();
             setNewData(newItem);
-            
-            
-        //Integer id = _items.get(row).getId_towaru();
-        Database db = Database.getDatabase();
-        db.connect();
 
+            //Integer id = _items.get(row).getId_towaru();
+            Database db = Database.getDatabase();
+            db.connect();
 
-        String nazwa_ = Functions.addApostrophes(newItem.getNazwa());
-        Integer liczba_sztuk_ = newItem.getLiczba_sztuk();
-        Float cena_ = newItem.getCena();
-        String opis_ = Functions.addApostrophes(newItem.getOpis());
+            String nazwa_ = Functions.addApostrophes(newItem.getNazwa());
+            Integer liczba_sztuk_ = newItem.getLiczba_sztuk();
+            Float cena_ = newItem.getCena();
+            String opis_ = Functions.addApostrophes(newItem.getOpis());
 
 //        db.update("towar", "nazwa = " + nazwa_, condition);
 //        db.update("towar", "liczba_sztuk = " + liczba_sztuk_, condition);
 //        db.update("towar", "cena = " + cena_, condition);
 //        db.update("towar", "opis = " + opis_, condition);
+            String value = nazwa_ + "," + liczba_sztuk_ + "," + cena_ + "," + opis_;
+            //db.update("towar", "nr_domu = "+nr_domu_, condition);
+            db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
 
-        String value = nazwa_+","+liczba_sztuk_+","+cena_+","+opis_;
-        //db.update("towar", "nr_domu = "+nr_domu_, condition);
-        db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
-        
-        
-        
-        
-        db.close();
-        
-     
-        //initItems();
-        
-        Integer newId =(Integer)jTableItems.getValueAt(jTableItems.getRowCount()-1, 0)+1;
-        newItem.setId_towaru(newId);
-        _items.add(newItem);
-        
- 
+            db.close();
+
+            //initItems();
+            //Integer newId =(Integer)jTableItems.getValueAt(jTableItems.getRowCount()-1, 0)+1;
+            //newItem.setId_towaru(newId);
+            _items.clear();
+            initItems(false);
+
+            //_items.add(newItem);
 
             /*
         ERROR
@@ -196,7 +188,7 @@ public class ItemsControl extends javax.swing.JPanel {
         return flag;
     }
 
-    private void initItems() {
+    private void initItems(boolean init) {
 
         /*
         SQL
@@ -205,7 +197,7 @@ public class ItemsControl extends javax.swing.JPanel {
         ArrayList<String> nazwaArr = new ArrayList<String>();
         ArrayList<Integer> liczba_sztukArr = new ArrayList<Integer>();
         ArrayList<Float> cenaArr = new ArrayList<Float>();
-        ArrayList<String> opisArr = new ArrayList<String>();    
+        ArrayList<String> opisArr = new ArrayList<String>();
         _items.clear();
 
         Database db = Database.getDatabase();
@@ -263,17 +255,17 @@ public class ItemsControl extends javax.swing.JPanel {
 //        _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
 //        _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
 //        _items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));
+        if (init) {
+            DefaultTableModel model = new DefaultTableModel();
+            jTableItems = new JTable(model);
 
+            for (String col : _tableColumns) {
+                model.addColumn(col);
+            }
 
-        DefaultTableModel model = new DefaultTableModel();
-        jTableItems = new JTable(model);
-        
-        for (String col : _tableColumns) {
-            model.addColumn(col);
-        }
-
-        for (Item item : _items) {
-            model.addRow(item.getItem());
+            for (Item item : _items) {
+                model.addRow(item.getItem());
+            }
         }
 
     }
@@ -481,8 +473,8 @@ public class ItemsControl extends javax.swing.JPanel {
 
     private void jButtonModAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModAddActionPerformed
 
-        System.out.println("Index od combobox ->"+jComboBox1.getSelectedIndex());
-        
+        System.out.println("Index od combobox ->" + jComboBox1.getSelectedIndex());
+
         if (jComboBox1.getSelectedIndex() == 0) {
             //modeyfikuj
             modifyItem(_row);
