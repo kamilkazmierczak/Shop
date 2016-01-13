@@ -51,6 +51,7 @@ public class Products extends javax.swing.JPanel {
         /*
         SQL
         */
+        //Integer y=1;
         
         
         Database db = Database.getDatabase();
