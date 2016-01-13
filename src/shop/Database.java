@@ -79,6 +79,64 @@ public class Database {
         //System.out.println("Odłączono od bazy danych");
     }
 
+    
+    public static ArrayList<Object> select2(String what, String table, String condition, SelectTypes type) {
+        ArrayList<Object> results = new ArrayList<Object>();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = _conn.createStatement();
+
+            if (condition != null) {
+                rs = stmt.executeQuery("select " + what + " from " + table + " where " + condition);
+            } else {
+                rs = stmt.executeQuery("select " + what + " from " + table);
+            }
+
+            switch (type) {
+                case STRING:
+                    while (rs.next()) {
+                        results.add(rs.getString(1));
+                    }
+                    break;
+                case INT:
+                    while (rs.next()) {
+                        results.add(rs.getInt(1));
+                    }
+                    break;
+                case FLOAT:
+                    while (rs.next()) {
+                        results.add(rs.getFloat(1));
+                    }
+                    break;
+                default:
+                    System.out.println("Nieznany typ danych");
+            }
+
+            
+            
+            
+        } catch (SQLException ex) {
+            System.out.println("Bład wykonania polecenia" + ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    /* kod obsługi */ }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    /* kod obsługi */ }
+            }
+        }
+        return results;
+    }
+    
+    
     public static ArrayList<Object> select(String what, String table, String condition, SelectTypes type,String order) {
         ArrayList<Object> results = new ArrayList<Object>();
 

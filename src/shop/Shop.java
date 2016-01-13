@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,15 +30,50 @@ public class Shop {
         // TODO code application logic here
         
        
-        JFrame frame = new JFrame("Menu główne");
-        //frame.setSize(1300, 1600);
-        frame.setContentPane(new MainMenu());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+//        JFrame frame = new JFrame("Menu główne");
+//        //frame.setSize(1300, 1600);
+//        frame.setContentPane(new MainMenu());
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
         
         
+
+//2D arr
+        ArrayList<ArrayList<Object>> my2DList = new ArrayList<ArrayList<Object>>();
+        
+        ArrayList<Object> newRow = new ArrayList<Object>();
+        newRow.add("1 kolumna w 1 wierszu");
+        newRow.add("2 kolumna w 1 wierszu");
+        my2DList.add(newRow); //new row
+        
+        String a = my2DList.get(0).get(0).toString();
+        String b = my2DList.get(0).get(1).toString();
+        
+        System.out.println(a+"\n"+b);
+        
+        my2DList.add(new ArrayList<Object>(Arrays.asList("1 kolumna w 2 wierszu", 13)));
+        
+        a = my2DList.get(1).get(0).toString();
+        Integer c = (Integer)my2DList.get(1).get(1);
+      
+        System.out.println(a+"\n"+c);
+//end of 2D arr
+        
+        
+//        Database db = Database.getDatabase();
+//        db.connect();      
+//        ///* SELECT
+//        ArrayList<Object> data = db.select("nazwa","towar",null,SelectTypes.STRING,"id_towaru");     
+//        for (Object result : data) {
+//            System.out.println(result);
+//        }
+//       
+//        db.close(); 
+
+
+
         
        // Database db = Database.getDatabase();
         //db.connect();      
