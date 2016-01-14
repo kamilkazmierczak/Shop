@@ -161,19 +161,26 @@ public class OrderConfirmation extends javax.swing.JPanel {
                 System.out.println("blad");
         }
         
-        Float koszt_transportu = Functions.calculateDeliverCost(dostawaTyp);
-        String sposob_platnosci = jComboPayment.getSelectedItem().toString();   
+        Float koszt_transportu = Functions.calculateDeliverCost(dostawaTyp);       
+        String sposob_platnosci = Functions.addApostrophes(jComboPayment.getSelectedItem().toString());   
+        String sposob_transportu = Functions.addApostrophes(jComboDeliver.getSelectedItem().toString());
         Integer nr_domu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_domu();
-        String miejscowosc = _addressess.get(jComboAddress.getSelectedIndex()).getMiejscowosc();
-        String adres = _addressess.get(jComboAddress.getSelectedIndex()).getUlica();
-        String kod_pocztowy = _addressess.get(jComboAddress.getSelectedIndex()).getKod_pocztowy();
-        Integer nr_telefonu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_telefonu();
-    
+        String miejscowosc = Functions.addApostrophes(_addressess.get(jComboAddress.getSelectedIndex()).getMiejscowosc());
+        String adres = Functions.addApostrophes(_addressess.get(jComboAddress.getSelectedIndex()).getUlica());
+        String kod_pocztowy = Functions.addApostrophes(_addressess.get(jComboAddress.getSelectedIndex()).getKod_pocztowy());
+        Integer nr_telefonu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_telefonu();  
+        Integer adresID = _addressess.get(jComboAddress.getSelectedIndex()).getId();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String data = dateFormat.format(new Date()).toString();
+        String data = Functions.addApostrophes(dateFormat.format(new Date()).toString());
+        Float koszt = calculateOrderCost();
  
+        Database db = Database.getDatabase();
+        db.connect();
+ 
+        System.out.println("data->"+data);
         
-        
+        String value = "to_date("+data+",'YYYY-MM-DD')"+","+koszt_transportu+","+sposob_transportu+","+sposob_platnosci+","+"'pakowany'"+","+koszt+","+db.getUserID()+","+adresID;
+        db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
         
         //dla tabeli zamowienie
         
@@ -201,7 +208,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
 
 
 
-    //db.close();
+    db.close();
     }
 
     private boolean checkForAddItemNumber() {

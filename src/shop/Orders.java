@@ -58,7 +58,7 @@ public class Orders extends javax.swing.JPanel {
             _orders.add(new Order(
                     (Integer) row.get(0),
                     Date.stringToDate(row.get(1).toString()),
-                    Date.stringToDate(row.get(2).toString()),
+                    Date.stringToDate((String)row.get(2)),
                     (float) row.get(3),
                     (String) row.get(4),
                     (String) row.get(5),

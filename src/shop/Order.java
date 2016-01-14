@@ -113,7 +113,7 @@ public class Order {
     
     public Object[] getOrder(){
 
-        if (this.data_dostawy == null) {
+        if (this.data_dostawy.getYear() == 0) {
              Object[] order = {this.id_zamowienia, Date.dateToString(this.data_zamowienia),"",this.koszt_transportu,this.sposob_transportu,this.sposob_platnosci,this.status,this.calkowity_koszt};
              return order;
         }else
