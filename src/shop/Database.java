@@ -180,6 +180,10 @@ public class Database {
                         case FLOAT:
                             newRow.add(rs.getFloat(i + 1));
                             break;
+                            
+                        case DATE:
+                            newRow.add(rs.getString(i + 1));
+                            break;
 
                         default:
                             System.out.println("Nieznany typ danych");

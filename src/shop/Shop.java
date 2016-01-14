@@ -38,6 +38,9 @@ public class Shop {
         frame.setVisible(true);
 
 
+        //Date data = Date.stringToDate("2014-04-02");
+        
+        
 
         //select2
 //        Database db = Database.getDatabase();

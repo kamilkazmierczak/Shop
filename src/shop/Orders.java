@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -38,8 +39,41 @@ public class Orders extends javax.swing.JPanel {
         /*
         SQL
          */
-        _orders.add(new Order(33, new Date(1, 3, 2013), new Date(13, 5, 2015), (float) 12.4, "Kurier", "PayPal", "pakowany", (float) 160.9));
-        _orders.add(new Order(82, new Date(23, 1, 2016), (float) 15.5, "Kurier", "Przelew", "anulowany", (float) 50.12));
+        
+        Database db = Database.getDatabase();
+        db.connect();
+        ArrayList<ArrayList<Object>> data2d = db.select2("id_zamowienia,data_zamowienia,data_dostawy,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt", "zamowienie", null,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.DATE,
+                        SelectTypes.DATE,
+                        SelectTypes.FLOAT,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.FLOAT)));
+         db.close();
+        
+        for (ArrayList<Object> row : data2d) {
+            _orders.add(new Order(
+                    (Integer) row.get(0),
+                    Date.stringToDate(row.get(1).toString()),
+                    Date.stringToDate(row.get(2).toString()),
+                    (float) row.get(3),
+                    (String) row.get(4),
+                    (String) row.get(5),
+                    (String) row.get(6),
+                    (float) row.get(7)
+            ));
+        }
+
+       
+        
+        
+        //_orders.add(new Order(33, new Date(1, 3, 2013), new Date(13, 5, 2015), (float) 12.4, "Kurier", "PayPal", "pakowany", (float) 160.9));
+       // _orders.add(new Order(82, new Date(23, 1, 2016), (float) 15.5, "Kurier", "Przelew", "anulowany", (float) 50.12));
+        
+        
 
         DefaultTableModel model = new DefaultTableModel();
         jTableOrders = new JTable(model);
@@ -134,6 +168,14 @@ public class Orders extends javax.swing.JPanel {
 
         for (int i = 0; i < _orders.size(); i++) {
             if (_orders.get(i).getId_zamowienia() == id) {
+                
+                System.out.println("status :"+status);
+                String condition = "id_zamowienia = "+id;
+                Database db = Database.getDatabase();
+                db.connect();
+                db.update("zamowienie", "status = '" + status + "' ", condition);
+                db.close();
+                            
                 _orders.get(i).setStatus(status);
             }
         }
@@ -179,7 +221,6 @@ public class Orders extends javax.swing.JPanel {
         jRadioSent = new javax.swing.JRadioButton();
         jRadioReceived = new javax.swing.JRadioButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
         jLabel1.setText("Zamówienia");
@@ -228,13 +269,6 @@ public class Orders extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setText("Zapisz zmiany");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -243,11 +277,8 @@ public class Orders extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,9 +318,7 @@ public class Orders extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -313,18 +342,11 @@ public class Orders extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       /*
-        SQL
-        */
-    }//GEN-LAST:event_jButton3ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jRadioCancelled;
