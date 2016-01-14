@@ -20,7 +20,32 @@ public class Functions {
         return "'"+text+"'";
     }
     
-    
+    public static Float calculateDeliverCost(DeliverType typ)
+    {
+        Float koszt =(float)0;
+        
+        switch(typ){
+            
+            case KURIER:
+                koszt = (float)15;
+                break;
+                
+            case POCZTA:
+                koszt = (float)7;
+                break;
+                
+            case OSOBISCIE:
+                koszt = (float)0;
+                break;        
+                
+            default:
+                System.out.println("Nieznany sposob dostawy");
+                break;        
+        }
+        
+        
+        return koszt;
+    }
     
     
     public static void clearTable(final DefaultTableModel model, ArrayList<String> columns) {

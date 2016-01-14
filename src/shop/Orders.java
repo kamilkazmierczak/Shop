@@ -169,7 +169,7 @@ public class Orders extends javax.swing.JPanel {
         for (int i = 0; i < _orders.size(); i++) {
             if (_orders.get(i).getId_zamowienia() == id) {
                 
-                System.out.println("status :"+status);
+                //System.out.println("status :"+status);
                 String condition = "id_zamowienia = "+id;
                 Database db = Database.getDatabase();
                 db.connect();

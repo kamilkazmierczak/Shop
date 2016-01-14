@@ -5,6 +5,8 @@
  */
 package shop;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JSpinner;
+import java.util.Date;
 
 /**
  *
@@ -21,40 +24,36 @@ import javax.swing.JSpinner;
  */
 public class OrderConfirmation extends javax.swing.JPanel {
 
-   
     private JFrame _frame;
     private ArrayList<Item> _cartContent;
     private Integer _spinnerValue;
+    private Float _discount;
     Map<Integer, Integer> _item = new HashMap<Integer, Integer>();
     private ArrayList<Address> _addressess = new ArrayList<Address>();
-    
+
     /**
      * Creates new form OrderConfirmation
      */
-    public OrderConfirmation(JFrame frame,ArrayList<Item> cartContent) {
-        initComponents(); 
+    public OrderConfirmation(JFrame frame, ArrayList<Item> cartContent) {
+        initComponents();
         _frame = frame;
         _cartContent = cartContent;
-         initComboAndMap();
-         initAddress();
-         disabelSpinnerEdit();
+        initComboAndMap();
+        initAddress();
+        initDiscount();
+        disabelSpinnerEdit();
+        jLabelKoszt.setText(calculateOrderCost().toString());
+    }
 
-         
-    }
-    
-    private void disabelSpinnerEdit()
-    {
+    private void disabelSpinnerEdit() {
         JFormattedTextField tf = ((JSpinner.DefaultEditor) jSpinner1.getEditor()).getTextField();
-        tf.setEditable(false); 
+        tf.setEditable(false);
     }
-    
-    
-     private void initAddress()
-     {
-        jComboAddress.setModel(new javax.swing.DefaultComboBoxModel<>());  
-        
-        
-                Database db = Database.getDatabase();
+
+    private void initAddress() {
+        jComboAddress.setModel(new javax.swing.DefaultComboBoxModel<>());
+
+        Database db = Database.getDatabase();
         db.connect();
         String condition = "uzytkownik = " + db.getUserID();
         ArrayList<ArrayList<Object>> data2d = db.select2("id,ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu", "adres", condition,
@@ -76,50 +75,140 @@ public class OrderConfirmation extends javax.swing.JPanel {
                     (String) row.get(1)));
 
         }
+        
+        
+        
+        
 
         db.close();
-        
-        
-         for (Address addr : _addressess) {    
-              jComboAddress.addItem(addr.getMiejscowosc());
-         }
 
-        
-     }
+        for (Address addr : _addressess) {
+            jComboAddress.addItem(addr.getMiejscowosc());
+        }
 
-    private void initComboAndMap()
+    }
+    
+    private void initDiscount()
     {
+        Database db = Database.getDatabase();
+        db.connect();
+        
+        String condition = "id_uzytkownika = "+db.getUserID();
+        ArrayList<ArrayList<Object>> data2d = db.select2("znizka", "uzytkownik", condition,
+                new ArrayList<SelectTypes>(Arrays.asList(SelectTypes.INT)));
+        
+        Float procent_znizki =(float)0; 
+        for (ArrayList<Object> row : data2d) {
+            procent_znizki = Functions.discountCodeToPercent((Integer)row.get(0));
+        }
+        db.close();
+        _discount = procent_znizki;
+        System.out.println(procent_znizki);
+    }
+
+    private void initComboAndMap() {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>());
-        for(Item item : _cartContent)
-        {
-            _item.put(item.getId_towaru(),1);
-            jComboBox1.addItem(item.getNazwa());  
-             
+        for (Item item : _cartContent) {
+            _item.put(item.getId_towaru(), 1);
+            jComboBox1.addItem(item.getNazwa());
+
         }
 
     }
     
-    private void changeItemNumber(Integer sign)
+    
+    private Float calculateOrderCost()
     {
-        if (sign>0) {
-        //add
-        
-        
-        }else
-        {//sub
-            
-            
+        Integer ilosc = 0;
+        Float wartosc_zamowienia = (float) 0;
+
+        try {
+            for (Item item : _cartContent) {
+                ilosc = _item.get(item.getId_towaru());
+
+                if (ilosc == null) {
+                    ilosc = 1;
+                    wartosc_zamowienia += (item.getCena() - (item.getCena() * (_discount / 100))) * ilosc;
+                } else {
+                    wartosc_zamowienia += (item.getCena() - (item.getCena() * (_discount / 100))) * ilosc;
+                }
+            }
+        } catch (NullPointerException e) {
+            return (float) -1;
         }
+
+        wartosc_zamowienia = (float) ((float) Math.round(wartosc_zamowienia * 100d) / 100d);
+
+        return wartosc_zamowienia;
     }
+
+    private void confirmOrder() {
+
+        DeliverType dostawaTyp = DeliverType.KURIER;
+        switch (jComboDeliver.getSelectedIndex()) {
+            case 0:
+                dostawaTyp = DeliverType.KURIER;
+                break;
+            case 1:
+                dostawaTyp = DeliverType.POCZTA;
+                break;
+                        
+            case 2:
+                dostawaTyp = DeliverType.OSOBISCIE;
+                break;
+
+            default:
+                System.out.println("blad");
+        }
+        
+        Float koszt_transportu = Functions.calculateDeliverCost(dostawaTyp);
+        String sposob_platnosci = jComboPayment.getSelectedItem().toString();   
+        Integer nr_domu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_domu();
+        String miejscowosc = _addressess.get(jComboAddress.getSelectedIndex()).getMiejscowosc();
+        String adres = _addressess.get(jComboAddress.getSelectedIndex()).getUlica();
+        String kod_pocztowy = _addressess.get(jComboAddress.getSelectedIndex()).getKod_pocztowy();
+        Integer nr_telefonu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_telefonu();
     
-    
-    private boolean checkForAddItemNumber()
-    {
-       boolean status =false; //false jesli nie wolno dodac wiecej sztuk produktu
-       Integer liczbaDostepnychSztuk = 0;
-       
-       
-       //wersja ze sprawdzeniem bazy danych
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String data = dateFormat.format(new Date()).toString();
+ 
+        
+        
+        
+        //dla tabeli zamowienie
+        
+        
+        
+         //db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
+        
+//        
+//        Integer ilosc = 0;
+//        for(Item item : _cartContent)
+//        {
+//         ilosc = _item.get(item.getId_towaru());
+//         
+//        
+//
+//
+//           //String value = nazwa_ + "," + liczba_sztuk_ + "," + cena_ + "," + opis_;
+//           //String value = 'to_date(' 
+//           
+//           // db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
+//
+//            db.close();
+//            
+//        }
+
+
+
+    //db.close();
+    }
+
+    private boolean checkForAddItemNumber() {
+        boolean status = false; //false jesli nie wolno dodac wiecej sztuk produktu
+        Integer liczbaDostepnychSztuk = 0;
+
+        //wersja ze sprawdzeniem bazy danych
 //       Database db = Database.getDatabase();
 //       db.connect();      
 //
@@ -130,26 +219,17 @@ public class OrderConfirmation extends javax.swing.JPanel {
 //            liczbaDostepnychSztuk = (Integer)result;
 //        }
 //        db.close();
-        
-
-
-        
         liczbaDostepnychSztuk = _cartContent.get(jComboBox1.getSelectedIndex()).getLiczba_sztuk();
-          
-        
-        if (liczbaDostepnychSztuk +1 == (Integer)jSpinner1.getValue()) {
-            status =false;
-        }else
-        {
+
+        if (liczbaDostepnychSztuk + 1 == (Integer) jSpinner1.getValue()) {
+            status = false;
+        } else {
             status = true;
         }
- 
-        
+
         return status;
     }
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,8 +257,10 @@ public class OrderConfirmation extends javax.swing.JPanel {
         jLabelZipCode = new javax.swing.JLabel();
         jLabelPhone = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jComboPayment2 = new javax.swing.JComboBox<>();
+        jComboDeliver = new javax.swing.JComboBox<>();
         jLabelNrDomu = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabelKoszt = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 36)); // NOI18N
         jLabel1.setText(" zamówienia");
@@ -280,30 +362,29 @@ public class OrderConfirmation extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel8.setText("Sposób transportu:");
 
-        jComboPayment2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kurier", "Poczta", "Odbiór osobisty" }));
-        jComboPayment2.addItemListener(new java.awt.event.ItemListener() {
+        jComboDeliver.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kurier", "Poczta", "Odbiór osobisty" }));
+        jComboDeliver.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboPayment2ItemStateChanged(evt);
+                jComboDeliverItemStateChanged(evt);
             }
         });
-        jComboPayment2.addActionListener(new java.awt.event.ActionListener() {
+        jComboDeliver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboPayment2ActionPerformed(evt);
+                jComboDeliverActionPerformed(evt);
             }
         });
 
         jLabelNrDomu.setText("nr domu");
 
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel9.setText("Koszt:");
+
+        jLabelKoszt.setText("koszt");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -340,9 +421,23 @@ public class OrderConfirmation extends javax.swing.JPanel {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboPayment2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboDeliver, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 39, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelKoszt)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(34, 34, 34)
@@ -368,7 +463,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
                     .addComponent(jComboPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboPayment2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboDeliver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -387,7 +482,11 @@ public class OrderConfirmation extends javax.swing.JPanel {
                         .addComponent(jLabelPhone)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelNrDomu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabelKoszt))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -396,26 +495,26 @@ public class OrderConfirmation extends javax.swing.JPanel {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(21, 21, 21)
                     .addComponent(jLabel2)
-                    .addContainerGap(368, Short.MAX_VALUE)))
+                    .addContainerGap(407, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    _frame.dispose();
+        _frame.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        confirmOrder();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 
-         Integer id_towaru =_cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru();
-         jSpinner1.setValue(_item.get(id_towaru));
-         
- 
+        Integer id_towaru = _cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru();
+        jSpinner1.setValue(_item.get(id_towaru));
+
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
@@ -424,27 +523,25 @@ public class OrderConfirmation extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-        
+
         //System.out.println("zmiana stanu");
-        
-        if ((Integer)jSpinner1.getValue() < 1) {
+        if ((Integer) jSpinner1.getValue() < 1) {
             jSpinner1.setValue(1);
-            _spinnerValue = (Integer)jSpinner1.getValue();
-        }else
-        {
-            
-            if (checkForAddItemNumber()) {
-                _item.put(_cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru(),(Integer)jSpinner1.getValue());
-                _spinnerValue = (Integer)jSpinner1.getValue();
-            }else
-            {
-                jSpinner1.setValue(_spinnerValue);
-            }
+            _spinnerValue = (Integer) jSpinner1.getValue();
+        } else if (checkForAddItemNumber()) {
+            _item.put(_cartContent.get(jComboBox1.getSelectedIndex()).getId_towaru(), (Integer) jSpinner1.getValue());
+            _spinnerValue = (Integer) jSpinner1.getValue();
             
             
+            jLabelKoszt.setText(calculateOrderCost().toString());
+            
+            
+        } else {
+            jSpinner1.setValue(_spinnerValue);
         }
         
-        
+       
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jSpinner1StateChanged
 
@@ -461,13 +558,13 @@ public class OrderConfirmation extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboPaymentActionPerformed
 
-    private void jComboPayment2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboPayment2ItemStateChanged
+    private void jComboDeliverItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboDeliverItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboPayment2ItemStateChanged
+    }//GEN-LAST:event_jComboDeliverItemStateChanged
 
-    private void jComboPayment2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPayment2ActionPerformed
+    private void jComboDeliverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboDeliverActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboPayment2ActionPerformed
+    }//GEN-LAST:event_jComboDeliverActionPerformed
 
     private void jSpinner1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jSpinner1PropertyChange
         // TODO add your handling code here:
@@ -481,23 +578,22 @@ public class OrderConfirmation extends javax.swing.JPanel {
 
     private void jComboAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboAddressActionPerformed
         // TODO add your handling code here:
-        
+
         Integer nr_domu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_domu();
         String miejscowosc = _addressess.get(jComboAddress.getSelectedIndex()).getMiejscowosc();
         String adres = _addressess.get(jComboAddress.getSelectedIndex()).getUlica();
         String kod_pocztowy = _addressess.get(jComboAddress.getSelectedIndex()).getKod_pocztowy();
         Integer nr_telefonu = _addressess.get(jComboAddress.getSelectedIndex()).getNr_telefonu();
-        
+
         //System.out.println(nr_domu);
-        
-        jLabelAddress.setText(adres+" (ulica)");
-        jLabelCity.setText(miejscowosc+" (miejscowość)");
-        jLabelPhone.setText(nr_telefonu.toString()+" (telefon)");
-        jLabelZipCode.setText(kod_pocztowy+" (kod pocztowy)");
-        jLabelNrDomu.setText(nr_domu.toString()+" (nr domu)");
-        
+        jLabelAddress.setText(adres + " (ulica)");
+        jLabelCity.setText(miejscowosc + " (miejscowość)");
+        jLabelPhone.setText(nr_telefonu.toString() + " (telefon)");
+        jLabelZipCode.setText(kod_pocztowy + " (kod pocztowy)");
+        jLabelNrDomu.setText(nr_domu.toString() + " (nr domu)");
+
         //addr.getMiejscowosc()
-        
+
     }//GEN-LAST:event_jComboAddressActionPerformed
 
 
@@ -506,8 +602,8 @@ public class OrderConfirmation extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboAddress;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboDeliver;
     private javax.swing.JComboBox<String> jComboPayment;
-    private javax.swing.JComboBox<String> jComboPayment2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -516,8 +612,10 @@ public class OrderConfirmation extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelAddress;
     private javax.swing.JLabel jLabelCity;
+    private javax.swing.JLabel jLabelKoszt;
     private javax.swing.JLabel jLabelNrDomu;
     private javax.swing.JLabel jLabelPhone;
     private javax.swing.JLabel jLabelZipCode;
