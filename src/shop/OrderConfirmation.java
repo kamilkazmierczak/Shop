@@ -180,31 +180,19 @@ public class OrderConfirmation extends javax.swing.JPanel {
         System.out.println("data->"+data);
         
         String value = "to_date("+data+",'YYYY-MM-DD')"+","+koszt_transportu+","+sposob_transportu+","+sposob_platnosci+","+"'pakowany'"+","+koszt+","+db.getUserID()+","+adresID;
+        //dla tabeli zamowienie
         db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
         
-        //dla tabeli zamowienie
-        
-        
-        
-         //db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
-        
-//        
-//        Integer ilosc = 0;
-//        for(Item item : _cartContent)
-//        {
-//         ilosc = _item.get(item.getId_towaru());
-//         
-//        
-//
-//
-//           //String value = nazwa_ + "," + liczba_sztuk_ + "," + cena_ + "," + opis_;
-//           //String value = 'to_date(' 
-//           
-//           // db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
-//
-//            db.close();
-//            
-//        }
+        //dla tabeli przydzial
+        Integer ilosc = 0;
+        for (Item item : _cartContent) {
+            ilosc = _item.get(item.getId_towaru());
+
+            //TE 4 JEST TAM NA SZTYWNO ->musze wyciagnac jakos id zamowienia
+            //value = item.getId_towaru() + "," + 4 + "," + ilosc + "," + item.getCena();
+            //db.insert("przydzial", "towar,zamowienie,liczba_sztuk,cena", value);
+
+        }
 
 
 
