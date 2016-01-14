@@ -11,7 +11,7 @@ package shop;
  */
 public enum SelectTypes
 {
-    FLOAT,INT,STRING
+    FLOAT,INT,STRING,DATE
 }
 
     

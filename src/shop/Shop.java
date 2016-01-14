@@ -150,9 +150,13 @@ public class Shop {
         -jakis komunikat jesli nie uda sie wstawic towaru ktory juz ma taka sama naze ->latwo o ten blad bo jak sie zrobi dodaj i kliknie na jakis item to nazwa ta sama i wysztko wskooczy
         cout wywali ze naruszona wizey uniaktowe
         
+        
+        -db.close() mozna dac wczesniej bo zazwyczaj go daje po dodaniu wartosci do tabeli a nie przed
+        
         >opisow bledow szukaj jako ERROR
         >opisow szukaj jako INFO
        
+        
        
        ISTOTNE
        idiotyczna jest funckja discountCodeToPercent bo trzeba sie polaczyc do bazy przed jej uzyciem i rozlaczyc po uzyciu, sama w sobie tego nie robi

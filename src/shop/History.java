@@ -5,6 +5,8 @@
  */
 package shop;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -29,8 +31,15 @@ public class History extends javax.swing.JPanel {
     
     private void initHistory()
     {
+        
+        Database db = Database.getDatabase();
+        db.connect();
+        ArrayList<ArrayList<Object>> data2d =db.getHistory();
+        db.close();
+        
         DefaultTableModel model = new DefaultTableModel();
         jTableHistory = new JTable(model);
+        
         model.addColumn("Id zamówienia");
         model.addColumn("Nazwa");
         model.addColumn("Status");
@@ -39,6 +48,19 @@ public class History extends javax.swing.JPanel {
         model.addColumn("Data zamówienia");
         model.addColumn("Data dostawy");
         model.addColumn("Całkowity koszt");
+        
+        for (ArrayList<Object> row : data2d) {   
+            model.addRow(new Object[]{row.get(0),
+                row.get(1),
+                row.get(2),
+                row.get(3),
+                row.get(4),
+                row.get(5),
+                row.get(6),
+                row.get(7),
+            });
+        }
+
         Functions.disableTableEdit(jTableHistory);
         jScrollPane1.getViewport().setView(jTableHistory);
     }

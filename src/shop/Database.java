@@ -77,6 +77,76 @@ public class Database {
         //System.out.println("Odłączono od bazy danych");
     }
 
+    public static ArrayList<ArrayList<Object>> getHistory() {
+        ArrayList<ArrayList<Object>> myHistory = new ArrayList<ArrayList<Object>>();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = _conn.createStatement();
+
+            ArrayList<SelectTypes> types =  new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT,
+                        SelectTypes.STRING,
+                        SelectTypes.STRING,
+                        SelectTypes.FLOAT,
+                        SelectTypes.INT,
+                        SelectTypes.DATE,
+                        SelectTypes.DATE,
+                        SelectTypes.FLOAT));
+            
+            rs = stmt.executeQuery("SELECT id_zamowienia,nazwa,status,p.cena,p.liczba_sztuk,data_zamowienia,data_dostawy,koszt FROM "
+                    + "((towar t JOIN przydzial p ON t.id_towaru = p.towar) JOIN zamowienie z ON z.id_zamowienia = p.zamowienie) WHERE z.uzytkownik = "+_userID);
+
+            ArrayList<Object> newRow;
+            while (rs.next()) {
+                newRow = new ArrayList<Object>();
+                for (int i = 0; i < types.size(); i++) {
+
+                    switch (types.get(i)) {
+                        case STRING:
+                            newRow.add(rs.getString(i + 1));
+                            break;
+
+                        case INT:
+                            newRow.add(rs.getInt(i + 1));
+                            break;
+
+                        case FLOAT:
+                            newRow.add(rs.getFloat(i + 1));
+                            break;
+                            
+                        case DATE:
+                            newRow.add(rs.getDate(i + 1));
+                            break;
+
+                        default:
+                            System.out.println("Nieznany typ danych");
+                    }
+                }
+                myHistory.add(newRow); //new row
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Bład wykonania polecenia" + ex.toString());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    /* kod obsługi */ }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    /* kod obsługi */ }
+            }
+        }
+        return myHistory;
+
+    }
+
     public static ArrayList<ArrayList<Object>> select2(String what, String table, String condition, ArrayList<SelectTypes> types) {
         //ArrayList<Object> results = new ArrayList<Object>();
 
@@ -100,15 +170,15 @@ public class Database {
 
                     switch (types.get(i)) {
                         case STRING:
-                            newRow.add(rs.getString(i+1));
+                            newRow.add(rs.getString(i + 1));
                             break;
 
                         case INT:
-                            newRow.add(rs.getInt(i+1));
+                            newRow.add(rs.getInt(i + 1));
                             break;
 
                         case FLOAT:
-                            newRow.add(rs.getFloat(i+1));
+                            newRow.add(rs.getFloat(i + 1));
                             break;
 
                         default:
