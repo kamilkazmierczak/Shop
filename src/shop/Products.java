@@ -368,7 +368,7 @@ public class Products extends javax.swing.JPanel {
             infoLabel.setText("Koszyk jest pusty");
             infoLabel.setVisible(true);
         }
-
+        _frame.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

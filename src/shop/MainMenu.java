@@ -88,7 +88,7 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         JFrame frame = new JFrame("Rejestracja");
-        frame.setContentPane(new Registration());
+        frame.setContentPane(new Registration(frame));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true); 
@@ -96,7 +96,7 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JFrame frame = new JFrame("Login");
-        frame.setContentPane(new Login());
+        frame.setContentPane(new Login(frame));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true); 

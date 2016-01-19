@@ -183,14 +183,29 @@ public class OrderConfirmation extends javax.swing.JPanel {
         //dla tabeli zamowienie
         db.insert("zamowienie", "data_zamowienia,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt,uzytkownik,adres", value);
         
+        
+    
+        ArrayList<ArrayList<Object>> data2d = db.select2("ZAMOWIENIE_SEQ.CURRVAL", "dual", null,
+                new ArrayList<SelectTypes>(Arrays.asList(
+                        SelectTypes.INT)));
+
+        Integer id_zamowienia = 0;
+        for (ArrayList<Object> row : data2d) {         
+                   id_zamowienia = (Integer)row.get(0); 
+        }
+             
         //dla tabeli przydzial
         Integer ilosc = 0;
+        String condition ="";
         for (Item item : _cartContent) {
             ilosc = _item.get(item.getId_towaru());
 
-            //TE 4 JEST TAM NA SZTYWNO ->musze wyciagnac jakos id zamowienia
-            //value = item.getId_towaru() + "," + 4 + "," + ilosc + "," + item.getCena();
-            //db.insert("przydzial", "towar,zamowienie,liczba_sztuk,cena", value);
+            
+            value = item.getId_towaru() + "," + id_zamowienia + "," + ilosc + "," + item.getCena();
+            db.insert("przydzial", "towar,zamowienie,liczba_sztuk,cena", value);
+            
+            condition = "id_towaru = "+item.getId_towaru();
+            db.update("towar","liczba_sztuk = liczba_sztuk - "+ilosc,condition);
 
         }
 
@@ -501,6 +516,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         confirmOrder();
+        _frame.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -275,7 +275,7 @@ public class Database {
 
             changes = stmt.executeUpdate("INSERT INTO " + table + "(" + what + ") " + "VALUES(" + values + ")");
             //result = "Wstawiono " + changes + " krotek.";
-            System.out.println("Wstawiono " + changes + " krotek.");
+            //System.out.println("Wstawiono " + changes + " krotek.");
             status = true;
 
         } catch (SQLException ex) {
