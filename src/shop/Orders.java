@@ -41,7 +41,7 @@ public class Orders extends javax.swing.JPanel {
          */
         
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("id_zamowienia,data_zamowienia,data_dostawy,koszt_transportu,sposob_transportu,sposob_platnosci,status,koszt", "zamowienie", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -52,7 +52,7 @@ public class Orders extends javax.swing.JPanel {
                         SelectTypes.STRING,
                         SelectTypes.STRING,
                         SelectTypes.FLOAT)));
-         db.close();
+         //db.close();
         
         for (ArrayList<Object> row : data2d) {
             _orders.add(new Order(
@@ -172,9 +172,9 @@ public class Orders extends javax.swing.JPanel {
                 //System.out.println("status :"+status);
                 String condition = "id_zamowienia = "+id;
                 Database db = Database.getDatabase();
-                db.connect();
+                //db.connect();
                 db.update("zamowienie", "status = '" + status + "' ", condition);
-                db.close();
+                //db.close();
                             
                 _orders.get(i).setStatus(status);
             }

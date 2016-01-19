@@ -117,7 +117,7 @@ public class EditAddresses extends javax.swing.JPanel {
 //         
 //        db.close();
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "uzytkownik = " + db.getUserID();
         ArrayList<ArrayList<Object>> data2d = db.select2("id,ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu", "adres", condition,
                 new ArrayList<SelectTypes>(Arrays.asList(
@@ -139,7 +139,7 @@ public class EditAddresses extends javax.swing.JPanel {
 
         }
 
-        db.close();
+        //db.close();
 
 //        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
 //        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
@@ -184,11 +184,11 @@ public class EditAddresses extends javax.swing.JPanel {
 
                 //_addressess.get(i).getID - >sql modify wgere id == getID
                 Database db = Database.getDatabase();
-                db.connect();
+                //db.connect();
                 Integer id = _addressess.get(i).getId();
                 String condition = "id = " + id;
                 db.delete("adres", condition);
-                db.close();
+                //db.close();
 
                 _addressess.remove(i);
 
@@ -216,7 +216,7 @@ public class EditAddresses extends javax.swing.JPanel {
                 setNewData(_addressess.get(i));
 
                 Database db = Database.getDatabase();
-                db.connect();
+                //db.connect();
                 Integer id = _addressess.get(i).getId();
                 String condition = "id = " + id;
 
@@ -232,7 +232,7 @@ public class EditAddresses extends javax.swing.JPanel {
                 db.update("adres", "nr_telefonu = " + nr_telefonu_, condition);
                 db.update("adres", "nr_domu = " + nr_domu_, condition);
 
-                db.close();
+                //db.close();
 
             }
         }

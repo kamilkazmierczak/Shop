@@ -41,7 +41,7 @@ public class Accounts extends javax.swing.JPanel {
     private void initUsers() {
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "typ_konta != 'admin'";
         ArrayList<ArrayList<Object>> data2d = db.select2("id_uzytkownika,imie,nazwisko,login,haslo,znizka", "uzytkownik", condition,
                 new ArrayList<SelectTypes>(Arrays.asList(
@@ -70,7 +70,7 @@ public class Accounts extends javax.swing.JPanel {
             model.addRow(user.getUser());
         }
 
-        db.close();
+        //db.close();
     }
 
     private void initDiscounts() {
@@ -81,7 +81,7 @@ public class Accounts extends javax.swing.JPanel {
 
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("kod_znizki,ile", "znizka", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -93,7 +93,7 @@ public class Accounts extends javax.swing.JPanel {
                     (float) row.get(1)));
         }
 
-        db.close();
+        //db.close();
         
         //_discounts.add(new Discount(999, (float) 60.2));
         // _discounts.add(new Discount(888, (float) 14));
@@ -133,11 +133,11 @@ public class Accounts extends javax.swing.JPanel {
         _users.get(row).setProcentZnizki(ilezniski);
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         Integer id = _users.get(row).getId_uzytkownika();
         String condition = "id_uzytkownika = " + id;
         db.update("uzytkownik", "znizka = " + discountCode, condition);
-        db.close();
+        //db.close();
 
         clearAccountTable(model);
         for (User user : _users) {

@@ -138,6 +138,9 @@ public class AdminMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        
+        Database db = Database.getDatabase();
+        db.close();
         _frame.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 

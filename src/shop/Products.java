@@ -55,7 +55,11 @@ public class Products extends javax.swing.JPanel {
         
         
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
+        
+        db.disableAutoCommit();
+        db.lockTable("towar");
+        
         ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -75,7 +79,8 @@ public class Products extends javax.swing.JPanel {
 
         }
 
-        db.close();
+        
+        //db.close();
         
         
      
@@ -333,6 +338,9 @@ public class Products extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Database db = Database.getDatabase(); 
+        db.commit();
+        db.enableAutoCommit();
         _frame.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -33,9 +33,9 @@ public class History extends javax.swing.JPanel {
     {
         
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         ArrayList<ArrayList<Object>> data2d =db.getHistory();
-        db.close();
+        //db.close();
         
         DefaultTableModel model = new DefaultTableModel();
         jTableHistory = new JTable(model);

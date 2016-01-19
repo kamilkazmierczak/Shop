@@ -48,7 +48,7 @@ public class NewAddress extends javax.swing.JPanel {
         
    
         Database db = Database.getDatabase();
-        db.connect();   
+        //db.connect();   
         
         Integer userID =0;
         userID = db.getUserID();
@@ -64,7 +64,7 @@ public class NewAddress extends javax.swing.JPanel {
         state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
         }
         
-        db.close();
+        //db.close();
         
         return state;
         

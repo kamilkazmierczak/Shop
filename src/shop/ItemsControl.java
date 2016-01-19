@@ -41,7 +41,10 @@ public class ItemsControl extends javax.swing.JPanel {
         jSpinnerNumberofItems.setValue(1);
         // jFormattedPriceField = new JFormattedTextField(new Float(3.14));
         jLabelInfo.setVisible(false);
-
+        
+        //Database db = Database.getDatabase();
+        //db.connect();
+        //ERROR - to jest tu tylko tmp bo wczesniej gdzies jest close, a nie ma byc trzeba wywalic wszystkie close
     }
 
     private void initListener() {
@@ -74,7 +77,7 @@ public class ItemsControl extends javax.swing.JPanel {
         //
         Integer id = _items.get(row).getId_towaru();
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "id_towaru = " + id;
 
         String nazwa_ = Functions.addApostrophes(_items.get(row).getNazwa());
@@ -89,7 +92,7 @@ public class ItemsControl extends javax.swing.JPanel {
 
         //db.update("towar", "nr_domu = "+nr_domu_, condition);
         //db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
-        db.close();
+        //db.close();
 
         Functions.clearTable(model, _tableColumns);
 
@@ -109,7 +112,7 @@ public class ItemsControl extends javax.swing.JPanel {
 
             //Integer id = _items.get(row).getId_towaru();
             Database db = Database.getDatabase();
-            db.connect();
+            //db.connect();
 
             String nazwa_ = Functions.addApostrophes(newItem.getNazwa());
             Integer liczba_sztuk_ = newItem.getLiczba_sztuk();
@@ -124,7 +127,7 @@ public class ItemsControl extends javax.swing.JPanel {
             //db.update("towar", "nr_domu = "+nr_domu_, condition);
             db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
 
-            db.close();
+            //db.close();
 
             //initItems();
             //Integer newId =(Integer)jTableItems.getValueAt(jTableItems.getRowCount()-1, 0)+1;
@@ -195,7 +198,7 @@ public class ItemsControl extends javax.swing.JPanel {
          */
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -215,7 +218,7 @@ public class ItemsControl extends javax.swing.JPanel {
 
         }
 
-        db.close();
+        //db.close();
 
 
 //        _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
@@ -241,10 +244,10 @@ public class ItemsControl extends javax.swing.JPanel {
 
         Integer id = _items.get(tableRow).getId_towaru();
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "id_towaru = " + id;
         db.delete("towar", condition);
-        db.close();
+        //db.close();
 
         _items.remove(tableRow);
         Functions.clearTable(model, _tableColumns);

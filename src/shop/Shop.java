@@ -38,7 +38,8 @@ public class Shop {
         frame.setVisible(true);
 
 
-          
+         Database db = Database.getDatabase();
+         db.connect();
 
 
         //Date data = Date.stringToDate("2014-04-02");
@@ -46,8 +47,7 @@ public class Shop {
         
 
         //select2
-//        Database db = Database.getDatabase();
-//        db.connect();
+
 //
 //        String condition = "liczba_sztuk > 5";
 //        ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", condition,

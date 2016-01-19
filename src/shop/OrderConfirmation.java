@@ -54,7 +54,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
         jComboAddress.setModel(new javax.swing.DefaultComboBoxModel<>());
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "uzytkownik = " + db.getUserID();
         ArrayList<ArrayList<Object>> data2d = db.select2("id,ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu", "adres", condition,
                 new ArrayList<SelectTypes>(Arrays.asList(
@@ -80,7 +80,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
         
         
 
-        db.close();
+        //db.close();
 
         for (Address addr : _addressess) {
             jComboAddress.addItem(addr.getMiejscowosc());
@@ -91,7 +91,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
     private void initDiscount()
     {
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         
         String condition = "id_uzytkownika = "+db.getUserID();
         ArrayList<ArrayList<Object>> data2d = db.select2("znizka", "uzytkownik", condition,
@@ -101,7 +101,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
         for (ArrayList<Object> row : data2d) {
             procent_znizki = Functions.discountCodeToPercent((Integer)row.get(0));
         }
-        db.close();
+        //db.close();
         _discount = procent_znizki;
         System.out.println(procent_znizki);
     }
@@ -175,7 +175,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
         Float koszt = calculateOrderCost();
  
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
  
         System.out.println("data->"+data);
         
@@ -209,9 +209,11 @@ public class OrderConfirmation extends javax.swing.JPanel {
 
         }
 
+     
+        db.commit();
+        db.enableAutoCommit();
 
-
-    db.close();
+    //db.close();
     }
 
     private boolean checkForAddItemNumber() {

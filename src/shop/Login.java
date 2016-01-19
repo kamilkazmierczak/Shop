@@ -145,7 +145,7 @@ public class Login extends javax.swing.JPanel {
         boolean status = false;
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "login = '" + login + "'";
         ArrayList<ArrayList<Object>> data2d = db.select2("id_uzytkownika,haslo", "uzytkownik", condition,
                 new ArrayList<SelectTypes>(Arrays.asList(
@@ -163,7 +163,7 @@ public class Login extends javax.swing.JPanel {
           }
         }
 
-        db.close();        
+        //db.close();        
 
 
 
@@ -175,14 +175,14 @@ public class Login extends javax.swing.JPanel {
         String type = "";
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         String condition = "login = '" + login + "'";
         //System.out.println(condition);
         ArrayList<Object> data = db.select("typ_konta", "uzytkownik", condition, SelectTypes.STRING,"id_uzytkownika");
         for (Object result : data) {
             type = (String) result;
         }
-        db.close();
+        //db.close();
 
         return type;
     }

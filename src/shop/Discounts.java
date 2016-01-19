@@ -44,7 +44,7 @@ public class Discounts extends javax.swing.JPanel {
         SQL
          */
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("kod_znizki,ile", "znizka", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -56,7 +56,7 @@ public class Discounts extends javax.swing.JPanel {
                     (float) row.get(1)));
         }
 
-        db.close();
+        //db.close();
 
         // _discounts.add(new Discount(999, (float) 60.2));
         //_discounts.add(new Discount(888, (float) 14));
@@ -97,7 +97,7 @@ public class Discounts extends javax.swing.JPanel {
         setNewData(_discounts.get(row));
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         Integer kod_znizki = _discounts.get(row).getKod_znizki();
         String condition = "kod_znizki = " + kod_znizki;
         Float ile_ = _discounts.get(row).getIle();
@@ -138,7 +138,7 @@ public class Discounts extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) jTableDiscounts.getModel();
 
         Database db = Database.getDatabase();
-        db.connect();
+        //db.connect();
         Integer id = _discounts.get(tableRow).getKod_znizki();
         String condition = "kod_znizki = " + id;
         
@@ -163,7 +163,7 @@ public class Discounts extends javax.swing.JPanel {
                 model.addRow(disc.getDiscount());
             }
         }
-    db.close();
+    //db.close();
     }
 
     private void addItem() {
@@ -177,9 +177,9 @@ public class Discounts extends javax.swing.JPanel {
             _discounts.add(newDiscount);
 
             Database db = Database.getDatabase();
-            db.connect();
+            //db.connect();
             db.insert("znizka", "ile", newDiscount.getIle().toString());
-            db.close();
+            //close();
 
             //Functions.clearTable(model, _tableColumns);
             _discounts.clear();

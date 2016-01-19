@@ -38,9 +38,9 @@ public class Registration extends javax.swing.JPanel {
         String value = imie+","+nazwisko+","+nick+","+haslo+","+"0"+","+"'user'";
         
         Database db = Database.getDatabase();
-        db.connect();       
+        //db.connect();       
         state = db.insert("uzytkownik", "imie,nazwisko,login,haslo,znizka,typ_konta", value);
-        db.close();
+        //db.close();
      
         return state;
     }

@@ -34,9 +34,6 @@ public class Database {
         _connectionProps.put("user", "inf117293");
         _connectionProps.put("password", "czita007");
 
-        //fabian
-        //_connectionProps.put("user", "inf117187");
-        //_connectionProps.put("password", "inf117187");
     }
 
     public static void setUser(String login) {
