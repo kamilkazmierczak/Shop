@@ -16,8 +16,10 @@ public class MainMenu extends javax.swing.JPanel {
     /**
      * Creates new form MainMenu
      */
-    public MainMenu() {
+    private JFrame _frame;
+    public MainMenu(JFrame frame) {
         initComponents();
+        _frame = frame;
     }
 
     
@@ -100,6 +102,7 @@ public class MainMenu extends javax.swing.JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true); 
+        _frame.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

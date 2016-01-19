@@ -201,9 +201,11 @@ public class Login extends javax.swing.JPanel {
             switch (accountType(login)) {
                 case "user":
                     openUserMenu();
+                    _frame.dispose();
                     break;
                 case "admin":
                     openAdminMenu();
+                    _frame.dispose();
                     break;
                 default:
                     System.out.println("Nieznany typ konta");

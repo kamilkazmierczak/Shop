@@ -31,7 +31,7 @@ public class Shop {
 
         JFrame frame = new JFrame("Menu główne");
         //frame.setSize(1300, 1600);
-        frame.setContentPane(new MainMenu());
+        frame.setContentPane(new MainMenu(frame));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
