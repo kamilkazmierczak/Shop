@@ -77,6 +77,50 @@ public class Database {
         //System.out.println("Odłączono od bazy danych");
     }
 
+    public static void disableAutoCommit() {
+        try {
+            _conn.setAutoCommit(false);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void enableAutoCommit() {
+        try {
+            _conn.setAutoCommit(true);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void commit() {
+
+        try {
+            _conn.commit();
+        } catch (SQLException ex) {
+            System.out.println("Bład wykonania polecenia" + ex.toString());
+        }
+
+    }
+
+    public static void lockTable(String table) {
+        Statement stmt = null;
+
+        try {
+            stmt = _conn.createStatement();
+            stmt.execute("LOCK TABLE " + table + " IN EXCLUSIVE MODE");
+        } catch (SQLException ex) {
+            System.out.println("Bład wykonania polecenia" + ex.toString());
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    /* kod obsługi */ }
+            }
+        }
+    }
+
     public static ArrayList<ArrayList<Object>> getHistory() {
         ArrayList<ArrayList<Object>> myHistory = new ArrayList<ArrayList<Object>>();
 
@@ -85,18 +129,18 @@ public class Database {
         try {
             stmt = _conn.createStatement();
 
-            ArrayList<SelectTypes> types =  new ArrayList<SelectTypes>(Arrays.asList(
-                        SelectTypes.INT,
-                        SelectTypes.STRING,
-                        SelectTypes.STRING,
-                        SelectTypes.FLOAT,
-                        SelectTypes.INT,
-                        SelectTypes.DATE,
-                        SelectTypes.DATE,
-                        SelectTypes.FLOAT));
-            
+            ArrayList<SelectTypes> types = new ArrayList<SelectTypes>(Arrays.asList(
+                    SelectTypes.INT,
+                    SelectTypes.STRING,
+                    SelectTypes.STRING,
+                    SelectTypes.FLOAT,
+                    SelectTypes.INT,
+                    SelectTypes.DATE,
+                    SelectTypes.DATE,
+                    SelectTypes.FLOAT));
+
             rs = stmt.executeQuery("SELECT id_zamowienia,nazwa,status,p.cena,p.liczba_sztuk,data_zamowienia,data_dostawy,koszt FROM "
-                    + "((towar t JOIN przydzial p ON t.id_towaru = p.towar) JOIN zamowienie z ON z.id_zamowienia = p.zamowienie) WHERE z.uzytkownik = "+_userID);
+                    + "((towar t JOIN przydzial p ON t.id_towaru = p.towar) JOIN zamowienie z ON z.id_zamowienia = p.zamowienie) WHERE z.uzytkownik = " + _userID);
 
             ArrayList<Object> newRow;
             while (rs.next()) {
@@ -115,7 +159,7 @@ public class Database {
                         case FLOAT:
                             newRow.add(rs.getFloat(i + 1));
                             break;
-                            
+
                         case DATE:
                             newRow.add(rs.getDate(i + 1));
                             break;
@@ -180,7 +224,7 @@ public class Database {
                         case FLOAT:
                             newRow.add(rs.getFloat(i + 1));
                             break;
-                            
+
                         case DATE:
                             newRow.add(rs.getString(i + 1));
                             break;
