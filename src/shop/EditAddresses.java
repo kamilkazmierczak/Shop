@@ -87,71 +87,8 @@ public class EditAddresses extends javax.swing.JPanel {
 
     private void initAddresses() {
 
-        /*
-        SQL
-         */
-//        ArrayList<Integer> idArr = new ArrayList<Integer>();
-//        ArrayList<String> ulicaArr = new ArrayList<String>();
-//        ArrayList<String> miejscowoscArr = new ArrayList<String>();
-//        ArrayList<String> kod_pocztowyArr = new ArrayList<String>();
-//        ArrayList<Integer> nr_telefonuArr = new ArrayList<Integer>();
-//        ArrayList<Integer> nr_domuArr = new ArrayList<Integer>();
-//
-//        
-//        
-//        Database db = Database.getDatabase();
-//        db.connect();
-//   
-//        String condition = "uzytkownik = "+db.getUserID();
-//        ArrayList<Object> data;
-//              
-//        data = db.select("id", "adres", condition, SelectTypes.INT,"id");
-//        for (Object result : data) {
-//            idArr.add((Integer)result);
-//        }
-//      
-//        data = db.select("ulica", "adres", condition, SelectTypes.STRING,"id");
-//        for (Object result : data) {
-//            ulicaArr.add((String)result);
-//        }
-//        
-//        data = db.select("miejscowosc", "adres", condition, SelectTypes.STRING,"id");
-//        for (Object result : data) {
-//            miejscowoscArr.add((String)result);
-//        }
-//        
-//        data = db.select("kod_pocztowy", "adres", condition, SelectTypes.STRING,"id");
-//        for (Object result : data) {
-//            kod_pocztowyArr.add((String)result);
-//        }
-//        
-//        data = db.select("nr_telefonu", "adres", condition, SelectTypes.INT,"id");
-//        for (Object result : data) {
-//            //System.out.println((Integer)result);
-//            nr_telefonuArr.add((Integer)result);
-//        }
-//        
-//        data = db.select("nr_domu", "adres", condition, SelectTypes.INT,"id");
-//        for (Object result : data) {
-//            nr_domuArr.add((Integer)result);
-//        }
-//        
-//        
-//        
-//        for (int i = 0; i < idArr.size(); i++) {
-//            
-//            _addressess.add(new Address(idArr.get(i),
-//                                nr_telefonuArr.get(i),
-//                                nr_domuArr.get(i), 
-//                                kod_pocztowyArr.get(i), 
-//                                miejscowoscArr.get(i), 
-//                                ulicaArr.get(i)
-//                                ));
-//        }
-//         
-//        db.close();
         Database db = Database.getDatabase();
-        //db.connect();
+       
         String condition = "uzytkownik = " + db.getUserID();
         ArrayList<ArrayList<Object>> data2d = db.select2("id,ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu", "adres", condition,
                 new ArrayList<SelectTypes>(Arrays.asList(
@@ -173,10 +110,7 @@ public class EditAddresses extends javax.swing.JPanel {
 
         }
 
-        //db.close();
-//        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
-//        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
-//        _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
+
         DefaultTableModel model = new DefaultTableModel();
         jTableAddresses = new JTable(model);
         model.addColumn("Miejscowość");

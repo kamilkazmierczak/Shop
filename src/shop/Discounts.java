@@ -44,7 +44,7 @@ public class Discounts extends javax.swing.JPanel {
         SQL
          */
         Database db = Database.getDatabase();
-        //db.connect();
+        
         ArrayList<ArrayList<Object>> data2d = db.select2("kod_znizki,ile", "znizka", null,
                 new ArrayList<SelectTypes>(Arrays.asList(
                         SelectTypes.INT,
@@ -56,10 +56,7 @@ public class Discounts extends javax.swing.JPanel {
                     (float) row.get(1)));
         }
 
-        //db.close();
-
-        // _discounts.add(new Discount(999, (float) 60.2));
-        //_discounts.add(new Discount(888, (float) 14));
+       
         if (init) {
             DefaultTableModel model = new DefaultTableModel();
             jTableDiscounts = new JTable(model);
@@ -185,14 +182,7 @@ public class Discounts extends javax.swing.JPanel {
             _discounts.clear();
             initDiscounts(false);
 
-            /*
-        ERROR
-        TU BEDA BLEDY!!!
-        bo to mi nie dodaje nowego id, nie robie nowej funkcji setNewData(..)
-        bo nie wiem jak chce to realizowac, albo jakos z sbd, albo
-        wziac id ostatniego elementu i nadac mu kolejny,
-        domyslnie jak go nie ma to jest to null
-             */
+       
             Functions.clearTable(model, _tableColumns);
             for (Discount disc : _discounts) {
                 model.addRow(disc.getDiscount());

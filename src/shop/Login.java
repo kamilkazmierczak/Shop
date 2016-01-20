@@ -56,13 +56,9 @@ public class Login extends javax.swing.JPanel {
             }
         });
 
-        jTextField1.setText("austin");
-
         jLabel2.setText("Login:");
 
         jLabel3.setText("Hasło:");
-
-        jPasswordField1.setText("hipi");
 
         jLabelStatus.setText("Blędny login lub hasło");
 

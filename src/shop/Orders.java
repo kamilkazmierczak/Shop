@@ -69,11 +69,6 @@ public class Orders extends javax.swing.JPanel {
 
        
         
-        
-        //_orders.add(new Order(33, new Date(1, 3, 2013), new Date(13, 5, 2015), (float) 12.4, "Kurier", "PayPal", "pakowany", (float) 160.9));
-       // _orders.add(new Order(82, new Date(23, 1, 2016), (float) 15.5, "Kurier", "Przelew", "anulowany", (float) 50.12));
-        
-        
 
         DefaultTableModel model = new DefaultTableModel();
         jTableOrders = new JTable(model);

@@ -41,31 +41,7 @@ public class Shop {
          Database db = Database.getDatabase();
          db.connect();
          
-         
 
-        /*
-        Notes:
-        -jesli liczba sztuk towaru = 0 to nie dodawaj go do koszyka (jesli nie zrobisz bedzie powodowac bledy w weryfikacji)
-        -jak sie usunie adres to zablokuj zeby go sie nie dalo zmodyfikowac (i na odwrot) (bledy)
-        -obsluga bledow userinput jest tylko w zarzadzaniu towarem
-       
-     
-
-       
-        
-        -jakis komunikat jesli nie uda sie wstawic towaru ktory juz ma taka sama naze ->latwo o ten blad bo jak sie zrobi dodaj i kliknie na jakis item to nazwa ta sama i wysztko wskooczy
-        cout wywali ze naruszona wizey uniaktowe
-        
-        
-
-        
-        >opisow bledow szukaj jako ERROR
-        >opisow szukaj jako INFO
-       
-        
-       
-      
-         */
     }
 
 }

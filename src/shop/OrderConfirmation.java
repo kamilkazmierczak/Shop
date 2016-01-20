@@ -224,17 +224,7 @@ public class OrderConfirmation extends javax.swing.JPanel {
         boolean status = false; //false jesli nie wolno dodac wiecej sztuk produktu
         Integer liczbaDostepnychSztuk = 0;
 
-        //wersja ze sprawdzeniem bazy danych
-//       Database db = Database.getDatabase();
-//       db.connect();      
-//
-//        String  selectedItem = _cartContent.get(jComboBox1.getSelectedIndex()).getNazwa();
-//        String condition = "nazwa = '"+selectedItem+"'";
-//        ArrayList<Object> data = db.select("liczba_sztuk","towar",condition,SelectTypes.INT);     
-//        for (Object result : data) {
-//            liczbaDostepnychSztuk = (Integer)result;
-//        }
-//        db.close();
+
         liczbaDostepnychSztuk = _cartContent.get(jComboBox1.getSelectedIndex()).getLiczba_sztuk();
 
         if (liczbaDostepnychSztuk + 1 == (Integer) jSpinner1.getValue()) {

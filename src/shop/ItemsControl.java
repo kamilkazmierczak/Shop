@@ -42,9 +42,7 @@ public class ItemsControl extends javax.swing.JPanel {
         // jFormattedPriceField = new JFormattedTextField(new Float(3.14));
         jLabelInfo.setVisible(false);
 
-        //Database db = Database.getDatabase();
-        //db.connect();
-        //ERROR - to jest tu tylko tmp bo wczesniej gdzies jest close, a nie ma byc trzeba wywalic wszystkie close
+
     }
 
     private void initListener() {
@@ -103,27 +101,21 @@ public class ItemsControl extends javax.swing.JPanel {
     private void addItem() {
         DefaultTableModel model = (DefaultTableModel) jTableItems.getModel();
 
-        //setNewData(_items.get(row));
-        //Item item = new Item(14, "myszka", 78, (float) 140.67, "Zwinna");
         if (checkUserInput()) {
             Item newItem = new Item();
             setNewData(newItem);
 
-            //Integer id = _items.get(row).getId_towaru();
+            
             Database db = Database.getDatabase();
-            //db.connect();
+            
 
             String nazwa_ = Functions.addApostrophes(newItem.getNazwa());
             Integer liczba_sztuk_ = newItem.getLiczba_sztuk();
             Float cena_ = newItem.getCena();
             String opis_ = Functions.addApostrophes(newItem.getOpis());
 
-//        db.update("towar", "nazwa = " + nazwa_, condition);
-//        db.update("towar", "liczba_sztuk = " + liczba_sztuk_, condition);
-//        db.update("towar", "cena = " + cena_, condition);
-//        db.update("towar", "opis = " + opis_, condition);
+
             String value = nazwa_ + "," + liczba_sztuk_ + "," + cena_ + "," + opis_;
-            //db.update("towar", "nr_domu = "+nr_domu_, condition);
             boolean state = false;
             state = db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
 
@@ -209,15 +201,12 @@ public class ItemsControl extends javax.swing.JPanel {
                     (String) row.get(1),
                     (Integer) row.get(2),
                     (float) row.get(3),
-                    (String) row.get(4) //ERROR - nie wiem czy nie wstawi null zamiast "" , ale wydaje sie dzialac
+                    (String) row.get(4)
             ));
 
         }
 
-        //db.close();
-//        _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
-//        _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
-//        _items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));
+
         if (init) {
             DefaultTableModel model = new DefaultTableModel();
             jTableItems = new JTable(model);

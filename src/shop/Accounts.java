@@ -93,16 +93,7 @@ public class Accounts extends javax.swing.JPanel {
                     (float) row.get(1)));
         }
 
-        //db.close();
-        
-        //_discounts.add(new Discount(999, (float) 60.2));
-        // _discounts.add(new Discount(888, (float) 14));
-        /*
-        INFO
-        User ma kod znizki i przy user.getUser() zwraca wartosc [%] (funkcja)
-        i ta funkcja potrzebuje SQL zeby sobie to zamienic na razie jest dla testow
-        initDiscounts dodaje mi wszystkie znizki do comboboxa
-         */
+
         for (Discount disc : _discounts) {
             jComboBox1.addItem(disc.getIle().toString());
         }

@@ -48,14 +48,10 @@ public class Products extends javax.swing.JPanel {
         
         
         
-        /*
-        SQL
-        */
-        //Integer y=1;
-        
+
         
         Database db = Database.getDatabase();
-        //db.connect();
+    
         
         db.disableAutoCommit();
         db.lockTable("towar");
@@ -79,14 +75,7 @@ public class Products extends javax.swing.JPanel {
 
         }
 
-        
-        //db.close();
-        
-        
-     
-       // _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
-        //_items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
-        //_items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));
+
 
         _tableContent = new Object[_items.size()][];
         for (int i = 0; i < _items.size(); i++) {
@@ -212,8 +201,6 @@ public class Products extends javax.swing.JPanel {
         CartTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         infoLabel = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
@@ -263,20 +250,6 @@ public class Products extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setText("jButton3");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         infoLabel.setText("Information Label (invisilbe)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -292,11 +265,8 @@ public class Products extends javax.swing.JPanel {
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(101, 101, 101)
-                                .addComponent(jButton3)
-                                .addGap(91, 91, 91)
-                                .addComponent(jButton5)))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(146, 146, 146)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
@@ -327,12 +297,9 @@ public class Products extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(infoLabel)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton5))
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -343,25 +310,6 @@ public class Products extends javax.swing.JPanel {
         db.enableAutoCommit();
         _frame.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-        System.out.println("Zawartość koszyka:");
-        for (int i = 0; i < _cartContent.size(); i++) {
-
-            System.out.println(_cartContent.get(i).getId_towaru() + " " + _cartContent.get(i).getNazwa());
-
-        }
-        System.out.println("To juz wszysko:");
-
-
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        for (Item item : _cartContent) {
-            System.out.println(item.getNazwa());
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
@@ -386,8 +334,6 @@ public class Products extends javax.swing.JPanel {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
