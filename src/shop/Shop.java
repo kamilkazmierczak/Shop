@@ -40,6 +40,24 @@ public class Shop {
 
          Database db = Database.getDatabase();
          db.connect();
+         
+         
+//         if (Functions.correctPhoneNumber("7822g1899")) {
+//             System.out.println("poprawny nr telefonu");
+//        }else
+//             System.out.println("bledny nr telefonu");
+         
+//            if (Functions.correctZipCode("64-237")) {
+//             System.out.println("poprawny");
+//        }else
+//             System.out.println("bledny");
+
+
+//            if (Functions.correctString("ASsda 7")) {
+//             System.out.println("poprawny");
+//        }else
+//             System.out.println("bledny");
+         
          //db.close();
 
         //Date data = Date.stringToDate("2014-04-02");

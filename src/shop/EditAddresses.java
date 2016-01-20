@@ -35,6 +35,7 @@ public class EditAddresses extends javax.swing.JPanel {
         jScrollPane1.getViewport().setView(jTableAddresses);
         Functions.disableTableEdit(jTableAddresses);
         initListener();
+        jLabelStatus.setVisible(false);
 
     }
 
@@ -49,6 +50,39 @@ public class EditAddresses extends javax.swing.JPanel {
         } else {
             jTextFieldPhone.setText((_addressess.get(row).getNr_telefonu()).toString());
         }
+    }
+
+    private boolean dataCorrect() {
+        boolean correctData = true;
+
+        Integer nr_telefonu = 0;
+        if (jTextFieldPhone.getText().length() > 0) {
+
+            if (!Functions.correctPhoneNumber(jTextFieldPhone.getText())) {
+                correctData = false;
+            }
+
+        }
+
+        if (!Functions.correctZipCode(jTextFieldZipCode.getText())) {
+            correctData = false;
+        }
+
+        if (!Functions.correctHomeNumber(jTextFieldHomeNumber.getText())) {
+            correctData = false;
+        }
+
+        if (!Functions.correctString(jTextFieldAddress.getText()) || !Functions.correctString(jTextFieldCity.getText())) {
+            correctData = false;
+        }
+
+        
+        if (!correctData) {
+            jLabelStatus.setVisible(true);
+        }else
+            jLabelStatus.setVisible(false);
+        
+        return correctData;
     }
 
     private void initAddresses() {
@@ -140,7 +174,6 @@ public class EditAddresses extends javax.swing.JPanel {
         }
 
         //db.close();
-
 //        _addressess.add(new Address(782271899, 101, "64-232", "Stara Tuchorza", "Stara Tuchorza"));
 //        _addressess.add(new Address(601299815, 154, "63-112", "Wolsztyn", "Dolna"));
 //        _addressess.add(new Address(224567889, 8, "199-216", "Warszawa", "Wielka"));
@@ -233,7 +266,6 @@ public class EditAddresses extends javax.swing.JPanel {
                 db.update("adres", "nr_domu = " + nr_domu_, condition);
 
                 //db.close();
-
             }
         }
 
@@ -291,6 +323,7 @@ public class EditAddresses extends javax.swing.JPanel {
         jTextFieldAddress = new javax.swing.JTextField();
         jButtonDelete = new javax.swing.JButton();
         jButtonModify = new javax.swing.JButton();
+        jLabelStatus = new javax.swing.JLabel();
 
         jLabel2.setFont(new java.awt.Font("Sitka Small", 0, 48)); // NOI18N
         jLabel2.setText("Zarządzaj adresami");
@@ -350,6 +383,9 @@ public class EditAddresses extends javax.swing.JPanel {
             }
         });
 
+        jLabelStatus.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        jLabelStatus.setText("Błędne dane");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -381,7 +417,9 @@ public class EditAddresses extends javax.swing.JPanel {
                                     .addComponent(jTextFieldHomeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabelStatus)
+                                    .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(41, Short.MAX_VALUE))
@@ -392,11 +430,7 @@ public class EditAddresses extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -417,10 +451,15 @@ public class EditAddresses extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelStatus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -434,11 +473,17 @@ public class EditAddresses extends javax.swing.JPanel {
     }//GEN-LAST:event_jTableAddressesMouseClicked
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        deleteAddress(jTableAddresses.getSelectedRow());
+        if (dataCorrect()) {
+            deleteAddress(jTableAddresses.getSelectedRow());
+        }
+
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModifyActionPerformed
-        modifyAddress(jTableAddresses.getSelectedRow());
+        if (dataCorrect()) {
+            modifyAddress(jTableAddresses.getSelectedRow());
+        }
+
     }//GEN-LAST:event_jButtonModifyActionPerformed
 
 
@@ -452,6 +497,7 @@ public class EditAddresses extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelStatus;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableAddresses;
     private javax.swing.JTextField jTextFieldAddress;

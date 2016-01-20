@@ -15,39 +15,109 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Functions {
 
-    public static String addApostrophes(String text)
+    
+    public static boolean correctString(String text)
     {
-        return "'"+text+"'";
+        boolean status = true;
+        
+        if(text.matches(".*\\d+.*"))
+            status = false;
+        
+        
+        return status;
     }
     
-    public static Float calculateDeliverCost(DeliverType typ)
-    {
-        Float koszt =(float)0;
+    
+    public static boolean correctPhoneNumber(String number) {
+        boolean status = true;
+
+        if (number.length() != 9) {
+            status = false;
+        }
+
+        try {
+            Integer.parseInt(number);
+        } catch (Exception e) {
+            status = false;
+        }
+
+        return status;
+    }
+
+    public static boolean correctHomeNumber(String number) {
+        boolean status = true;
         
-        switch(typ){
-            
-            case KURIER:
-                koszt = (float)15;
-                break;
-                
-            case POCZTA:
-                koszt = (float)7;
-                break;
-                
-            case OSOBISCIE:
-                koszt = (float)0;
-                break;        
-                
-            default:
-                System.out.println("Nieznany sposob dostawy");
-                break;        
+        try {
+            Integer.parseInt(number);
+        } catch (Exception e) {
+            status = false;
         }
         
         
-        return koszt;
+        return status;
     }
     
     
+    
+    public static boolean correctZipCode(String number) {
+        boolean status = true;
+        String pre = "";
+        String dash = "";
+        String post = "";
+
+        if (number.length() != 6) {
+            status = false;
+        } else {
+
+            pre = number.substring(0, 2);
+            dash = number.substring(2, 3);
+            post = number.substring(3, 6);
+
+        }
+
+        try {
+            Integer.parseInt(pre);
+            Integer.parseInt(post);
+        } catch (Exception e) {
+            status = false;
+        }
+
+        if (!dash.equals("-")) {
+            status = false;
+        }
+
+        return status;
+    }
+
+    public static String addApostrophes(String text) {
+        return "'" + text + "'";
+    }
+
+    public static Float calculateDeliverCost(DeliverType typ) {
+        Float koszt = (float) 0;
+
+        switch (typ) {
+
+            case KURIER:
+                koszt = (float) 15;
+                break;
+
+            case POCZTA:
+                koszt = (float) 7;
+                break;
+
+            case OSOBISCIE:
+                koszt = (float) 0;
+                break;
+
+            default:
+                System.out.println("Nieznany sposob dostawy");
+                break;
+        }
+
+        return koszt;
+    }
+
     public static void clearTable(final DefaultTableModel model, ArrayList<String> columns) {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
@@ -89,22 +159,20 @@ public class Functions {
         /*
         SQL
          */
-        Float discount = (float)0;
+        Float discount = (float) 0;
         Database db = Database.getDatabase();
         //db.connect();
-   
-     
-        ArrayList<Object> data;
-              
-        String condition = "kod_znizki = "+code;
-        
-        data = db.select("ile", "znizka", condition, SelectTypes.FLOAT,"kod_znizki");
-        for (Object result : data) {
-            discount= (float)result;
-        }
-        
-        //db.close();
 
+        ArrayList<Object> data;
+
+        String condition = "kod_znizki = " + code;
+
+        data = db.select("ile", "znizka", condition, SelectTypes.FLOAT, "kod_znizki");
+        for (Object result : data) {
+            discount = (float) result;
+        }
+
+        //db.close();
 //        if (code == 817) {
 //            return (float) 50.0;
 //        } else if (code == 0) {
@@ -116,8 +184,7 @@ public class Functions {
 //        }
 //
 //        return (float) 4.4;
-        
-    return discount;
+        return discount;
     }
 
 }

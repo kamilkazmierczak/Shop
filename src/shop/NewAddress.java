@@ -18,58 +18,85 @@ public class NewAddress extends javax.swing.JPanel {
      * Creates new form NewAddress
      */
     private JFrame _frame;
-    
+
     public NewAddress(JFrame frame) {
         initComponents();
         _frame = frame;
         jLabelStatus.setVisible(false);
     }
 
-    
-    private boolean addAdress()
-    {
+    private boolean addAdress() {
         boolean state = true;
         boolean addPhone = true;
-        
+        boolean correctData = true;
+
         String miasto = Functions.addApostrophes(jTextFieldCity.getText());
         String ulica = Functions.addApostrophes(jTextFieldAddress.getText());
-        Integer nr_domu =  Integer.parseInt(jTextFieldHomeNumber.getText());
-        
-        Integer nr_telefonu =0;
-        if (jTextFieldPhone.getText().length()>0) {
-            nr_telefonu = Integer.parseInt(jTextFieldPhone.getText());
-        }else
-        {
+        Integer nr_domu =0;
+
+        Integer nr_telefonu = 0;
+        if (jTextFieldPhone.getText().length() > 0) {
+
+            if (Functions.correctPhoneNumber(jTextFieldPhone.getText())) {
+                nr_telefonu = Integer.parseInt(jTextFieldPhone.getText());
+            }else
+            {
+                correctData = false;
+            }
+
+        } else {
             addPhone = false;
         }
         
+        if (!Functions.correctZipCode(jTextFieldZipCode.getText())) {
+            correctData = false;
+        }
         
+         if (!Functions.correctHomeNumber(jTextFieldHomeNumber.getText())) {
+            correctData = false;
+        }else
+         {
+             nr_domu = Integer.parseInt(jTextFieldHomeNumber.getText());
+         }
+         
+         if (!Functions.correctString(miasto) || !Functions.correctString(ulica)) {
+            correctData = false;
+        }
+        
+
         String kod_pocztowy = Functions.addApostrophes(jTextFieldZipCode.getText());
-        
-   
+
         Database db = Database.getDatabase();
         //db.connect();   
-        
-        Integer userID =0;
+
+        Integer userID = 0;
         userID = db.getUserID();
 
-        if(addPhone)
-        {
-        String value = ulica+","+miasto+","+kod_pocztowy+","+nr_telefonu+","+nr_domu+","+userID;
-        state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu,uzytkownik", value);
-        }else
-        {
-            //System.out.println("bez telefonu");
-        String value = ulica+","+miasto+","+kod_pocztowy+","+nr_domu+","+userID;
-        state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
+        if (correctData) {
+            if (addPhone) {
+                String value = ulica + "," + miasto + "," + kod_pocztowy + "," + nr_telefonu + "," + nr_domu + "," + userID;
+                state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_telefonu,nr_domu,uzytkownik", value);
+            } else {
+                //System.out.println("bez telefonu");
+                String value = ulica + "," + miasto + "," + kod_pocztowy + "," + nr_domu + "," + userID;
+                state = db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
+            }
+        } else {
+            state = false;
+            jLabelStatus.setVisible(true);
+            jLabelStatus.setText("Błędne dane");
+        }
+
+        
+        if (correctData == false) {
+            state = false;
         }
         
         //db.close();
-        
         return state;
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,14 +234,14 @@ public class NewAddress extends javax.swing.JPanel {
         if (addAdress()) {
             //System.out.println("dodano");
             jLabelStatus.setVisible(true);
+            jLabelStatus.setText("Dodano adres");
             jTextFieldAddress.setText("");
             jTextFieldCity.setText("");
             jTextFieldPhone.setText("");
             jTextFieldHomeNumber.setText("");
             jTextFieldZipCode.setText("");
-            
-        }else
-        {
+
+        } else {
             //System.out.println("nie udalo sie dodac");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
