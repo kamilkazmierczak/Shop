@@ -43,6 +43,10 @@ public class OrderConfirmation extends javax.swing.JPanel {
         initDiscount();
         disabelSpinnerEdit();
         jLabelKoszt.setText(calculateOrderCost().toString());
+        
+        if (_addressess.size() < 1) {
+            jButton1.setEnabled(false);
+        }
     }
 
     private void disabelSpinnerEdit() {
@@ -512,6 +516,9 @@ public class OrderConfirmation extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Database db = Database.getDatabase(); 
+        db.commit();
+        db.enableAutoCommit();
         _frame.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed

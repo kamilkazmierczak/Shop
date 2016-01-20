@@ -31,8 +31,11 @@ public class Database {
 
     private Database() {
         _connectionProps = new Properties();
-        _connectionProps.put("user", "inf117293");
-        _connectionProps.put("password", "czita007");
+        //_connectionProps.put("user", "inf117293");
+        //_connectionProps.put("password", "czita007");
+
+        _connectionProps.put("user", "inf117187");
+        _connectionProps.put("password", "hybryda12");
 
     }
 

@@ -40,7 +40,7 @@ public class Shop {
 
          Database db = Database.getDatabase();
          db.connect();
-
+         //db.close();
 
         //Date data = Date.stringToDate("2014-04-02");
         
