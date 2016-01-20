@@ -367,11 +367,12 @@ public class Database {
         return result;
     }
 
-    public static String delete(String table, String condition) {
+    public static boolean delete(String table, String condition) {
         int changes;
         String result = null;
         Statement stmt = null;
-
+        boolean status = true;
+        
         try {
             stmt = _conn.createStatement();
 
@@ -380,6 +381,7 @@ public class Database {
 
         } catch (SQLException ex) {
             System.out.println("Bład wykonania polecenia" + ex.toString());
+            status = false;
         } finally {
             if (stmt != null) {
                 try {
@@ -389,7 +391,7 @@ public class Database {
             }
         }
 
-        return result;
+        return status;
     }
 
     public static Database getDatabase() {

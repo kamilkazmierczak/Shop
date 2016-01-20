@@ -41,7 +41,7 @@ public class ItemsControl extends javax.swing.JPanel {
         jSpinnerNumberofItems.setValue(1);
         // jFormattedPriceField = new JFormattedTextField(new Float(3.14));
         jLabelInfo.setVisible(false);
-        
+
         //Database db = Database.getDatabase();
         //db.connect();
         //ERROR - to jest tu tylko tmp bo wczesniej gdzies jest close, a nie ma byc trzeba wywalic wszystkie close
@@ -93,7 +93,6 @@ public class ItemsControl extends javax.swing.JPanel {
         //db.update("towar", "nr_domu = "+nr_domu_, condition);
         //db.insert("adres", "ulica,miejscowosc,kod_pocztowy,nr_domu,uzytkownik", value);
         //db.close();
-
         Functions.clearTable(model, _tableColumns);
 
         for (Item item : _items) {
@@ -125,30 +124,28 @@ public class ItemsControl extends javax.swing.JPanel {
 //        db.update("towar", "opis = " + opis_, condition);
             String value = nazwa_ + "," + liczba_sztuk_ + "," + cena_ + "," + opis_;
             //db.update("towar", "nr_domu = "+nr_domu_, condition);
-            db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
+            boolean state = false;
+            state = db.insert("towar", "nazwa,liczba_sztuk,cena,opis", value);
 
-            //db.close();
+            if (state) {
 
-            //initItems();
-            //Integer newId =(Integer)jTableItems.getValueAt(jTableItems.getRowCount()-1, 0)+1;
-            //newItem.setId_towaru(newId);
-            _items.clear();
-            initItems(false);
+                jLabelInfo.setVisible(false);
+                
+                
+                _items.clear();
+                initItems(false);
+                Functions.clearTable(model, _tableColumns);
+                for (Item item : _items) {
+                    model.addRow(item.getItem());
+                }
 
-            //_items.add(newItem);
-
-            /*
-        ERROR
-        TU BEDA BLEDY!!!
-        bo to mi nie dodaje nowego id, nie robie nowej funkcji setNewData(..)
-        bo nie wiem jak chce to realizowac, albo jakos z sbd, albo
-        wziac id ostatniego elementu i nadac mu kolejny,
-        domyslnie jak go nie ma to jest to null
-             */
-            Functions.clearTable(model, _tableColumns);
-            for (Item item : _items) {
-                model.addRow(item.getItem());
+            }else
+            {
+                jLabelInfo.setText("Taki przedmiot istnieje");
+                jLabelInfo.setVisible(true);
+                
             }
+            
         }
 
     }
@@ -196,7 +193,6 @@ public class ItemsControl extends javax.swing.JPanel {
         /*
         SQL
          */
-
         Database db = Database.getDatabase();
         //db.connect();
         ArrayList<ArrayList<Object>> data2d = db.select2("id_towaru,nazwa,liczba_sztuk,cena,opis", "towar", null,
@@ -213,14 +209,12 @@ public class ItemsControl extends javax.swing.JPanel {
                     (String) row.get(1),
                     (Integer) row.get(2),
                     (float) row.get(3),
-                    (String) row.get(4)  //ERROR - nie wiem czy nie wstawi null zamiast "" , ale wydaje sie dzialac
+                    (String) row.get(4) //ERROR - nie wiem czy nie wstawi null zamiast "" , ale wydaje sie dzialac
             ));
 
         }
 
         //db.close();
-
-
 //        _items.add(new Item(1, "pendrive", 34, (float) 12.5, "Bardzo szybki"));
 //        _items.add(new Item(2, "monitor", 2, (float) 2500, "Znakomity"));
 //        _items.add(new Item(3, "tv", 4, (float) 5000, "Duzy"));
@@ -241,19 +235,27 @@ public class ItemsControl extends javax.swing.JPanel {
 
     private void deleteItem(int tableRow) {
         DefaultTableModel model = (DefaultTableModel) jTableItems.getModel();
+        boolean status = false;
 
         Integer id = _items.get(tableRow).getId_towaru();
         Database db = Database.getDatabase();
         //db.connect();
         String condition = "id_towaru = " + id;
-        db.delete("towar", condition);
+        status = db.delete("towar", condition);
         //db.close();
-
-        _items.remove(tableRow);
-        Functions.clearTable(model, _tableColumns);
-        for (Item item : _items) {
-            model.addRow(item.getItem());
+        if (status) {
+            _items.remove(tableRow);
+            Functions.clearTable(model, _tableColumns);
+            for (Item item : _items) {
+                model.addRow(item.getItem());
+            }
+            jLabelInfo.setVisible(false);
+        }else
+        {
+            jLabelInfo.setVisible(true);
+            jLabelInfo.setText("Towar jest w zamówieniu");
         }
+
     }
 
     /**
@@ -381,13 +383,15 @@ public class ItemsControl extends javax.swing.JPanel {
                                             .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextFieldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jSpinnerNumberofItems, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextFieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabelInfo)))
+                                            .addComponent(jTextFieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(58, 58, 58)
-                                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonModAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabelInfo)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jButtonModAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(jLabel2)
@@ -442,15 +446,18 @@ public class ItemsControl extends javax.swing.JPanel {
 
     private void jButtonModAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModAddActionPerformed
 
-        System.out.println("Index od combobox ->" + jComboBox1.getSelectedIndex());
-
+        //System.out.println("Index od combobox ->" + jComboBox1.getSelectedIndex());
         if (jComboBox1.getSelectedIndex() == 0) {
             //modeyfikuj
-            modifyItem(_row);
-            System.out.println("Modyfikacja");
+
+            if (checkUserInput()) {
+                modifyItem(_row);
+            }
+
+            //System.out.println("Modyfikacja");
         } else {
             addItem();
-            System.out.println("Dodawanie");
+            //System.out.println("Dodawanie");
         }
 
 

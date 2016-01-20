@@ -45,14 +45,18 @@
                                           <Component id="jTextFieldDescription" alignment="0" min="-2" pref="156" max="-2" attributes="0"/>
                                           <Component id="jSpinnerNumberofItems" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                                           <Component id="jTextFieldPrice" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
-                                          <Component id="jLabelInfo" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-                                      <Component id="jButtonDelete" min="-2" pref="86" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButtonModAdd" min="-2" pref="101" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabelInfo" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="jButtonDelete" min="-2" pref="86" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jButtonModAdd" min="-2" pref="101" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
